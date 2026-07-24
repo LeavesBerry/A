@@ -52,7 +52,7 @@ backend/
 1. 运行路径建议是 `cd backend && python mian.py`，因为代码里的 `./data/static/` 会按当前工作目录解析。
 2. `.env` 可放在 `backend/.env`，至少建议配置：
    - `SECRET_KEY`
-   - `EMAIL_SENDER`
+   - ``
    - `EMAIL_AUTH_CODE`
    - `DB_USER`
    - `DB_PASSWORD`

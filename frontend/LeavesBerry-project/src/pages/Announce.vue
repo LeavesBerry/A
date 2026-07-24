@@ -3,13 +3,11 @@
 		<div class="item-box none-select" v-show="!configModule.isContentExpanded">
 			<p class="no-item-tip none-select" v-if="currentConfig.length == 0" @click="getAllAnnoInfo">暂无公告( •̀ ω •́
 				)✧<br>点击此处刷新</p>
-			<div class="items" v-for="item in currentConfig" :key="item.title"
+			<div class="items" v-for="item in currentConfig" :key="item.id"
 				@click="configModule.expandContent(item.id, 'Announce')">
 				<p class="item-title">{{ item.title }}</p>
-				<p id="anno-date">————{{ Math.floor(item.anno_date / 10000) }}年{{ Math.floor((item.anno_date % 10000) /
-					100) }}月{{ (item.anno_date % 10000) % 100 }}日
-				</p>
-				<p id="anno-date">————{{ Math.floor(item.anno_date / 10000) }}年{{ Math.floor((item.anno_date % 10000) /
+				<p class="anno-date">————{{ Math.floor(item.anno_date / 10000) }}年{{ Math.floor((item.anno_date % 10000)
+					/
 					100) }}月{{ (item.anno_date % 10000) % 100 }}日
 				</p>
 			</div>
@@ -39,17 +37,16 @@
 <script setup>
 import api from "../utils/api"
 import {
-	userState, navbarModule,
-	copyText, createQRCode, classifyGroup,
-	switchArrow, arrowStyle, apiRequest, configModule, du
+	classifyGroup, switchArrow, arrowStyle, configModule, du
 } from "../utils/index";
-import { reactive, ref, onMounted } from "vue"
+import { ref, onMounted, onUnmounted } from "vue"
 import Sidebar from "../components/Sidebar.vue";
+import Logo from "../components/Logo.vue";
 
-
-let navList = ref([]);
-let currentConfig = ref([])
-let groupMap = null
+const navList = ref([])
+const currentConfig = ref([])
+const groupMap = ref(new Map())
+let isUnmounted = false
 
 const annoTypeList = [
 	{ index: 0, typeKey: "all", label: "所有", id: "all" },
@@ -59,31 +56,34 @@ const annoTypeList = [
 	{ index: 4, typeKey: "other", label: "其他", id: "other" }
 ]
 
-
 async function getAllAnnoInfo() {
-	const res = await api.post('/api/getAllAnnoInfo');
-	navList.value = res.data;
-	currentConfig.value = navList.value;
-	groupMap = classifyGroup(navList.value, 'type')
+	const res = await api.post('/api/getAllAnnoInfo')
+	if (isUnmounted) return
+
+	const list = Array.isArray(res.data) ? res.data : []
+	navList.value = list
+	currentConfig.value = list
+	groupMap.value = classifyGroup(list, 'type')
 }
 
-
 function switchDirConfig(sn, type) {
+	switchArrow(sn)
+
 	if (type === "all") {
 		currentConfig.value = navList.value
 		return
 	}
-	if (groupMap.get(type)) {
-		currentConfig.value = groupMap.get(type)
-	}
-	else {
-		currentConfig.value = []
-	}
+
+	currentConfig.value = groupMap.value.get(type) ?? []
 }
 
-onMounted(() => {
-	arrowStyle.transform = "";
-	getAllAnnoInfo()
+onMounted(async () => {
+	arrowStyle.transform = ""
+	await getAllAnnoInfo()
+})
+
+onUnmounted(() => {
+	isUnmounted = true
 })
 </script>
 
@@ -95,7 +95,7 @@ onMounted(() => {
 	/* 457px * 2.4 */
 }
 
-#anno-date {
+.anno-date {
 	width: 250px;
 	text-align: left;
 	position: absolute;

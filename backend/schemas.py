@@ -47,3 +47,6 @@ class AnnoRequest(BaseModel):
 class FeedBackRequest(BaseModel):
     user_email: EmailStr
     feedback: str
+
+class TextResRequest(BaseModel):
+    text_name: str

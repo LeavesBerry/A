@@ -1,6 +1,6 @@
 import time
 
-from sqlalchemy import Column, Integer, String, Text, Float, ForeignKey
+from sqlalchemy import Column, Integer, String, Text, Float, ForeignKey, JSON
 
 from database import Base
 
@@ -56,8 +56,8 @@ class Coll(Base):
     __tablename__ = "coll"
 
     user_id = Column(Integer, ForeignKey("user_base.user_id"), primary_key=True, nullable=False)
-    url = Column(String(1000), nullable=False)
-    url_hash = Column(String(64), primary_key=True, nullable=False)
+    url = Column(String(200), nullable=False, primary_key=True, )
+    url_hash = Column(String(64), nullable=False)
     title = Column(String(255), default="未知界面", nullable=False)
     type = Column(String(10), default="other", nullable=False)
 
@@ -73,11 +73,18 @@ class Anno(Base):
 
 
 class Pages(Base):
-    __tablename__ = "pages"\
+    __tablename__ = "pages"
     
     id = Column(Integer, primary_key=True, autoincrement=True)
     url = Column(String(100), unique=True, nullable=False)
     title = Column(String(255), default="未知界面", nullable=False)
+
+class TextRes(Base):
+    __tablename__ = "text_res"
+
+    id = Column(Integer,primary_key=True, autoincrement=True)
+    name = Column(String(100), unique=True, nullable=False, index=True)
+    text = Column(JSON, nullable=False)
 
 class FeedBack(Base):
     __tablename__ = "feedback"

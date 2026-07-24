@@ -4,7 +4,7 @@
 		<div class="item-box">
 			<p class="no-item-tip none-select" v-if="currentConfig.length == 0" @click="getAllColl">暂无收藏( •̀ ω •́
 				)✧<br>点击此处刷新</p>
-			<div class="items" v-for="item in currentConfig" :key="item.title">
+			<div class="items" v-for="item in currentConfig" :key="item.id ?? item.url">
 				<p class="item-title" @click="goPage(item.url)">{{ item.title }}</p>
 				<div id="colls-function-box">
 					<button @click.stop.prevent="cancelColl(`${item.url}`)" style="color: #73B436; 
@@ -28,8 +28,8 @@
 	<teleport class="fixed-page" to="#app #app">
 		<sidebar :type-list="collTypeList" @change-dir="switchDirConfig"></sidebar>
 	</teleport>
-
 </template>
+
 <script setup>
 import Sidebar from "../components/Sidebar.vue";
 import api from "../utils/api"
@@ -39,12 +39,14 @@ import {
 	disposeReturn
 } from "../utils/index";
 import { ROOTPATH } from "../router/index.js";
-import { ref, Teleport, watch, onMounted } from "vue"
+import { ref, onMounted, onUnmounted } from "vue"
+import Logo from "../components/Logo.vue";
 
-let navList = ref([]);
-let currentConfig = ref([])
-let groupMap = null
-const { goPage, backPage, goPageByName } = useGoPage()
+const navList = ref([])
+const currentConfig = ref([])
+const groupMap = ref(new Map())
+const { goPage } = useGoPage()
+let isUnmounted = false
 
 const collTypeList = [
 	{ index: 0, typeKey: "all", label: "所有", id: "all" },
@@ -54,61 +56,78 @@ const collTypeList = [
 	{ index: 4, typeKey: "other", label: "其他", id: "other" }
 ]
 
+function applyCollList(data) {
+	if (isUnmounted) return
+
+	const list = Array.isArray(data) ? data : []
+	navList.value = list
+	currentConfig.value = list
+	groupMap.value = classifyGroup(list, 'type')
+}
+
 async function getAllColl() {
-	if (!userState.isLogined || userState.userAccessToken == "visitor") { return null }
-	const allColls = JSON.parse(localStorage.getItem('all_colls'))
-	if (userState.isChangedColl == "false" && allColls) {
-		navList.value = allColls;
+	if (!userState.isLogined || userState.userAccessToken == "visitor") return
+
+	const collCache = localStorage.getItem('all_colls')
+	if (userState.isChangedColl == "false" && collCache) {
+		try {
+			applyCollList(JSON.parse(collCache))
+			return
+		}
+		catch {
+			localStorage.removeItem('all_colls')
+		}
 	}
-	else {
-		const res = await api.post('/api/getAllColl');
-		navList.value = res.data;
-		localStorage.setItem('all_colls', JSON.stringify(res.data));
-		userState.isChangedColl = "false"
-	}
-	currentConfig.value = navList.value;
-	groupMap = classifyGroup(navList.value, 'type')
+
+	const res = await api.post('/api/getAllColl')
+	if (isUnmounted) return
+
+	applyCollList(res.data)
+	localStorage.setItem('all_colls', JSON.stringify(navList.value))
+	userState.isChangedColl = "false"
 }
 
 async function cancelColl(url) {
 	if (!userState.isLogined || userState.userAccessToken == 'visitor') return
+
 	try {
-		navList.value = navList.value.filter((item) => {
-			return item.url !== url
-		})
-		currentConfig.value = currentConfig.value.filter((item) => {
-			return item.url !== url
-		})
+		navList.value = navList.value.filter(item => item.url !== url)
+		currentConfig.value = currentConfig.value.filter(item => item.url !== url)
 		localStorage.setItem('all_colls', JSON.stringify(navList.value))
-		groupMap = classifyGroup(navList.value, 'type')
-		url = `${ROOTPATH}${url}`
-		const res = await apiRequest.toggleColl(url);
+		groupMap.value = classifyGroup(navList.value, 'type')
+
+		const requestUrl = `${ROOTPATH}${url}`
+		const res = await apiRequest.toggleColl(requestUrl)
+		if (isUnmounted) return
+
 		if (!disposeReturn(res)) {
-			localStorage.setItem(`coll_${url}`, res.is_collected)
+			localStorage.setItem(`coll_${requestUrl}`, res.is_collected)
 		}
-	} catch (e) {
-		showTips(e)
+	}
+	catch (e) {
+		if (!isUnmounted) showTips(e)
 	}
 }
 
 function switchDirConfig(sn, type) {
+	switchArrow(sn)
+
 	if (type === "all") {
 		currentConfig.value = navList.value
 		return
 	}
-	if (groupMap.get(type)) {
-		currentConfig.value = groupMap.get(type)
-	}
-	else {
-		currentConfig.value = []
-	}
+
+	currentConfig.value = groupMap.value.get(type) ?? []
 }
 
-onMounted(() => {
-	arrowStyle.transform = "";
-	getAllColl();
+onMounted(async () => {
+	arrowStyle.transform = ""
+	await getAllColl()
 })
 
+onUnmounted(() => {
+	isUnmounted = true
+})
 </script>
 
 <style>

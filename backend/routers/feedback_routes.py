@@ -13,7 +13,7 @@ from services.email_service import send_email
 router = APIRouter()
 
 @router.post("/api/submitFeedBack")
-async def submit_feedback(data = FeedBackRequest, 
+async def submit_feedback(data: FeedBackRequest, 
                          db: Session = Depends(get_db),
                          user_id: int = Depends(get_current_user("user_id"))):
     user_email = data.user_email
@@ -22,10 +22,14 @@ async def submit_feedback(data = FeedBackRequest,
     if not user_feedback_info:
         new_feedback_info = FeedBack(user_email=user_email, last_submit_time=now)
         db.add(new_feedback_info)
+        send_email(user_email= user_email, text_content = data.feedback, 
+                           subject = "user_feedback")
         db.commit()
+        return JSONResponse({"msg": "已成功提交反馈"})
     elif user_feedback_info.last_submit_time - now >= 86400:
         user_feedback_info.last_submit_time = now
-        send_email(user_email, data.feedback, "user_feedback")
+        send_email(user_email= user_email, text_content = data.feedback, 
+                   subject = "user_feedback")
         db.commit()
         return JSONResponse({"msg": "已成功提交反馈"})
     else:

@@ -102,7 +102,7 @@
 #command-title {
     width: 70vw;
     height: calc(6 * var(--design-vh, 4.57px));
-    margin: 0;
+    margin-top: 5px;
     font-size: calc(4 * var(--design-vh, 4.57px));
     font-weight: 200;
     text-align: center;
@@ -141,9 +141,11 @@
 #execute-cmd-button {
     position: absolute;
     top: calc(8 * var(--design-vh, 4.57px));
-    left: calc(86% + 4px);
+    left: 85%;
     width: 10%;
-    height: calc(5 * var(--design-vh, 4.57px) + 6px);
+    height: calc(5 * var(--design-vh, 4.57px));
+    cursor: pointer;
+    padding: 0;
     outline: none;
     border: 2px solid #FFF3D0;
     background-color: rgba(0, 0, 0, 0);

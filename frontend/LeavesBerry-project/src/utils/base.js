@@ -70,7 +70,7 @@ export function useGoPage() {
     }
 
     function goPageByName(routeName, parmes) {
-        router.push({ name: routeName, parmes })
+        router.push({ name: routeName, parmes: parmes })
     }
 
     return { goPage, backPage, goPageByName }
@@ -241,8 +241,15 @@ export const apiRequest = {
 
     async submitFeedback(userEmail, feedback) {
         const res = await api.post('/api/submitFeedBack', {
-            user_email = userEmail,
-            feedback = feedback
+            user_email: userEmail,
+            feedback: feedback
+        });
+        return res.data
+    },
+
+    async getTextResourse(textName) {
+        const res = await api.post('/api/getTextResourse', {
+            text_name: textName
         });
         return res.data
     }

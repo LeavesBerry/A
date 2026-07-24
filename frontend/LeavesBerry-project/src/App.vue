@@ -82,7 +82,7 @@
           <span>公告栏</span>
         </button>
 
-        <button class="menu-function-button">
+        <button class="menu-function-button" @click="goPage('/History')">
           <svg class="menu-function-icon" viewBox="0 0 32 32" aria-hidden="true">
             <circle cx="16" cy="16" r="11"></circle>
             <path d="M16 9v7l5 3"></path>
@@ -104,7 +104,7 @@
           <span>反馈箱</span>
         </button>
 
-        <button class="menu-function-button">
+        <button class="menu-function-button" @click="goPage('/Protocol')">
           <span class="menu-function-symbol" aria-hidden="true">#</span>
           <span>协议</span>
         </button>
@@ -161,7 +161,7 @@
       </div>
 
       <div id="command-menu" v-if="!pageState.isCmdClosed">
-        <p id="command-title">------------------Command Input------------------</p>
+        <p id="command-title">指令面板</p>
         <button id="close-command" @click="navbarModule.toggleCmdUI">×</button>
         <input id="cmd-input" v-model="navbarModule.cmdInputValue" placeholder="请输入指令">
         <button id="execute-cmd-button" @click="navbarModule.executeCmd(cmdOutputBox)">RUN</button>
@@ -208,6 +208,7 @@
       </div>
     </div>
 
+    <div id="teleport-root"></div>
 
     <router-view v-slot="{ Component, route }">
       <transition name="page-cover-slide">

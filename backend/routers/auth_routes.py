@@ -49,8 +49,8 @@ async def send_code(data: SendCodeRequest, db: Session = Depends(get_db)):
 
     res, det = send_email(
         data.user_email,
-        f"验证码：{code}",
         "LeavesBerry验证码",
+        f"验证码：{code}",
         VERIFYCODEHTML.replace("{{CODE}}", code),
     )
     if res:

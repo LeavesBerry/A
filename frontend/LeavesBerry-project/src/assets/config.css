@@ -106,6 +106,7 @@
     font-size: calc(8 * var(--design-vh));
     background-color: rgba(0, 0, 0, 0);
     border: none;
+    color: #3A251A;
 }
 
 .title-content-divider {
