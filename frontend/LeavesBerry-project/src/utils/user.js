@@ -1,5 +1,6 @@
 import { reactive } from "vue"
-import { showTips, disposeReturn, apiRequest } from "./base"
+import { showTips } from "./base"
+import { disposeReturn, apiRequest } from "./request"
 import { pageState } from "./page"
 import { navbarModule } from "./navbar"
 import {

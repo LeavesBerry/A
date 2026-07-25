@@ -15,7 +15,8 @@
 				若缺少公告<br>可尝试点击此处刷新界面( •̀ ω •́ )</p>
 		</div>
 	</div>
-	<teleport class="fixed-page" to="#app #app">
+	<teleport class="fixed-page" to="#app #app-root">
+		<Logo></Logo>
 		<sidebar :type-list="annoTypeList" @change-dir="switchDirConfig"></sidebar>
 		<div class="hidden-container" :style="{
 			position:

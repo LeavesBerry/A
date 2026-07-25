@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app-root">
 
     <div id="page-filter" v-if="pageState.showFilter"></div>
 
@@ -99,7 +99,7 @@
           <span>帮助</span>
         </button>
 
-        <button class="menu-function-button" @click="goPage('/FeedBack')">
+        <button class="menu-function-button" @click="goPage('/Feedback')">
           <span class="menu-function-symbol" aria-hidden="true">@</span>
           <span>反馈箱</span>
         </button>
@@ -121,12 +121,12 @@
           <span>指令表</span>
         </button>
 
-        <button class="menu-function-button" @click="userState.userAccessToken == 'visitor' ?
-          loginModule.openLoginWindow() : loginModule.logout()" style="border-radius:0 0 3vh 0">
+        <button class="menu-function-button" @click="userState.isLogined ?
+          loginModule.logout() : loginModule.openLoginWindow()" style="border-radius:0 0 3vh 0">
           <svg class="menu-function-icon" viewBox="0 0 32 32" aria-hidden="true">
             <path d="M27 16H7M14 9l-7 7 7 7"></path>
           </svg>
-          <span>{{ userState.userAccessToken == 'visitor' ? '登入' : '登出' }}</span>
+          <span>{{ userState.isLogined ? '登出' : '登入' }}</span>
         </button>
       </div>
     </div>
@@ -225,7 +225,7 @@ import { ref, onMounted, onUnmounted, watch, reactive } from 'vue';
 import {
   debounce, tip, onGlobalClick, useGoPage,
   navbarModule, menuModule, pageState, routeListener,
-  userState, userModule, loginModule, qrBox
+  userState, userModule, loginModule, qrBox, startTimer
 } from './utils/index';
 import { useHead } from "@vueuse/head"
 
@@ -238,11 +238,13 @@ useHead({
   meta: [{ name: "description", content: () => pageState.currentDesc }]
 })
 
-routeListener();
+
 // ------------------------------
 // 生命周期
 // ------------------------------
 onMounted(() => {
+  routeListener();
+  startTimer();
   userModule.initUser();
   document.addEventListener('click', onGlobalClick);
 })

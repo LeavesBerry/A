@@ -1,13 +1,10 @@
-import { reactive, watch, ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { pageState, updatePageInfo } from "./page";
+import { reactive, ref } from "vue";
+import { pageState } from "./page";
 import { navbarModule } from "./navbar";
 import { menuModule } from "./menu";
-import { userModule } from "./user";
-import api from "./api";
 import QRCode from "qrcodejs2-fix"
-import { configModule } from "./config";
-import router from "../router";
+
+
 
 // ------------------------------
 // 常量
@@ -17,64 +14,6 @@ export const du = (value) => `calc(${value} * var(--design-vh, 4.57px))`
 // ------------------------------
 // 工具函数
 // ------------------------------
-let isRouteWithConfig = false
-
-export function routeListener() {
-    const route = useRoute();
-    watch(
-        () => route.fullPath,
-        (newPath) => {
-            if (isRouteWithConfig) {
-                isRouteWithConfig = false
-                return
-            }
-            else {
-                updatePageInfo(route.params.page, `${location.origin}${newPath}`)
-                navbarModule.initColl(pageState.currentUrl);
-            }
-
-        },
-        { flush: "sync", immediate: true }
-    )
-}
-
-export function useGoPage() {
-
-    function goPage(url) {
-        const reg = /^(.*)\/([^\/]+)\/config_index:(\d+)$/;
-        const matchResult = url.match(reg)
-        if (!matchResult) {
-            router.push(url)
-            return true
-        }
-        else {
-            isRouteWithConfig = true
-            const folderName = matchResult[2];
-            const baseUrl = matchResult[1] + "/" + folderName;
-            const configNum = Number(matchResult[3]);
-            try {
-                configModule.expandContent(configNum, folderName,
-                    `${location.origin}${baseUrl}`)
-                router.push(baseUrl)
-                return true
-            } catch {
-                return false
-            }
-
-        }
-
-    }
-
-    function backPage() {
-        router.back()
-    }
-
-    function goPageByName(routeName, parmes) {
-        router.push({ name: routeName, parmes: parmes })
-    }
-
-    return { goPage, backPage, goPageByName }
-}
 
 export const tip = reactive({
     tipStyle: {},
@@ -114,23 +53,6 @@ function processTipQueue() {
         processTipQueue()
     }, showTime)
 }
-
-export function disposeReturn(data) {
-
-    if (data.error) {
-        showTips(data.error);
-        return true;
-    }
-    if (data.xpChange) {
-        userModule.changeXp(data.xpChange)
-    }
-    if (data.msg) {
-        showTips(data.msg);
-        return false;
-    }
-    return false;
-}
-
 
 export async function copyText(text) {
     try {
@@ -194,65 +116,6 @@ export function classifyGroup(data, keyField) {
         groupMap.get(groupKey).push(item)
     }
     return groupMap
-}
-
-// ------------------------------
-// 后端请求
-// ------------------------------
-export const apiRequest = {
-    async sendCode(email) {
-        const res = await api.post('/api/sendCode', { user_email: email });
-        return res.data;
-    },
-
-    async register(data) {
-        const res = await api.post('/api/register', data);
-        return res.data;
-    },
-
-    async login(data) {
-        const res = await api.post('/api/login', data)
-        return res.data;
-    },
-
-    async logout(data) {
-        const res = await api.post('/api/logout', data)
-        return res.data;
-    },
-
-    async getUserInfo() {
-        const res = await api.post('/api/getUserInfo')
-        return res.data;
-    },
-
-    async initColl(currentUrl) {
-        const res = await api.post('/api/initColl', { url: currentUrl });
-        return res.data;
-    },
-
-    async toggleColl(currentUrl, currentTitle, currentType) {
-        const res = await api.post('/api/toggleColl', {
-            url: currentUrl,
-            title: currentTitle,
-            type: currentType
-        });
-        return res.data;
-    },
-
-    async submitFeedback(userEmail, feedback) {
-        const res = await api.post('/api/submitFeedBack', {
-            user_email: userEmail,
-            feedback: feedback
-        });
-        return res.data
-    },
-
-    async getTextResourse(textName) {
-        const res = await api.post('/api/getTextResourse', {
-            text_name: textName
-        });
-        return res.data
-    }
 }
 
 // ------------------------------

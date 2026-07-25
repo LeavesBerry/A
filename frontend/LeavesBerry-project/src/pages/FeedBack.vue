@@ -1,5 +1,4 @@
 <template>
-    <Logo></Logo>
     <div class="slide-page">
         <div id="feedback-page">
             <p id="title">对本站的一些建议或想法</p>
@@ -14,10 +13,13 @@
             </div>
         </div>
     </div>
+    <teleport class="fixed-page" to="#app #app-root">
+        <Logo></Logo>
+    </teleport>
 </template>
 
 <script setup>
-import { apiRequest, userState, disposeReturn, showTips } from '../utils';
+import { apiRequest, userState, disposeReturn, showTips } from '../utils/index.js';
 import { ref, onMounted, onUnmounted } from 'vue';
 import Logo from '../components/Logo.vue';
 
@@ -39,7 +41,7 @@ function outputSubmitRes(res) {
 }
 
 function checkSubmitCondition() {
-    if (!userState.isLogined || userState.userAccessToken == "visitor") {
+    if (!userState.isLogined) {
         outputSubmitRes("需登录才能提交反馈")
         return false
     }

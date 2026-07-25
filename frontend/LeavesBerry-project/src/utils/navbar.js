@@ -1,8 +1,6 @@
 import { nextTick, reactive, ref } from "vue"
-import {
-    apiRequest, showTips, copyText,
-    createQRCode, disposeReturn, du
-} from "./base"
+import { apiRequest, disposeReturn } from "./request"
+import { showTips, copyText, createQRCode, du } from "./base"
 import { pageState, updatePageInfo } from "./page"
 import { cmdHandler } from "./cmd"
 import { userState } from "./user"
@@ -60,7 +58,7 @@ export const navbarModule = reactive({
         try {
             const res = await apiRequest.initColl(pageState.currentUrl)
             if (!disposeReturn(res)) {
-                pageState.isCollected = res.is_collected ? "true" : "false";
+                pageState.isCollected = res.is_collected;
                 localStorage.setItem(collCacheKey, res.is_collected)
             }
         } catch (e) {
@@ -69,7 +67,7 @@ export const navbarModule = reactive({
     },
 
     async toggleColl() {
-        if (!userState.isLogined || userState.userAccessToken == 'visitor') return
+        if (!userState.isLogined) return
         try {
             pageState.isCollected = !pageState.isCollected;
             userState.isChangedColl = true;

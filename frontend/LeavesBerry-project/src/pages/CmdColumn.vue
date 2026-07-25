@@ -10,7 +10,8 @@
 			<p class="refresh-tip none-select" v-if="currentConfig.length !== 0">更多指令,敬请期待( •̀ ω •́ )✧</p>
 		</div>
 	</div>
-	<teleport class="fixed-page" to="#app #app">
+	<teleport class="fixed-page" to="#app #app-root">
+		<Logo></Logo>
 		<Sidebar :type-list="cmdTypeList" @change-dir="switchDirConfig"></Sidebar>
 	</teleport>
 </template>

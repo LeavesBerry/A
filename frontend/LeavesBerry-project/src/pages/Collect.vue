@@ -25,7 +25,8 @@
 				若缺少收藏<br>可尝试点击此处刷新界面( •̀ ω •́ )</p>
 		</div>
 	</div>
-	<teleport class="fixed-page" to="#app #app">
+	<teleport class="fixed-page" to="#app #app-root">
+		<Logo></Logo>
 		<sidebar :type-list="collTypeList" @change-dir="switchDirConfig"></sidebar>
 	</teleport>
 </template>
@@ -66,10 +67,10 @@ function applyCollList(data) {
 }
 
 async function getAllColl() {
-	if (!userState.isLogined || userState.userAccessToken == "visitor") return
+	if (!userState.isLogined) return
 
 	const collCache = localStorage.getItem('all_colls')
-	if (userState.isChangedColl == "false" && collCache) {
+	if (!userState.isChangedColl && collCache) {
 		try {
 			applyCollList(JSON.parse(collCache))
 			return
@@ -84,11 +85,11 @@ async function getAllColl() {
 
 	applyCollList(res.data)
 	localStorage.setItem('all_colls', JSON.stringify(navList.value))
-	userState.isChangedColl = "false"
+	userState.isChangedColl = false
 }
 
 async function cancelColl(url) {
-	if (!userState.isLogined || userState.userAccessToken == 'visitor') return
+	if (!userState.isLogined) return
 
 	try {
 		navList.value = navList.value.filter(item => item.url !== url)

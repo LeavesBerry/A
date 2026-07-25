@@ -61,6 +61,11 @@ class Coll(Base):
     title = Column(String(255), default="未知界面", nullable=False)
     type = Column(String(10), default="other", nullable=False)
 
+class History(Base):
+    __tablename__ = "history"
+
+    user_id = Column(Integer, ForeignKey("user_base.user_id"), primary_key=True, nullable=False)
+    visit_list = Column(JSON, nullable=False, default=[])
 
 class Anno(Base):
     __tablename__ = "anno"

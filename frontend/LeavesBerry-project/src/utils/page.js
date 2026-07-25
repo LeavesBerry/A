@@ -30,6 +30,26 @@ export const pageMetaConfig = {
         type: "other",
         description: '用于测试'
     },
+    Protocol: {
+        title: "协议界面",
+        type: "essay",
+        description: '一些访问须知的协议'
+    },
+    Feedback: {
+        title: "反馈界面",
+        type: "other",
+        description: '给本站作者反馈'
+    },
+    History: {
+        title: "历史界面",
+        type: "other",
+        description: '我的访问历史'
+    },
+    CmdColumn: {
+        title: "指令表",
+        type: "other",
+        description: '在此处查看各种指令的用法'
+    }
 }
 
 export function updatePageInfo(pagename, fullPath) {

@@ -1,9 +1,11 @@
-import { useGoPage, showTips, createQRCode, copyText } from "./base"
+import { useGoPage } from "./route"
+import { showTips, createQRCode, copyText } from "./base"
 import { pageState } from "./page"
 import { menuModule } from "./menu"
 import { navbarModule } from "./navbar"
 import { userState } from "./user"
 import { ROOTPATH } from "../router"
+import { visitList } from "./route"
 
 const { goPage } = useGoPage()
 
@@ -57,7 +59,8 @@ export const cmdHandler = {
             navbar: navbarModule,
             menu: menuModule,
             page: pageState,
-            user: userState
+            user: userState,
+            visit: visitList
         }
         const targetState = printableObject[item]
         if (!targetState) {

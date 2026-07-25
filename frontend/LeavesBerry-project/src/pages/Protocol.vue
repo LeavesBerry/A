@@ -1,6 +1,5 @@
 <template>
-    <Logo></Logo>
-    <div class="sb-page">
+    <div class="slide-page">
         <div id="proto-page">
             <div id="sum-box">
                 <p id="proto-title">下面长达1mol的协议的概述,阅完此不视为你已阅读下方协议</p>
@@ -17,6 +16,9 @@
             </div>
         </div>
     </div>
+    <teleport class="fixed-page" to="#app #app-root">
+        <Logo></Logo>
+    </teleport>
 </template>
 
 <script setup>

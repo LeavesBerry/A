@@ -50,3 +50,6 @@ class FeedBackRequest(BaseModel):
 
 class TextResRequest(BaseModel):
     text_name: str
+
+class VisitListRequest(BaseModel):
+    visit_list: list[str]

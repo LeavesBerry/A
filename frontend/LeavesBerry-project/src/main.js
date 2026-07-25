@@ -98,7 +98,7 @@ api.interceptors.response.use(
                 userState,
                 {
                     userAccessToken: null,
-                    isLogined: "false"
+                    isLogined: false
                 },
                 persistConfig
             );
