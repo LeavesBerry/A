@@ -1,34 +1,37 @@
 <template>
 	<!--受到transform影响,不要把fixed,拖拽,需获取坐标的点击等放入-->
-	<div class="slide-page">
-		<div class="item-box">
-			<p class="no-item-tip none-select" v-if="currentConfig.length == 0" @click="getAllColl">暂无收藏( •̀ ω •́
-				)✧<br>点击此处刷新</p>
-			<div class="items" v-for="item in currentConfig" :key="item.id ?? item.url">
-				<p class="item-title" @click="goPage(item.url)">{{ item.title }}</p>
-				<div id="colls-function-box">
-					<button @click.stop.prevent="cancelColl(`${item.url}`)" style="color: #73B436; 
-					font-size: calc(6 * var(--design-vh));
-					padding-bottom: 2%;
-					border-left: 1px solid #3A251A;">✦</button>
-					<button @click.stop.prevent="createQRCode(`${ROOTPATH}${item.url}`)" style="background-image: url('http://localhost:5000/static/resource/images/QR.png');
-					background-size: calc(4 * var(--design-vh));
-					background-position: calc(1.3 * var(--design-vh)) center;
-					"></button>
-					<button @click.stop.prevent="copyText(item.url)" style="background-image: url('http://localhost:5000/static/resource/images/Link.png');
-					background-size: calc(6 * var(--design-vh));
-					background-position: calc(0.3 * var(--design-vh)) center;
-					"></button>
+	<div class="page" id="collect-page">
+		<div class="slide-page">
+			<div class="item-box">
+				<p class="no-item-tip none-select" v-if="currentConfig.length == 0" @click="getAllColl">暂无收藏( •̀ ω •́
+					)✧<br>点击此处刷新</p>
+				<div class="items" v-for="item in currentConfig" :key="item.id ?? item.url">
+					<p class="item-title" @click="goPage(item.url)">{{ item.title }}</p>
+					<div id="colls-function-box">
+						<button @click.stop.prevent="cancelColl(`${item.url}`)" style="color: #73B436; 
+						font-size: calc(6 * var(--design-vh));
+						padding-bottom: 2%;
+						border-left: 1px solid #3A251A;">✦</button>
+						<button @click.stop.prevent="createQRCode(`${ROOTPATH}${item.url}`)" style="background-image: url('http://localhost:5000/static/resource/images/QR.png');
+						background-size: calc(4 * var(--design-vh));
+						background-position: calc(1.3 * var(--design-vh)) center;
+						"></button>
+						<button @click.stop.prevent="copyText(item.url)" style="background-image: url('http://localhost:5000/static/resource/images/Link.png');
+						background-size: calc(6 * var(--design-vh));
+						background-position: calc(0.3 * var(--design-vh)) center;
+						"></button>
+					</div>
 				</div>
+				<p class="refresh-tip none-select" v-if="currentConfig.length !== 0" @click="getAllColl">
+					若缺少收藏<br>可尝试点击此处刷新界面( •̀ ω •́ )</p>
 			</div>
-			<p class="refresh-tip none-select" v-if="currentConfig.length !== 0" @click="getAllColl">
-				若缺少收藏<br>可尝试点击此处刷新界面( •̀ ω •́ )</p>
 		</div>
+		<teleport class="fixed-page" to="#app #app-root">
+			<Logo></Logo>
+			<sidebar :type-list="collTypeList" @change-dir="switchDirConfig"></sidebar>
+		</teleport>
 	</div>
-	<teleport class="fixed-page" to="#app #app-root">
-		<Logo></Logo>
-		<sidebar :type-list="collTypeList" @change-dir="switchDirConfig"></sidebar>
-	</teleport>
+
 </template>
 
 <script setup>
@@ -139,7 +142,7 @@ onUnmounted(() => {
 	/* 457px * 2.4 */
 }
 
-#colls-function-box {
+#collect-page #colls-function-box {
 	position: absolute;
 	right: 10%;
 	top: 15%;
@@ -149,7 +152,7 @@ onUnmounted(() => {
 	z-index: 3;
 }
 
-.items button {
+#collect-page .items button {
 	width: calc(8 * var(--design-vh));
 	height: calc(6 * var(--design-vh));
 	background-color: rgba(0, 0, 0, 0);

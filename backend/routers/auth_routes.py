@@ -7,6 +7,7 @@ from fastapi.responses import JSONResponse
 from jose import JWTError, jwt
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
+from limiter_config import limiter
 
 from config import REFRESH_TOKEN_EXPIRE_DAYS, SECRET_KEY, ALGORITHM
 from database import get_db
@@ -27,7 +28,8 @@ router = APIRouter()
 
 
 @router.post("/api/sendCode")
-async def send_code(data: SendCodeRequest, db: Session = Depends(get_db)):
+@limiter.limit("1/5minutes")
+async def send_code(request: Request, data: SendCodeRequest, db: Session = Depends(get_db)):
     await check_code_rate(data.user_email, db)
     clean_expired_codes(db)
 
@@ -39,7 +41,7 @@ async def send_code(data: SendCodeRequest, db: Session = Depends(get_db)):
     while True:
         code = str(random.randint(100000, 999999))
         try:
-            new_code = Code(user_email=data.user_email, code=code, create_time=time.time())
+            new_code = Code(user_email=data.user_email, code=code, create_time=int(time.time()))
             db.add(new_code)
             db.commit()
             break
@@ -59,13 +61,15 @@ async def send_code(data: SendCodeRequest, db: Session = Depends(get_db)):
 
 
 @router.post("/api/register")
-async def register(data: RegisterRequest, db: Session = Depends(get_db)):
+@limiter.limit("3/5minutes")
+async def register(request: Request, data: RegisterRequest, db: Session = Depends(get_db)):
     clean_expired_codes(db)
 
     code_record = db.query(Code).filter(Code.user_email == data.user_email).first()
     if not code_record or code_record.code != data.code:
         return JSONResponse("验证码错误")
     if time.time() - code_record.create_time > 300:
+        print(time.time(), code_record.create_time)
         db.delete(code_record)
         db.commit()
         raise APIError("验证码已过期")
@@ -91,6 +95,7 @@ async def register(data: RegisterRequest, db: Session = Depends(get_db)):
 
 
 @router.post("/api/login")
+@limiter.limit("5/5minutes")
 async def login(
     request: Request,
     data: LoginRequest,
@@ -142,7 +147,8 @@ async def login(
 
 
 @router.post("/api/refreshToken")
-async def refresh_token(
+@limiter.limit("2/10minutes")
+async def refresh_token(request: Request, 
     refresh_cookie: Optional[str] = Cookie(default=None),
     db: Session = Depends(get_db),
 ):
@@ -175,6 +181,7 @@ async def refresh_token(
 
 
 @router.post("/api/logout")
-def logout(response: Response):
+@limiter.limit("2/10minutes")
+def logout(request: Request, response: Response):
     response.delete_cookie(key="refresh_cookie", path="/")
     return JSONResponse({"msg": "已退出登录"})

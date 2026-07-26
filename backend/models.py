@@ -40,7 +40,7 @@ class Code(Base):
     user_id = Column(Integer, primary_key=True)
     user_email = Column(String(120), unique=True, nullable=False, index=True)
     code = Column(String(10), unique=True, nullable=False)
-    create_time = Column(Float, default=time.time)
+    create_time = Column(Integer, default=int(time.time()))
 
 
 class LimLogin(Base):

@@ -3,8 +3,13 @@ import os
 from sqlalchemy import update
 from sqlalchemy.orm import Session
 
+from cache import cache
 from config import PUBLIC_DIR
 from models import UserProfile
+
+
+def _invalidate_user_info(user_id: int) -> None:
+    cache.delete(cache.build_key("user", "info", user_id))
 
 
 def change_xp(user_id: int, change_value: int, db: Session) -> bool:
@@ -15,7 +20,10 @@ def change_xp(user_id: int, change_value: int, db: Session) -> bool:
     )
     result = db.execute(change)
     db.commit()
-    return result.rowcount > 0
+    changed = result.rowcount > 0
+    if changed:
+        _invalidate_user_info(user_id)
+    return changed
 
 
 def change_avatar(user_id: int, file_bytes: bytes, db: Session) -> tuple[str, bool]:
@@ -37,5 +45,6 @@ def change_avatar(user_id: int, file_bytes: bytes, db: Session) -> tuple[str, bo
     db.commit()
 
     if result.rowcount > 0:
+        _invalidate_user_info(user_id)
         return avatar_url, True
     return "http://localhost:5000/static/avatar/default_avatar.jpg", False

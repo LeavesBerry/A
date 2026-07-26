@@ -60,6 +60,24 @@ export const apiRequest = {
             text_name: textName
         });
         return res.data
+    },
+
+    async changeBio(bio) {
+        const res = await api.post('/api/changeBio', {
+            bio: bio
+        });
+        return res.data
+    },
+
+    async changeAvatar(file) {
+        const formData = new FormData()
+        formData.append("file", file, file.name)
+        const res = await api.post('/api/changeAvatar', formData, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        });
+        return res.data
     }
 }
 

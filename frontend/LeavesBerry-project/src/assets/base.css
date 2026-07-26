@@ -54,6 +54,15 @@ textarea {
 	isolation: isolate;
 }
 
+.page {
+	position: relative;
+	top: calc(8 * var(--design-vh, 4.57px));
+	height: fit-content;
+	align-items: center;
+	flex-direction: column;
+	justify-items: center;
+}
+
 .parent-prevent * {
 	pointer-events: none;
 }

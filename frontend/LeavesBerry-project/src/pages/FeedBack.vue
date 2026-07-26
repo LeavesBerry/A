@@ -1,6 +1,6 @@
 <template>
-    <div class="slide-page">
-        <div id="feedback-page">
+    <div class="page" id="feedback-page">
+        <div class="slide-page">
             <p id="title">对本站的一些建议或想法</p>
             <div id="title-input-devider"></div>
             <textarea id="feedback-input" wrap="soft" :placeholder="placeholder" v-model="feedback"
@@ -102,34 +102,30 @@ onUnmounted(() => {
 </script>
 
 <style>
-#feedback-page {
-    margin-top: calc(8 * var(--design-vh, 4.57px));
-    align-items: center;
-    flex-direction: column;
-    justify-items: center;
-}
-
-#title {
+#feedback-page #title {
     color: #3A251A;
-    font-size: calc(10 * var(--design-vh, 4.57px));
-    font-weight: 600;
+    font-size: 25px;
+    font-weight: 700;
     padding-top: calc(4 * var(--design-vh, 4.57px));
 }
 
-#feedback-input {
+#feedback-page #feedback-input {
     position: relative;
-    margin-top: calc(4 * var(--design-vh, 4.57px));
-    padding: 0 5px;
-    width: 90vw;
+    margin-top: 20px;
+    width: 90.5vw;
+    height: fit-content;
+    padding: 20px 5px;
+    border: 1px solid #4a4030;
+    border-bottom: none;
+    border-radius: calc(6 * var(--design-vh, 4.57px)) calc(6 * var(--design-vh, 4.57px)) 0 0;
     field-sizing: content;
     min-height: calc(10 * var(--design-vh, 4.57px));
     max-height: calc(300 * var(--design-vh, 4.57px));
     resize: none;
     overflow-y: hidden;
-    background-color: #4a4030;
-    border: 5px solid #3A251A;
+    background-color: rgba(0, 0, 0, 0);
     height: fit-content;
-    color: #FFF3D0;
+    color: #3A251A;
     font-size: 20px;
     font-weight: 300;
     text-align: top;
@@ -138,33 +134,34 @@ onUnmounted(() => {
     overflow-x: hidden;
 }
 
-#feedback-input::placeholder {
-    color: #fff3d0b4;
+#feedback-page #feedback-input::placeholder {
+    color: #4a4030;
 }
 
-#submit-button {
+#feedback-page #submit-button {
     position: relative;
-    margin-top: calc(4 * var(--design-vh, 4.57px));
+    margin-top: -1px;
     padding: 0, 5px;
-    width: 90vw;
+    width: 90.5vw;
     height: calc(8 * var(--design-vh, 4.57px));
-    background-color: #4a4030;
-    border: 5px solid #3A251A;
-    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid #4a4030;
+    border-radius: 0 0 calc(6 * var(--design-vh, 4.57px)) calc(6 * var(--design-vh, 4.57px));
     font-size: 20px;
     font-weight: 600;
-    color: #FFF3D0;
+    color: #3A251A;
     cursor: pointer;
 }
 
-#tip-box {
-    position: relative;
+#feedback-page #tip-box {
+    position: absolute;
+    left: 5vw;
     width: 90vw;
     margin-top: calc(2 * var(--design-vh, 4.57px));
     justify-items: left;
 }
 
-#tip-box p {
+#feedback-page #tip-box p {
     color: #4a4030;
     font-size: 15px;
     font-weight: 500;

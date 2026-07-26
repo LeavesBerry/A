@@ -1,6 +1,6 @@
 <template>
-    <div class="slide-page">
-        <div id="proto-page">
+    <div class="page" id="proto-page">
+        <div class="slide-page">
             <div id="sum-box">
                 <p id="proto-title">下面长达1mol的协议的概述,阅完此不视为你已阅读下方协议</p>
                 <div id="proto-text-box">
@@ -72,21 +72,15 @@ onUnmounted(() => {
 </script>
 
 <style>
-#proto-page {
-    margin-top: calc(8 * var(--design-vh, 4.57px));
-    align-items: center;
-    flex-direction: column;
-    justify-items: center;
-}
-
-#proto-title {
+#proto-page #proto-title {
     color: #4a4030;
     font-size: 25px;
-    padding: 10px 0;
+    font-weight: 700;
+    padding-top: calc(4 * var(--design-vh, 4.57px));
 }
 
-
-#proto-text-box {
+#proto-page #proto-text-box {
+    margin-top: calc(4 * var(--design-vh, 4.57px));
     width: 100vw;
     height: fit-content;
     padding: 20px 0;
@@ -94,7 +88,7 @@ onUnmounted(() => {
     border-bottom: 1px solid #4a4030;
 }
 
-.proto-text {
+#proto-page .proto-text {
     position: relative;
     left: 10vw;
     width: 80vw;
@@ -105,7 +99,7 @@ onUnmounted(() => {
     font-weight: 500;
 }
 
-#detail-text {
+#proto-page #detail-text {
     white-space: pre-line;
     word-break: break-all;
     word-wrap: break-word;

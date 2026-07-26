@@ -1,6 +1,6 @@
 import time
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
@@ -9,13 +9,16 @@ from database import get_db
 from models import FeedBack
 from schemas import FeedBackRequest
 from services.email_service import send_email
+from limiter_config import limiter
 
 router = APIRouter()
 
 @router.post("/api/submitFeedBack")
-async def submit_feedback(data: FeedBackRequest, 
-                         db: Session = Depends(get_db),
-                         user_id: int = Depends(get_current_user("user_id"))):
+@limiter.limit("1/24hours")
+async def submit_feedback(request: Request, 
+        data: FeedBackRequest, 
+        db: Session = Depends(get_db),
+        user_id: int = Depends(get_current_user("user_id"))):
     user_email = data.user_email
     now = time.time()
     user_feedback_info = db.query(FeedBack).filter(FeedBack.user_email == user_email).first()

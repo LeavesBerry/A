@@ -1,19 +1,22 @@
 <template>
-	<div class="slide-page">
-		<div class="item-box">
-			<ExTextarea v-for="item in currentConfig" :key="item.id ?? item.cmd" :title="item.cmd" :text="item.des"
-				custom-class="textarea" title-class="textarea-title" button-class="textarea-button"
-				content-class="textarea-content">
-			</ExTextarea>
-			<p class="no-item-tip none-select" v-if="currentConfig.length == 0">暂无该类指令( •̀ ω •́ )✧</p>
-			<!--直接用refresh-tip更方便-->
-			<p class="refresh-tip none-select" v-if="currentConfig.length !== 0">更多指令,敬请期待( •̀ ω •́ )✧</p>
+	<div class="page" id="cmd-column-page">
+		<div class="slide-page">
+			<div class="item-box">
+				<ExTextarea v-for="item in currentConfig" :key="item.id ?? item.cmd" :title="item.cmd" :text="item.des"
+					custom-class="textarea" title-class="textarea-title" button-class="textarea-button"
+					content-class="textarea-content">
+				</ExTextarea>
+				<p class="no-item-tip none-select" v-if="currentConfig.length == 0">暂无该类指令( •̀ ω •́ )✧</p>
+				<!--直接用refresh-tip更方便-->
+				<p class="refresh-tip none-select" v-if="currentConfig.length !== 0">更多指令,敬请期待( •̀ ω •́ )✧</p>
+			</div>
 		</div>
+		<teleport class="fixed-page" to="#app #app-root">
+			<Logo></Logo>
+			<Sidebar :type-list="cmdTypeList" @change-dir="switchDirConfig"></Sidebar>
+		</teleport>
 	</div>
-	<teleport class="fixed-page" to="#app #app-root">
-		<Logo></Logo>
-		<Sidebar :type-list="cmdTypeList" @change-dir="switchDirConfig"></Sidebar>
-	</teleport>
+
 </template>
 
 <script setup>
@@ -93,7 +96,7 @@ onUnmounted(() => {
 </script>
 
 <style>
-.textarea {
+#cmd-column-page .textarea {
 	width: 70vw;
 	height: auto;
 	flex-direction: column;
@@ -110,7 +113,7 @@ onUnmounted(() => {
 	user-select: none;
 }
 
-.textarea-title {
+#cmd-column-page .textarea-title {
 	width: fit-content;
 	height: auto;
 	font-size: calc(6 * var(--design-vh));
@@ -121,7 +124,7 @@ onUnmounted(() => {
 	left: 7%;
 }
 
-.textarea-button {
+#cmd-column-page .textarea-button {
 	position: absolute;
 	right: 5%;
 	top: calc(-2 * var(--design-vh));
@@ -134,7 +137,7 @@ onUnmounted(() => {
 	color: #3A251A;
 }
 
-.textarea-content {
+#cmd-column-page .textarea-content {
 	position: relative;
 	left: 7%;
 	top: 8px;

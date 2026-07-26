@@ -13,7 +13,6 @@ let timer = null;
 async function submitVisitList() {
     if (!userState.isLogined || visitList.length == 0) return
     try {
-        console.log(visitList)
         const res = await apiRequest.submitVisitList(visitList)
         if (!disposeReturn(res)) {
             visitList = []
@@ -45,7 +44,6 @@ export function routeListener() {
             }
             else {
                 updatePageInfo(route.params.page, `${location.origin}${newPath}`)
-                visitList.push(`${location.origin}${newPath}`)
                 navbarModule.initColl(pageState.currentUrl);
             }
 
@@ -57,6 +55,7 @@ export function routeListener() {
 export function useGoPage() {
 
     function goPage(url) {
+        visitList.push(url)
         const reg = /^(.*)\/([^\/]+)\/config_index:(\d+)$/;
         const matchResult = url.match(reg)
         if (!matchResult) {
@@ -72,7 +71,7 @@ export function useGoPage() {
                 configModule.expandContent(configNum, folderName,
                     `${location.origin}${baseUrl}`)
                 router.push(baseUrl)
-                visitList.push(url)
+
                 return true
             } catch {
                 return false

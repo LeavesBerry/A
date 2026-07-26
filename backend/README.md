@@ -59,3 +59,47 @@ backend/
    - `DB_HOST`
    - `DB_PORT`
    - `DB_NAME`
+
+
+## Redis 缓存
+
+Redis 与 MySQL 的配置统一放在 `config.py`，环境变量写在 `.env`。
+
+安装依赖：
+
+```bash
+pip install -r requirements.txt
+```
+
+本地启动 Redis（Docker 示例）：
+
+```bash
+docker run -d --name leavesberry-redis -p 6379:6379 redis:7-alpine
+```
+
+缓存采用 Cache-Aside 模式：
+
+1. 读取时先查 Redis。
+2. 未命中时查询 MySQL，并将 JSON 结果写入 Redis。
+3. 修改数据后删除相关缓存，下次读取自动重建。
+4. Redis 连接失败时自动降级到 MySQL，接口仍可使用。
+
+当前已接入缓存的查询：
+
+- 公告列表与公告详情
+- 文本资源
+- 用户资料
+- 收藏状态与收藏列表
+- 用户访问历史
+
+通用模块位于 `cache.py`，可使用：
+
+```python
+from cache import cache
+
+key = cache.build_key("module", "resource", resource_id)
+value = cache.get(key)
+cache.set(key, {"data": "example"}, ttl=300)
+cache.delete(key)
+value = cache.remember(key, loader_function, ttl=300)
+```

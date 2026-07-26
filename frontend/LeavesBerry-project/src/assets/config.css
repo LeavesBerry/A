@@ -1,6 +1,6 @@
 .item-box {
     position: absolute;
-    top: calc(8 * var(--design-vh));
+    top: 0;
     left: 28vw;
     width: 70vw;
     height: auto;

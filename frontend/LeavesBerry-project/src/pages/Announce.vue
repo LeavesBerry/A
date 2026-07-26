@@ -1,38 +1,43 @@
 <template>
-	<div class="slide-page">
-		<div class="item-box none-select" v-show="!configModule.isContentExpanded">
-			<p class="no-item-tip none-select" v-if="currentConfig.length == 0" @click="getAllAnnoInfo">暂无公告( •̀ ω •́
-				)✧<br>点击此处刷新</p>
-			<div class="items" v-for="item in currentConfig" :key="item.id"
-				@click="configModule.expandContent(item.id, 'Announce')">
-				<p class="item-title">{{ item.title }}</p>
-				<p class="anno-date">————{{ Math.floor(item.anno_date / 10000) }}年{{ Math.floor((item.anno_date % 10000)
-					/
-					100) }}月{{ (item.anno_date % 10000) % 100 }}日
-				</p>
+	<div class="page" id="announce-page">
+		<div class="slide-page">
+			<div class="item-box none-select" v-show="!configModule.isContentExpanded">
+				<p class="no-item-tip none-select" v-if="currentConfig.length == 0" @click="getAllAnnoInfo">暂无公告( •̀ ω
+					•́
+					)✧<br>点击此处刷新</p>
+				<div class="items" v-for="item in currentConfig" :key="item.id"
+					@click="configModule.expandContent(item.id, 'Announce')">
+					<p class="item-title">{{ item.title }}</p>
+					<p class="anno-date">————{{ Math.floor(item.anno_date / 10000) }}年{{ Math.floor((item.anno_date %
+						10000)
+						/
+						100) }}月{{ (item.anno_date % 10000) % 100 }}日
+					</p>
+				</div>
+				<p class="refresh-tip none-select" v-if="currentConfig.length !== 0" @click="getAllAnnoInfo">
+					若缺少公告<br>可尝试点击此处刷新界面( •̀ ω •́ )</p>
 			</div>
-			<p class="refresh-tip none-select" v-if="currentConfig.length !== 0" @click="getAllAnnoInfo">
-				若缺少公告<br>可尝试点击此处刷新界面( •̀ ω •́ )</p>
 		</div>
-	</div>
-	<teleport class="fixed-page" to="#app #app-root">
-		<Logo></Logo>
-		<sidebar :type-list="annoTypeList" @change-dir="switchDirConfig"></sidebar>
-		<div class="hidden-container" :style="{
-			position:
-				configModule.isContentExpanded ? 'absolute' : 'fixed'
-		}">
-			<div class="content-container" :style="{
-				transform: configModule.isContentExpanded ?
-					`translateY(${du(-112)})` : 'none'
+		<teleport class="fixed-page" to="#app #app-root">
+			<Logo></Logo>
+			<sidebar :type-list="annoTypeList" @change-dir="switchDirConfig"></sidebar>
+			<div class="hidden-container" :style="{
+				position:
+					configModule.isContentExpanded ? 'absolute' : 'fixed'
 			}">
-				<button class="hide-content-button none-select" @click="configModule.hideContent()">×</button>
-				<p class="content-title">{{ configModule.contentTitle }}</p>
-				<div class="title-content-divider"></div>
-				<p class="content-text">{{ configModule.contentText }}</p>
+				<div class="content-container" :style="{
+					transform: configModule.isContentExpanded ?
+						`translateY(${du(-112)})` : 'none'
+				}">
+					<button class="hide-content-button none-select" @click="configModule.hideContent()">×</button>
+					<p class="content-title">{{ configModule.contentTitle }}</p>
+					<div class="title-content-divider"></div>
+					<p class="content-text">{{ configModule.contentText }}</p>
+				</div>
 			</div>
-		</div>
-	</teleport>
+		</teleport>
+	</div>
+
 </template>
 
 <script setup>
@@ -96,7 +101,7 @@ onUnmounted(() => {
 	/* 457px * 2.4 */
 }
 
-.anno-date {
+#announce-page .anno-date {
 	width: 250px;
 	text-align: left;
 	position: absolute;
