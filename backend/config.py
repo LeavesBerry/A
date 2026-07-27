@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 ROOT_PATH = os.getenv("ROOT_PATH", "http://localhost:5173")
+SERVER_PATH = os.getenv("SERVER_PATH", "http://localhost:5000")
 
 SECRET_KEY = os.getenv("SECRET_KEY", "leavesberry-helloworld-520")
 ALGORITHM = "HS256"

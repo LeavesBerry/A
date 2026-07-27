@@ -69,14 +69,10 @@ export const apiRequest = {
         return res.data
     },
 
-    async changeAvatar(file) {
+    async changeAvatar(blob) {
         const formData = new FormData()
-        formData.append("file", file, file.name)
-        const res = await api.post('/api/changeAvatar', formData, {
-            headers: {
-                "Content-Type": "multipart/form-data"
-            }
-        });
+        formData.append("file", blob, 'avatar_img.jpg')
+        const res = await api.post('/api/changeAvatar', formData);
         return res.data
     }
 }

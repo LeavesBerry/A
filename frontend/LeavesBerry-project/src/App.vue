@@ -55,7 +55,7 @@
           <span>收藏夹</span>
         </button>
 
-        <button class="menu-function-button">
+        <button class="menu-function-button" @click="goPage('/Setting')">
           <svg class="menu-function-icon" viewBox="0 0 32 32" aria-hidden="true">
             <circle cx="16" cy="16" r="4"></circle>
             <path
