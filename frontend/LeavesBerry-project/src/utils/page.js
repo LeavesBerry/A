@@ -11,7 +11,20 @@ export const pageState = reactive({
     currentTitle: '',
     currentType: '',
     currentDesc: '',
-    showFilter: false
+    showFilter: false,
+    leftUp: {},
+    leftDown: {},
+    rightUp: {},
+    rightDown: {},
+    menuBox: {},
+    navbar: {},
+    searchKey: '',
+    srcShot: '',
+    isScrShot: false,
+    shareStyle: {},
+    shareText: '➹',
+    cmdInputValue: "",
+    cmdOutputText: "",
 })
 
 export const pageMetaConfig = {

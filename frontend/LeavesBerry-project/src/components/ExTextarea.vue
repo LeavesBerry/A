@@ -35,7 +35,7 @@ function toggleText() {
 }
 </script>
 
-<style>
+<style scoped>
 .expandable-textarea .content {
     word-break: break-all;
     word-wrap: break-word;

@@ -5,7 +5,7 @@
 			<div class="item-box">
 				<p class="no-item-tip none-select" v-if="currentConfig.length == 0" @click="getAllColl">暂无收藏( •̀ ω •́
 					)✧<br>点击此处刷新</p>
-				<div class="items" v-for="item in currentConfig" :key="item.id ?? item.url">
+				<div class="item" v-for="item in currentConfig" :key="item.id ?? item.url">
 					<p class="item-title" @click="goPage(item.url)">{{ item.title }}</p>
 					<div id="colls-function-box">
 						<button @click.stop.prevent="cancelColl(`${item.url}`)" style="color: #73B436; 
@@ -134,7 +134,7 @@ onUnmounted(() => {
 })
 </script>
 
-<style>
+<style scoped>
 :root {
 	/* 设计参考视高：457px；原 1vh = 4.57px */
 	--design-vh: 4.57px;
@@ -142,7 +142,11 @@ onUnmounted(() => {
 	/* 457px * 2.4 */
 }
 
-#collect-page #colls-function-box {
+.item {
+	height: calc(20 * var(--design-vh));
+}
+
+#colls-function-box {
 	position: absolute;
 	right: 10%;
 	top: 15%;
@@ -152,7 +156,7 @@ onUnmounted(() => {
 	z-index: 3;
 }
 
-#collect-page .items button {
+.item button {
 	width: calc(8 * var(--design-vh));
 	height: calc(6 * var(--design-vh));
 	background-color: rgba(0, 0, 0, 0);

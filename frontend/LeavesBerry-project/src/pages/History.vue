@@ -1,27 +1,39 @@
 <template>
     <div class="page" id="history-page">
         <div class="slide-page">
-            <p id="title">你的访问历史</p>
-            <div id="history-box">
-                <ExTextarea v-for="item in historyList" :key="item"
-                    :title="pageMetaConfig[item.replace(`/`, '')]?.title ?? '未知界面'" :text="item + '\n' +
-                        (pageMetaConfig[item.replace(`/`, '')]?.description ?? '')" custom-class=" textarea"
-                    title-class="textarea-title" button-class="textarea-button" content-class="textarea-content">
-                </ExTextarea>
+            <div class="item-box">
+                <div class="item" id="history" v-for="item in currentContent">
+                    <p class="item-title" id="history-title">
+                        {{ pageMetaConfig[item.replace(`/`, '')]?.title ?? '未知界面' }}</p>
+                    <p id="history-url">{{ ROOTPATH + item }}</p>
+                    <p id="history-des">
+                        {{ pageMetaConfig[item.replace(`/`, '')]?.description ?? '' }}</p>
+                </div>
             </div>
+
         </div>
     </div>
     <teleport class="fixed-page" to="#app #app-root">
         <Logo></Logo>
+        <Sidebar type-list="historyTypeList" @change-dir=""></Sidebar>
     </teleport>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
 import Logo from '../components/Logo.vue';
+import Sidebar from '../components/Sidebar.vue';
 import ExTextarea from '../components/ExTextarea.vue'
 import api from '../utils/api.js';
-import { disposeReturn, pageMetaConfig } from '../utils/index.js';
+import { disposeReturn, pageMetaConfig, arrowStyle } from '../utils/index.js';
+import { ROOTPATH } from '../router/index.js';
+
+const historyTypeList = [
+    { index: 0, typeKey: "all", label: "所有", id: "all" },
+    { index: 1, typeKey: "recent", label: "较近", id: "recent" },
+    { index: 2, typeKey: "past", label: "较远", id: "past" }
+]
+let currentContent = ref([])
 
 let historyList = ref([])
 
@@ -32,23 +44,33 @@ async function getHistory() {
     }
 }
 
+function switchDirContent(sn, type) {
+    switchArrow(sn)
+
+    switch (type) {
+        case "all":
+            currentContent.value = historyList.value
+            return
+        case "recent":
+            currentContent.value = historyList.value.slice(0, 30)
+            return
+        case "past":
+            currentContent.value = historyList.value.slice(30)
+    }
+}
+
 onMounted(() => {
+    arrowStyle.transform = ""
     getHistory()
 })
 
 </script>
-<style>
-#history-page #title {
-    color: #3A251A;
-    font-size: 25px;
-    font-weight: 700;
-    padding-top: calc(4 * var(--design-vh, 4.57px));
-}
-
-#history-page #history-box {
+<style scoped>
+#history-box {
     margin-top: calc(4 * var(--design-vh, 4.57px));
 }
-
+</style>
+<style>
 #history-page .textarea {
     width: 90.5vw;
     height: auto;

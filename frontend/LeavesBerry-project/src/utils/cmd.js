@@ -103,13 +103,11 @@ export const cmdHandler = {
                     menuModule.toggleMenu()
                 }
                 return "已关闭菜单"
-                break
             case '1':
                 if (pageState.isMenuClosed) {
                     menuModule.toggleMenu()
                 }
                 return "已打开菜单"
-                break
         }
     },
     // ------------------------------

@@ -71,15 +71,15 @@ onUnmounted(() => {
 })
 </script>
 
-<style>
-#proto-page #proto-title {
-    color: #4a4030;
+<style scoped>
+#proto-title {
+    color: #3a251a;
     font-size: 25px;
     font-weight: 700;
     padding-top: calc(4 * var(--design-vh, 4.57px));
 }
 
-#proto-page #proto-text-box {
+#proto-text-box {
     margin-top: calc(4 * var(--design-vh, 4.57px));
     width: 100vw;
     height: fit-content;
@@ -88,7 +88,7 @@ onUnmounted(() => {
     border-bottom: 1px solid #4a4030;
 }
 
-#proto-page .proto-text {
+.proto-text {
     position: relative;
     left: 10vw;
     width: 80vw;
@@ -99,7 +99,7 @@ onUnmounted(() => {
     font-weight: 500;
 }
 
-#proto-page #detail-text {
+#detail-text {
     white-space: pre-line;
     word-break: break-all;
     word-wrap: break-word;

@@ -1,244 +1,350 @@
 <template>
     <div class="page" id="setting-page">
         <div class="slide-page">
-            <input v-model="bioInputValue">
-            <input type="file" accept="image/*" @change="selectAvatarFile($event)">
+            <div class="item-box" v-if="currentContent == 'name'"></div>
+            <div class="item-box" v-if="currentContent == 'bio'">
+                <input v-model="bioInputValue">
+                <button @click="changeBio"></button>
+            </div>
+            <div class="item-box" v-if="currentContent == 'avatar'">
+                <label class="item" id="avatar-input">
+                    <span id="docu-name">
+                        {{ avatarState.avatarFile ? `已选择: ${avatarState.avatarFile.name} | 点击更改` : "点击选择文件" }}
+                    </span>
+                    <input placeholder="选择文件" type="file" accept="image/*" @change="avatarModule.selectFile($event)">
+                </label>
 
-            <button @click="changeAvatar" :disabled="!cropReady">
-                上传头像
-            </button>
+                <button class="item" id="change-avatar-button" @click="avatarModule.changeAvatar"
+                    :disabled="!avatarModule.cropReady">上传头像</button>
 
-            <div v-if="originImgUrl" id="preview-box" ref="previewRef">
-
-                <img :src="originImgUrl" ref="imgRef" id="origin-img" draggable="false" @load="initCropBox">
-
-                <div id="crop-box" :style="cropBoxStyle" @mousedown="startMove">
-
-                    <div v-for="handle in handles" :key="handle" :class="['handle', handle]"
-                        @mousedown.stop="startResize(handle, $event)">
+                <div id="crop-area">
+                    <div id="crop-tip-box">
+                        <p id="crop-tip" v-for="item in avatarState.tipList" v-if="avatarState.avatarFile">•{{ item }}</p>
                     </div>
 
+                    <div v-if="avatarState.originImgUrl" id="preview-box" :ref="el => avatarState.previewRef = el">
+                        <img :src="avatarState.originImgUrl" :ref="el => avatarState.imgRef = el" id="origin-img" draggable="false" @load="avatarModule.initCropBox">
+                        <div id="crop-box" :style="avatarModule.cropBoxStyle" @mousedown="avatarModule.startMove">
+                            <div v-for="handle in avatarState.handles" :key="handle" :class="['handle', handle]"
+                                @mousedown.stop="avatarModule.startResize(handle, $event)">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
 
+            </div>
+            <div class="item-box" v-if="currentContent == 'email'"></div>
+            <div class="item-box" v-if="currentContent == 'logout'"></div>
+        </div>
         <teleport class="fixed-page" to="#app #app-root">
             <Logo></Logo>
+            <Sidebar :type-list="setTypeList" @change-dir="switchDirContent"></Sidebar>
         </teleport>
     </div>
 </template>
 
 <script setup>
-import { ref, computed, onUnmounted } from 'vue'
+import { ref, reactive, onUnmounted, onMounted } from 'vue'
 import Logo from '../components/Logo.vue'
-import { SERVERPATH } from '../router/index.js'
-import { apiRequest, userState, disposeReturn } from '../utils/index.js'
+import Sidebar from '../components/Sidebar.vue'
+import {
+    apiRequest, userState, disposeReturn, showTips, arrowStyle,
+    switchArrow
+} from '../utils/index.js'
+
+const setTypeList = [
+    { index: 0, typeKey: "name", label: "名称", id: "name" },
+    { index: 1, typeKey: "bio", label: "简介", id: "bio" },
+    { index: 2, typeKey: "avatar", label: "头像", id: "avatar" },
+    { index: 3, typeKey: "email", label: "邮箱", id: "email" },
+    { index: 4, typeKey: "logout", label: "注销", id: "logout" }
+]
+const currentContent = ref('')
 
 const bioInputValue = ref(userState.bio)
 
-const avatarFlie = ref(null)
-const originImgUrl = ref('')
-const imgRef = ref(null)
-const previewRef = ref(null)
-
-const TARGET_CROP_WIDTH = 300
-const TARGET_CROP_HEIGHT = 300
-
-const crop = ref({ x: 80, y: 50, size: 200 })
-
-const scaleRatioX = ref(1)
-const scaleRatioY = ref(1)
-
-const dragging = ref(false)
-const resizing = ref(false)
-const resizeDirection = ref('')
-
-const startPoint = ref({ x: 0, y: 0 })
-const startCrop = ref({ x: 0, y: 0, size: 0 })
-const handles = ['lt', 'rt', 'lb', 'rb', 'top', 'bottom', 'left', 'right']
-
-const cropReady = computed(() => {
-    return originImgUrl.value && crop.value.size > 0
+const avatarState = reactive({
+    avatarFile: null,
+    originImgUrl: '',
+    imgRef: null,
+    previewRef: null,
+    tipList: [
+        "用红色裁剪框框选你希望设置为头像的部分",
+        "最终头像框展示你所选择的部分的内切圆内的图像"
+    ],
+    TARGET_CROP_WIDTH: 300,
+    TARGET_CROP_HEIGHT: 300,
+    crop: { x: 80, y: 50, size: 200 },
+    scaleRatioX: 1,
+    scaleRatioY: 1,
+    dragging: false,
+    resizing: false,
+    resizeDirection: '',
+    startPoint: { x: 0, y: 0 },
+    startCrop: { x: 0, y: 0, size: 0 },
+    handles: ['lt', 'rt', 'lb', 'rb', 'top', 'bottom', 'left', 'right']
 })
 
+const avatarModule = {
+    get cropReady() {
+        return Boolean(avatarState.originImgUrl && avatarState.crop.size > 0)
+    },
 
-const cropBoxStyle = computed(() => {
-    return {
-        left: crop.value.x + 'px',
-        top: crop.value.y + 'px',
-        width: crop.value.size + 'px',
-        height: crop.value.size + 'px'
-    }
-})
+    get cropBoxStyle() {
+        return {
+            left: avatarState.crop.x + 'px',
+            top: avatarState.crop.y + 'px',
+            width: avatarState.crop.size + 'px',
+            height: avatarState.crop.size + 'px'
+        }
+    },
 
+    initCropBox() {
+        const img = avatarState.imgRef
+        if (!img) return
 
-function initCropBox() {
-    const img = imgRef.value
-    if (!img) return
+        avatarState.scaleRatioX = img.naturalWidth / img.clientWidth
+        avatarState.scaleRatioY = img.naturalHeight / img.clientHeight
 
-    scaleRatioX.value = img.naturalWidth / img.clientWidth
-    scaleRatioY.value = img.naturalHeight / img.clientHeight
+        const size = Math.min(img.clientWidth, img.clientHeight) * 0.6
+        avatarState.crop = {
+            x: (img.clientWidth - size) / 2,
+            y: (img.clientHeight - size) / 2,
+            size
+        }
+    },
 
-    const size = Math.min(img.clientWidth, img.clientHeight) * 0.6
-    crop.value = { x: (img.clientWidth - size) / 2, y: (img.clientHeight - size) / 2, size }
-}
+    limitCrop(next) {
+        const img = avatarState.imgRef
+        if (!img) return next
 
+        next.size = Math.max(40, Math.min(next.size, img.clientWidth, img.clientHeight))
+        next.x = Math.max(0, Math.min(next.x, img.clientWidth - next.size))
+        next.y = Math.max(0, Math.min(next.y, img.clientHeight - next.size))
 
-function limitCrop(next) {
-    const img = imgRef.value
+        return next
+    },
 
-    if (!img) return next
+    startMove(e) {
+        avatarState.dragging = true
+        avatarState.startPoint = { x: e.clientX, y: e.clientY }
+        avatarState.startCrop = { ...avatarState.crop }
 
-    next.size = Math.max(40, Math.min(next.size, img.clientWidth, img.clientHeight))
-    next.x = Math.max(0, Math.min(next.x, img.clientWidth - next.size))
-    next.y = Math.max(0, Math.min(next.y, img.clientHeight - next.size))
+        window.addEventListener('mousemove', avatarModule.moveCrop)
+        window.addEventListener('mouseup', avatarModule.stopAction)
+    },
 
-    return next
-}
+    moveCrop(e) {
+        if (!avatarState.dragging && !avatarState.resizing) return
 
+        const dx = e.clientX - avatarState.startPoint.x
+        const dy = e.clientY - avatarState.startPoint.y
 
-function startMove(e) {
-    dragging.value = true
-    startPoint.value = { x: e.clientX, y: e.clientY }
-    startCrop.value = { ...crop.value }
+        if (avatarState.dragging) {
+            avatarState.crop = avatarModule.limitCrop({
+                ...avatarState.startCrop,
+                x: avatarState.startCrop.x + dx,
+                y: avatarState.startCrop.y + dy
+            })
+        } else {
+            avatarModule.resizeCrop(dx, dy)
+        }
+    },
 
-    window.addEventListener('mousemove', moveCrop)
-    window.addEventListener('mouseup', stopAction)
-}
+    startResize(direction, e) {
+        avatarState.resizing = true
+        avatarState.resizeDirection = direction
+        avatarState.startPoint = { x: e.clientX, y: e.clientY }
+        avatarState.startCrop = { ...avatarState.crop }
 
+        window.addEventListener('mousemove', avatarModule.moveCrop)
+        window.addEventListener('mouseup', avatarModule.stopAction)
+    },
 
-function moveCrop(e) {
-    if (!dragging.value && !resizing.value) return
+    resizeCrop(dx, dy) {
+        const old = avatarState.startCrop
+        let size = old.size
+        let x = old.x
+        let y = old.y
 
-    const dx = e.clientX - startPoint.value.x
-    const dy = e.clientY - startPoint.value.y
+        const direction = avatarState.resizeDirection
 
-    if (dragging.value) {
-        crop.value = limitCrop({
-            ...startCrop.value, x: startCrop.value.x + dx,
-            y: startCrop.value.y + dy
+        if (direction.includes('r')) {
+            size = old.size + dx
+        }
+        if (direction.includes('b')) {
+            size = old.size + dy
+        }
+        if (direction.includes('l')) {
+            size = old.size - dx
+            x = old.x + dx
+        }
+        if (direction.includes('t')) {
+            size = old.size - dy
+            y = old.y + dy
+        }
+
+        const minSize = 40
+        if (size < minSize) {
+            size = minSize
+        }
+        if (direction.includes('l')) {
+            x = old.x + old.size - size
+        }
+        if (direction.includes('t')) {
+            y = old.y + old.size - size
+        }
+
+        avatarState.crop = avatarModule.limitCrop({ x, y, size })
+    },
+
+    stopAction() {
+        avatarState.dragging = false
+        avatarState.resizing = false
+
+        window.removeEventListener('mousemove', avatarModule.moveCrop)
+        window.removeEventListener('mouseup', avatarModule.stopAction)
+    },
+
+    selectFile(e) {
+        const file = e.target.files?.[0]
+        if (!file || !file.type.startsWith('image/')) return
+
+        avatarState.avatarFile = file
+        avatarModule.revokeOriginImgUrl()
+        avatarState.originImgUrl = URL.createObjectURL(file)
+    },
+
+    revokeOriginImgUrl() {
+        if (!avatarState.originImgUrl) return
+
+        URL.revokeObjectURL(avatarState.originImgUrl)
+        avatarState.originImgUrl = ''
+    },
+
+    getCropBlob() {
+        const img = avatarState.imgRef
+        if (!img) {
+            return Promise.resolve(null)
+        }
+
+        const canvas = document.createElement('canvas')
+        canvas.width = avatarState.TARGET_CROP_WIDTH
+        canvas.height = avatarState.TARGET_CROP_HEIGHT
+
+        const ctx = canvas.getContext('2d')
+        if (!ctx) {
+            return Promise.resolve(null)
+        }
+
+        const sx = avatarState.crop.x * avatarState.scaleRatioX
+        const sy = avatarState.crop.y * avatarState.scaleRatioY
+        const sourceWidth = avatarState.crop.size * avatarState.scaleRatioX
+        const sourceHeight = avatarState.crop.size * avatarState.scaleRatioY
+
+        ctx.drawImage(
+            img,
+            sx,
+            sy,
+            sourceWidth,
+            sourceHeight,
+            0,
+            0,
+            avatarState.TARGET_CROP_WIDTH,
+            avatarState.TARGET_CROP_HEIGHT
+        )
+
+        return new Promise(resolve => {
+            canvas.toBlob(resolve, 'image/jpeg', 0.85)
         })
-    }
-    else {
-        resizeCrop(dx, dy)
+    },
+
+    async changeAvatar() {
+        if (!userState.isLogined || !avatarModule.cropReady) return
+
+        const blob = await avatarModule.getCropBlob()
+        if (!blob) {
+            showTips("头像裁剪失败，请重新选择图片")
+            return
+        }
+
+        const res = await apiRequest.changeAvatar(blob)
+        if (!disposeReturn(res)) {
+            userState.avatarUrl = res.avatar_url
+        }
+    },
+
+    dispose() {
+        avatarModule.stopAction()
+        avatarModule.revokeOriginImgUrl()
+        avatarState.avatarFile = null
+        avatarState.imgRef = null
+        avatarState.previewRef = null
     }
 }
 
-
-function startResize(direction, e) {
-    resizing.value = true
-    resizeDirection.value = direction
-    startPoint.value = { x: e.clientX, y: e.clientY }
-    startCrop.value = { ...crop.value }
-
-    window.addEventListener('mousemove', moveCrop)
-    window.addEventListener('mouseup', stopAction)
-}
-
-
-function resizeCrop(dx, dy) {
-    const old = startCrop.value
-    let size = old.size
-    let x = old.x
-    let y = old.y
-
-    const direction = resizeDirection.value
-
-    if (direction.includes('r')) {
-        size = old.size + dx
-    }
-    if (direction.includes('b')) {
-        size = old.size + dy
-    }
-    if (direction.includes('l')) {
-        size = old.size - dx
-        x = old.x + dx
-    }
-    if (direction.includes('t')) {
-        size = old.size - dy
-        y = old.y + dy
-    }
-
-    const minSize = 40
-    if (size < minSize)
-        size = minSize
-    if (direction.includes('l'))
-        x = old.x + old.size - size
-    if (direction.includes('t'))
-        y = old.y + old.size - size
-
-    crop.value = limitCrop({ x, y, size })
-}
-
-
-function stopAction() {
-    dragging.value = false
-    resizing.value = false
-
-    window.removeEventListener('mousemove', moveCrop)
-    window.removeEventListener('mouseup', stopAction)
-}
-
-
-function selectAvatarFile(e) {
-    const file = e.target.files[0]
-    if (!file || !file.type.startsWith('image/')) return
-
-    avatarFlie.value = file
-
-    if (originImgUrl.value) URL.revokeObjectURL(originImgUrl.value)
-    originImgUrl.value = URL.createObjectURL(file)
-}
-
-
-
-function getCropBlob() {
-    const canvas = document.createElement('canvas')
-    canvas.width = TARGET_CROP_WIDTH
-    canvas.height = TARGET_CROP_HEIGHT
-    const ctx = canvas.getContext('2d')
-    const img = imgRef.value
-    const sx = crop.value.x * scaleRatioX.value
-    const sy = crop.value.y * scaleRatioY.value
-    const size = crop.value.size
-
-    ctx.drawImage(img, sx, sy, size * scaleRatioX.value, size * scaleRatioY.value,
-        0, 0, TARGET_CROP_WIDTH, TARGET_CROP_HEIGHT)
-
-    return new Promise(resolve => {
-        canvas.toBlob(resolve, 'image/jpeg', 0.85)
-    })
-}
-
-
-async function changeAvatar() {
-    if (!userState.isLogined)
+function changeBio() {
+    if (!userState.isLogined || !bioInputValue.value) return
+    if (bioInputValue.value.length > 20) {
+        showTips("简介字数需在20字以内")
         return
+    }
 
-    const blob = await getCropBlob()
-    const res = await apiRequest.changeAvatar(blob)
-
+    const res = apiRequest.changeBio(bioInputValue.value)
     if (!disposeReturn(res)) {
-        userState.avatarUrl = res.avatar_url
+        userState.bio = bioInputValue.value
     }
 }
+
+function switchDirContent(sn, type) {
+    switchArrow(sn)
+    currentContent.value = type ?? ""
+}
+
+onMounted(() => {
+    arrowStyle.transform = ""
+    currentContent.value = "name"
+})
 
 onUnmounted(() => {
-    stopAction()
-    if (originImgUrl.value)
-        URL.revokeObjectURL(originImgUrl.value)
-
+    avatarModule.dispose()
 })
 </script>
 
 <style scoped>
-#preview-box {
+#crop-area {
     position: relative;
-    width: 600px;
-    overflow: hidden;
-
+    top: calc(8 * var(--design-vh));
 }
 
+#preview-box {
+    position: absolute;
+    width: 600px;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid #3a251a;
+}
+
+#crop-tip-box {
+    position: absolute;
+    top: -4px;
+    left: 620px;
+    width: calc(70vw - 620px);
+    text-align: left;
+}
+
+#crop-tip {
+    white-space: pre-line;
+    word-break: break-all;
+    word-wrap: break-word;
+    color: #3a251a;
+    font-size: 16px;
+    font-weight: 200;
+}
 
 #origin-img {
     width: 100%;
@@ -312,5 +418,43 @@ onUnmounted(() => {
     right: -6px;
     top: 50%;
     cursor: e-resize;
+}
+
+#avatar-input {
+    height: calc(8 * var(--design-vh));
+    flex-direction: column;
+    padding-top: calc(1 * var(--design-vh));
+    padding-bottom: calc(2 * var(--design-vh));
+    text-align: center;
+}
+
+#avatar-input::placeholder {
+    text-align: center;
+}
+
+#avatar-input input {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+}
+
+#docu-name {
+    font-size: 20px;
+    color: #3a251a;
+    font-weight: 600;
+}
+
+#change-avatar-button {
+    height: calc(8 * var(--design-vh));
+    flex-direction: column;
+    padding-top: calc(1 * var(--design-vh));
+    padding-bottom: calc(2 * var(--design-vh));
+    text-align: center;
+    font-size: 20px;
+    color: #3a251a;
+    font-weight: 600;
+    outline: none;
+    border: none;
 }
 </style>

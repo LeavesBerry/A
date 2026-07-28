@@ -75,6 +75,9 @@ def change_bio(
     if not user_profile:
         raise APIError("用户资料不存在")
 
+    if not data.bio or not type(data.bio) == str:
+        raise APIError("简介格式错误")
+
     user_profile.bio = data.bio
     db.commit()
     cache.delete(user_info_cache_key(user_id))

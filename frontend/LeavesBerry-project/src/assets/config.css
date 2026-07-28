@@ -4,6 +4,8 @@
     left: 28vw;
     width: 70vw;
     height: auto;
+    justify-content: center;
+    align-items: center;
 }
 
 .no-item-tip {
@@ -16,9 +18,9 @@
     align-items: center;
 }
 
-.items {
+.item {
     width: 70vw;
-    height: calc(20 * var(--design-vh));
+    background-color: #FFF3D0;
     box-shadow: 8px 10px 25px rgb(180, 145, 80, 1);
     position: relative;
     margin-top: calc(6 * var(--design-vh));

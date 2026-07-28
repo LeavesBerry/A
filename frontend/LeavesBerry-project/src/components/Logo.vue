@@ -6,7 +6,7 @@
 import { showTips } from '../utils';
 </script>
 
-<style>
+<style scoped>
 .logo {
     font-size: 13px;
     position: fixed;

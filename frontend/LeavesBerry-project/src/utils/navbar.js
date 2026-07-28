@@ -7,21 +7,10 @@ import { userState } from "./user"
 import { create } from "axios"
 import router from "../router"
 
-export const navbarModule = reactive({
-
-    navbar: {},
-    searchKey: '',
-    srcShot: '',
-    isScrShot: false,
-    shareStyle: {},
-    shareText: '➹',
-    cmdInputValue: "",
-    cmdOutputText: "",
-
-
+export const navbarModule = {
     // 搜索
     DoSearch() {
-        console.log('搜索:', this.searchKey);
+        console.log('搜索:', pageState.searchKey);
     },
 
     // ------------------------------
@@ -36,8 +25,8 @@ export const navbarModule = reactive({
             backgroundColor: '#ffffff',
             logging: false,
         });
-        this.srcShot = canvas.toDataURL('image/jpeg', 1);
-        this.isScrShot = true;
+        pageState.srcShot = canvas.toDataURL('image/jpeg', 1);
+        pageState.isScrShot = true;
     },
 
 
@@ -102,8 +91,8 @@ export const navbarModule = reactive({
 
         pageState.isShareClosed = !pageState.isShareClosed
         if (!pageState.isShareClosed) {
-            this.shareText = '';
-            this.shareStyle = {
+            pageState.shareText = '';
+            pageState.shareStyle = {
                 width: du(9),
                 paddingLeft: du(4.5),
                 paddingRight: du(4.5),
@@ -112,12 +101,12 @@ export const navbarModule = reactive({
                 backgroundSize: `${du(3)} ${du(3)}, ${du(3)} ${du(3)}`,
                 backgroundRepeat: 'no-repeat,no-repeat'
             }
-            this.shareText = '';
+            pageState.shareText = '';
 
 
         } else {
-            this.shareStyle = {};
-            this.shareText = '➹';
+            pageState.shareStyle = {};
+            pageState.shareText = '➹';
         }
     },
 
@@ -129,7 +118,7 @@ export const navbarModule = reactive({
     },
 
     showOutput(text, cmdOutputBox) {
-        this.cmdOutputText += `${text}\n`;
+        pageState.cmdOutputText += `${text}\n`;
         nextTick(() => {
             if (cmdOutputBox) {
                 cmdOutputBox.scrollTop = cmdOutputBox.scrollHeight;
@@ -138,7 +127,7 @@ export const navbarModule = reactive({
     },
 
     executeCmd(cmdOutputBox) {
-        const cmd = this.cmdInputValue;
+        const cmd = pageState.cmdInputValue;
         const reg = /^([a-zA-Z0-9_]+)\((.*)\)$/
         const match = cmd.trim().match(reg)
         if (!match) {
@@ -154,9 +143,9 @@ export const navbarModule = reactive({
             return
         }
         const output = handler(...args)
-        this.cmdInputValue = ""
+        pageState.cmdInputValue = ""
         this.showOutput(`运行${cmdName}成功,输出: ${output}`, cmdOutputBox)
     }
 
 
-});
+};

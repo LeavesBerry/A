@@ -1,7 +1,7 @@
 <template>
     <div class="sidebar">
         <span class="dir-active-arrow" :style="arrowStyle">{{ arrow }}</span>
-        <div class="type" v-for="item in typeList" :key="item.index" :id="item.id"
+        <div class="sidebar-config" v-for="item in typeList" :key="item.index" :id="'sidebar-' + item.id"
             @click="handleItemClick(item.index, item.typeKey)">❖{{ item.label }}❖</div>
     </div>
 
@@ -26,7 +26,7 @@ function handleItemClick(sn, type) {
 }
 </script>
 
-<style>
+<style scoped>
 .sidebar {
     width: 25vw;
     height: 100vh;
@@ -43,7 +43,7 @@ function handleItemClick(sn, type) {
     user-select: none;
 }
 
-.type {
+.sidebar-config {
     width: 23vw;
     height: calc(8 * var(--design-vh, 4.57px));
     background-color: #FFF3D0;
@@ -63,11 +63,16 @@ function handleItemClick(sn, type) {
 .dir-active-arrow {
     position: absolute;
     right: 15px;
-    top: 15px;
+    top: calc(4.25 * var(--design-vh, 4.57px) - 0.5px);
     color: #3A251A;
+    height: calc(3.5 * var(--design-vh, 4.57px));
     font-size: calc(3.5 * var(--design-vh, 4.57px));
+    text-align: center;
+    line-height: calc(3.5 * var(--design-vh, 4.57px));
     font-weight: 200;
     letter-spacing: 5px;
     transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
 }
 </style>

@@ -3,7 +3,7 @@
 		<div class="slide-page">
 			<div class="item-box">
 				<ExTextarea v-for="item in currentConfig" :key="item.id ?? item.cmd" :title="item.cmd" :text="item.des"
-					custom-class="textarea" title-class="textarea-title" button-class="textarea-button"
+					custom-class="item" title-class="textarea-title" button-class="textarea-button"
 					content-class="textarea-content">
 				</ExTextarea>
 				<p class="no-item-tip none-select" v-if="currentConfig.length == 0">暂无该类指令( •̀ ω •́ )✧</p>
@@ -96,21 +96,11 @@ onUnmounted(() => {
 </script>
 
 <style>
-#cmd-column-page .textarea {
-	width: 70vw;
+#cmd-column-page .item {
 	height: auto;
 	flex-direction: column;
 	padding-top: calc(1 * var(--design-vh));
 	padding-bottom: calc(2 * var(--design-vh));
-	box-shadow: 8px 10px 25px rgb(180, 145, 80, 1);
-	position: relative;
-	margin-top: calc(3 * var(--design-vh));
-	display: flex;
-	border-radius: calc(6 * var(--design-vh));
-	text-decoration: none;
-	z-index: 2;
-	-webkit-user-select: none;
-	user-select: none;
 }
 
 #cmd-column-page .textarea-title {

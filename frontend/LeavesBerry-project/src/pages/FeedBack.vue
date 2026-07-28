@@ -1,7 +1,6 @@
 <template>
     <div class="page" id="feedback-page">
         <div class="slide-page">
-            <p id="title">对本站的一些建议或想法</p>
             <div id="title-input-devider"></div>
             <textarea id="feedback-input" wrap="soft" :placeholder="placeholder" v-model="feedback"
                 :disabled="!couldSubmit">
@@ -101,15 +100,8 @@ onUnmounted(() => {
 })
 </script>
 
-<style>
-#feedback-page #title {
-    color: #3A251A;
-    font-size: 25px;
-    font-weight: 700;
-    padding-top: calc(4 * var(--design-vh, 4.57px));
-}
-
-#feedback-page #feedback-input {
+<style scoped>
+#feedback-input {
     position: relative;
     margin-top: 20px;
     width: 90.5vw;
@@ -134,11 +126,11 @@ onUnmounted(() => {
     overflow-x: hidden;
 }
 
-#feedback-page #feedback-input::placeholder {
+#feedback-input::placeholder {
     color: #4a4030;
 }
 
-#feedback-page #submit-button {
+#submit-button {
     position: relative;
     margin-top: -1px;
     padding: 0, 5px;
@@ -153,7 +145,7 @@ onUnmounted(() => {
     cursor: pointer;
 }
 
-#feedback-page #tip-box {
+#tip-box {
     position: absolute;
     left: 5vw;
     width: 90vw;
@@ -161,7 +153,7 @@ onUnmounted(() => {
     justify-items: left;
 }
 
-#feedback-page #tip-box p {
+#tip-box p {
     color: #4a4030;
     font-size: 15px;
     font-weight: 500;

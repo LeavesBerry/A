@@ -6,7 +6,7 @@
     <div ref="qrBox" style="display: none;"></div>
 
     <div id="menu-box" :class="pageState.isMenuClosed ? 'parent-prevent' : ''" @click="menuModule.toggleMenu"
-      :style="menuModule.menuBox">
+      :style="pageState.menuBox">
 
       <div id="user_info">
         <img id="avatar" :src="userState.avatarUrl" @click="userModule.changeAvatar">
@@ -131,30 +131,29 @@
       </div>
     </div>
 
-    <button class="menu-button" id="button-left-up" :style="menuModule.leftUp"></button>
-    <button class="menu-button" id="button-left-down" :style="menuModule.leftDown"></button>
-    <button class="menu-button" id="button-right-up" :style="menuModule.rightUp"></button>
-    <button class="menu-button" id="button-right-down" :style="menuModule.rightDown"></button>
+    <button class="menu-button" id="button-left-up" :style="pageState.leftUp"></button>
+    <button class="menu-button" id="button-left-down" :style="pageState.leftDown"></button>
+    <button class="menu-button" id="button-right-up" :style="pageState.rightUp"></button>
+    <button class="menu-button" id="button-right-down" :style="pageState.rightDown"></button>
 
+    <p class="tip" :style="tip.tipStyle">{{ tip.tipText }}</p>
 
-    <div id="navbar" :style="navbarModule.navbar">
+    <div id="navbar" :style="pageState.navbar">
 
-      <p class="tip" :style="tip.tipStyle">{{ tip.tipText }}</p>
-
-      <input id="search-input" type="text" placeholder="查找……" v-model="navbarModule.searchKey" />
+      <input id="search-input" type="text" placeholder="查找……" v-model="pageState.searchKey" />
       <button id="search-button" @click="navbarModule.DoSearch">GO</button>
 
       <div id="navbar-fuction-button-box">
         <!-------------截图-------------->
         <button class="navbar-function-button" id="scrshot-button" @click="navbarModule.handleScreenshot">✦</button>
-        <img id="screen-shot" v-if="navbarModule.isScrShot" :src="navbarModule.scrShot">
+        <img id="screen-shot" v-if="pageState.isScrShot" :src="pageState.scrShot">
         <!-------------收藏-------------->
         <button class="navbar-function-button" id="collect-button"
           :style="{ color: pageState.isCollected ? '#73B436' : 'rgb(90,25,27)' }"
           @click="navbarModule.toggleColl">✦</button>
         <!-------------分享-------------->
         <button class="navbar-function-button" id="share-button" @click="navbarModule.toggleShare"
-          :style="navbarModule.shareStyle">{{ navbarModule.shareText }}</button>
+          :style="pageState.shareStyle">{{ pageState.shareText }}</button>
         <!-------------指令-------------->
         <button class="navbar-function-button" id="command-button"
           :style="{ color: !pageState.isCmdClosed ? 'red' : '#5A191B' }" @click="navbarModule.toggleCmdUI">/</button>
@@ -163,10 +162,10 @@
       <div id="command-menu" v-if="!pageState.isCmdClosed">
         <p id="command-title">指令面板</p>
         <button id="close-command" @click="navbarModule.toggleCmdUI">×</button>
-        <input id="cmd-input" v-model="navbarModule.cmdInputValue" placeholder="请输入指令">
+        <input id="cmd-input" v-model="pageState.cmdInputValue" placeholder="请输入指令">
         <button id="execute-cmd-button" @click="navbarModule.executeCmd(cmdOutputBox)">RUN</button>
         <div id="cmd-output-box" ref="cmdOutputBox">
-          <p id="cmd-output">{{ navbarModule.cmdOutputText }}</p>
+          <p id="cmd-output">{{ pageState.cmdOutputText }}</p>
         </div>
       </div>
     </div>

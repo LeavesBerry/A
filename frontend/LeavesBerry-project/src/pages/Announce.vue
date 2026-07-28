@@ -5,7 +5,7 @@
 				<p class="no-item-tip none-select" v-if="currentConfig.length == 0" @click="getAllAnnoInfo">暂无公告( •̀ ω
 					•́
 					)✧<br>点击此处刷新</p>
-				<div class="items" v-for="item in currentConfig" :key="item.id"
+				<div class="item" v-for="item in currentConfig" :key="item.id"
 					@click="configModule.expandContent(item.id, 'Announce')">
 					<p class="item-title">{{ item.title }}</p>
 					<p class="anno-date">————{{ Math.floor(item.anno_date / 10000) }}年{{ Math.floor((item.anno_date %
@@ -93,7 +93,7 @@ onUnmounted(() => {
 })
 </script>
 
-<style>
+<style scoped>
 :root {
 	/* 设计参考视高：457px；原 1vh = 4.57px */
 	--design-vh: 4.57px;
@@ -101,7 +101,7 @@ onUnmounted(() => {
 	/* 457px * 2.4 */
 }
 
-#announce-page .anno-date {
+.anno-date {
 	width: 250px;
 	text-align: left;
 	position: absolute;
@@ -109,5 +109,9 @@ onUnmounted(() => {
 	top: 50%;
 	font-size: calc(4 * var(--design-vh));
 	color: #706048;
+}
+
+.item {
+	height: calc(20 * var(--design-vh));
 }
 </style>

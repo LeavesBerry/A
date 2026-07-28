@@ -39,7 +39,8 @@ a {
 
 input,
 button,
-textarea {
+textarea,
+label {
 	padding: 0%;
 	vertical-align: middle;
 	box-sizing: border-box;
