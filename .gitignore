@@ -1,0 +1,12 @@
+node_modules/
+package-lock.json
+backend/.env
+backend/config.py
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+*.log
+.vscode/
+.DS_Store
