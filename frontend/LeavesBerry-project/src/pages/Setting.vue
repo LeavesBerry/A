@@ -3,8 +3,14 @@
         <div class="slide-page">
             <div class="item-box" v-if="currentContent == 'name'"></div>
             <div class="item-box" v-if="currentContent == 'bio'">
-                <input v-model="bioInputValue">
-                <button @click="changeBio"></button>
+                <input class="item" id="bio-input" v-model="bioInputValue" placeholder="请输入简介(20字以内)"
+                maxlength="20">
+                <button class="item" id="change-bio-button" @click="changeBio">更改简介</button>
+                <p>•如果你想不出一个满意的简介,不妨试试</p>
+                <div id="gener-bio-button-box">
+                    <button class="gener-bio-button" id="poem-gener-bio-button"></button>
+                    <button class="gener-bio-button" id="game-gener-bio-button"></button>
+                </div>
             </div>
             <div class="item-box" v-if="currentContent == 'avatar'">
                 <label class="item" id="avatar-input">
@@ -15,7 +21,7 @@
                 </label>
 
                 <button class="item" id="change-avatar-button" @click="avatarModule.changeAvatar"
-                    :disabled="!avatarModule.cropReady">上传头像</button>
+                    :disabled="!avatarModule.cropReady">更改头像</button>
 
                 <div id="crop-area">
                     <div id="crop-tip-box">
@@ -48,8 +54,8 @@ import { ref, reactive, onUnmounted, onMounted } from 'vue'
 import Logo from '../components/Logo.vue'
 import Sidebar from '../components/Sidebar.vue'
 import {
-    apiRequest, userState, disposeReturn, showTips, arrowStyle,
-    switchArrow
+    apiRequest, userState, disposeReturn, showTips, currentSidebarConfig,
+    updatePersistFields, persistConfig
 } from '../utils/index.js'
 
 const setTypeList = [
@@ -270,7 +276,7 @@ const avatarModule = {
 
         const res = await apiRequest.changeAvatar(blob)
         if (!disposeReturn(res)) {
-            userState.avatarUrl = res.avatar_url
+            updatePersistFields(userState, { avatarUrl: res.avatar_url }, persistConfig)
         }
     },
 
@@ -283,26 +289,26 @@ const avatarModule = {
     }
 }
 
-function changeBio() {
+async function changeBio() {
     if (!userState.isLogined || !bioInputValue.value) return
     if (bioInputValue.value.length > 20) {
         showTips("简介字数需在20字以内")
         return
     }
 
-    const res = apiRequest.changeBio(bioInputValue.value)
+    const res = await apiRequest.changeBio(bioInputValue.value)
     if (!disposeReturn(res)) {
-        userState.bio = bioInputValue.value
+        updatePersistFields(userState, { bio: bioInputValue.value }, persistConfig)
     }
 }
 
 function switchDirContent(sn, type) {
-    switchArrow(sn)
+    currentSidebarConfig.value = sn
     currentContent.value = type ?? ""
 }
 
 onMounted(() => {
-    arrowStyle.transform = ""
+    currentSidebarConfig.value = 0
     currentContent.value = "name"
 })
 
@@ -446,6 +452,32 @@ onUnmounted(() => {
 }
 
 #change-avatar-button {
+    height: calc(8 * var(--design-vh));
+    flex-direction: column;
+    padding-top: calc(1 * var(--design-vh));
+    padding-bottom: calc(2 * var(--design-vh));
+    text-align: center;
+    font-size: 20px;
+    color: #3a251a;
+    font-weight: 600;
+    outline: none;
+    border: none;
+}
+
+#change-bio-button {
+    height: calc(8 * var(--design-vh));
+    flex-direction: column;
+    padding-top: calc(1 * var(--design-vh));
+    padding-bottom: calc(2 * var(--design-vh));
+    text-align: center;
+    font-size: 20px;
+    color: #3a251a;
+    font-weight: 600;
+    outline: none;
+    border: none;
+}
+
+#bio-input {
     height: calc(8 * var(--design-vh));
     flex-direction: column;
     padding-top: calc(1 * var(--design-vh));

@@ -56,7 +56,7 @@
 
 .hidden-container {
     position: fixed;
-    top: calc(120 * var(--design-vh));
+    top: 120vh;
     left: 25vw;
     width: 75vw;
     height: auto;

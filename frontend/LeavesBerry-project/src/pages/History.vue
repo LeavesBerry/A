@@ -25,7 +25,7 @@ import Logo from '../components/Logo.vue';
 import Sidebar from '../components/Sidebar.vue';
 import ExTextarea from '../components/ExTextarea.vue'
 import api from '../utils/api.js';
-import { disposeReturn, pageMetaConfig, arrowStyle } from '../utils/index.js';
+import { disposeReturn, pageMetaConfig, currentSidebarConfig } from '../utils/index.js';
 import { ROOTPATH } from '../router/index.js';
 
 const historyTypeList = [
@@ -45,7 +45,7 @@ async function getHistory() {
 }
 
 function switchDirContent(sn, type) {
-    switchArrow(sn)
+    currentSidebarConfig.value = sn
 
     switch (type) {
         case "all":
@@ -60,7 +60,7 @@ function switchDirContent(sn, type) {
 }
 
 onMounted(() => {
-    arrowStyle.transform = ""
+    currentSidebarConfig.value = 0
     getHistory()
 })
 

@@ -24,7 +24,7 @@ import Sidebar from '../components/Sidebar.vue';
 import ExTextarea from '../components/ExTextarea.vue';
 import { ref, onMounted, onUnmounted } from 'vue';
 import {
-	switchArrow, classifyGroup, arrowStyle,
+	currentSidebarConfig, classifyGroup,
 	apiRequest, disposeReturn
 } from '../utils/index';
 import Logo from '../components/Logo.vue';
@@ -75,7 +75,7 @@ async function getCmdInfoList() {
 }
 
 function switchDirConfig(sn, type) {
-	switchArrow(sn)
+	currentSidebarConfig.value = sn;
 
 	if (type === "all") {
 		currentConfig.value = navList.value
@@ -86,7 +86,7 @@ function switchDirConfig(sn, type) {
 }
 
 onMounted(async () => {
-	arrowStyle.transform = ""
+	currentSidebarConfig.value = 0
 	await getCmdInfoList()
 })
 

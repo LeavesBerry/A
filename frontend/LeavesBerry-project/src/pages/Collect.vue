@@ -12,11 +12,11 @@
 						font-size: calc(6 * var(--design-vh));
 						padding-bottom: 2%;
 						border-left: 1px solid #3A251A;">✦</button>
-						<button @click.stop.prevent="createQRCode(`${ROOTPATH}${item.url}`)" style="background-image: url('http://localhost:5000/static/resource/images/QR.png');
+						<button @click.stop.prevent="createQRCode(`${ROOTPATH}${item.url}`)" style="background-image: url('/images/QR.png');
 						background-size: calc(4 * var(--design-vh));
 						background-position: calc(1.3 * var(--design-vh)) center;
 						"></button>
-						<button @click.stop.prevent="copyText(item.url)" style="background-image: url('http://localhost:5000/static/resource/images/Link.png');
+						<button @click.stop.prevent="copyText(item.url)" style="background-image: url('/images/Link.png');
 						background-size: calc(6 * var(--design-vh));
 						background-position: calc(0.3 * var(--design-vh)) center;
 						"></button>
@@ -39,7 +39,7 @@ import Sidebar from "../components/Sidebar.vue";
 import api from "../utils/api"
 import {
 	userState, copyText, createQRCode, classifyGroup,
-	switchArrow, arrowStyle, showTips, useGoPage, apiRequest,
+	currentSidebarConfig, showTips, useGoPage, apiRequest,
 	disposeReturn
 } from "../utils/index";
 import { ROOTPATH } from "../router/index.js";
@@ -114,7 +114,7 @@ async function cancelColl(url) {
 }
 
 function switchDirConfig(sn, type) {
-	switchArrow(sn)
+	currentSidebarConfig.value = sn
 
 	if (type === "all") {
 		currentConfig.value = navList.value
@@ -125,7 +125,7 @@ function switchDirConfig(sn, type) {
 }
 
 onMounted(async () => {
-	arrowStyle.transform = ""
+	currentSidebarConfig.value = 0
 	await getAllColl()
 })
 

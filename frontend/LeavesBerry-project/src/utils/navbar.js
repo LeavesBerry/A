@@ -96,7 +96,7 @@ export const navbarModule = {
                 width: du(9),
                 paddingLeft: du(4.5),
                 paddingRight: du(4.5),
-                backgroundImage: 'url("http://localhost:5000/static/resource/images/QR.png"),url("http://localhost:5000/static/resource/images/Link.png")',
+                backgroundImage: 'url("/images/QR.png"),url("/images/Link.png")',
                 backgroundPosition: `${du(1)} center, right ${du(1)} center`,
                 backgroundSize: `${du(3)} ${du(3)}, ${du(3)} ${du(3)}`,
                 backgroundRepeat: 'no-repeat,no-repeat'
@@ -144,7 +144,7 @@ export const navbarModule = {
         }
         const output = handler(...args)
         pageState.cmdInputValue = ""
-        this.showOutput(`运行${cmdName}成功,输出: ${output}`, cmdOutputBox)
+        this.showOutput(`运行${cmdName}成功,输出 | ${output}`, cmdOutputBox)
     }
 
 

@@ -1,4 +1,5 @@
 import { reactive } from "vue";
+import Setting from "../pages/Setting.vue";
 
 // 页面状态
 export const pageState = reactive({
@@ -61,7 +62,12 @@ export const pageMetaConfig = {
     CmdColumn: {
         title: "指令表",
         type: "other",
-        description: '在此处查看各种指令的用法'
+        description: '查看各种指令的用法'
+    },
+    Setting: {
+        title: "设置界面",
+        type: "other",
+        description: "设置你的个人资料"
     }
 }
 

@@ -27,7 +27,7 @@ class UserProfile(Base):
     )
     avatar_url = Column(
         String(100),
-        default="http://localhost:5000/static/avatar/default_avatar.jpg",
+        default="/static/avatar/default_avatar.jpg",
         unique=False,
     )
     bio = Column(String(30), default="你好,世界")

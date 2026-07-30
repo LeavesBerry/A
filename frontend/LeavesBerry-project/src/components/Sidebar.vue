@@ -1,13 +1,16 @@
 <template>
     <div class="sidebar">
-        <span class="dir-active-arrow" :style="arrowStyle">{{ arrow }}</span>
-        <div class="sidebar-config" v-for="item in typeList" :key="item.index" :id="'sidebar-' + item.id"
-            @click="handleItemClick(item.index, item.typeKey)">❖{{ item.label }}❖</div>
+        <div class="sidebar-config" v-for="item in typeList" :key="item.index" 
+            :id="'sidebar-' + item.id" :class="{ activediv: currentSidebarConfig === item.index }"
+            @click="handleItemClick(item.index, item.typeKey)">
+            <span class="sidebar-config-text"
+            :class="{ activespan: currentSidebarConfig === item.index }">❖{{ item.label }}❖</span>
+        </div>
     </div>
 
 </template>
 <script setup>
-import { arrowStyle, switchArrow, configModule } from '../utils/index';
+import { currentSidebarConfig, configModule } from '../utils/index';
 const arrow = "<<<"
 const props = defineProps({
     typeList: {
@@ -19,7 +22,7 @@ const props = defineProps({
 const emit = defineEmits(["changeDir"])
 function handleItemClick(sn, type) {
     if (!configModule.isContentExpanded) {
-        switchArrow(sn)
+        currentSidebarConfig.value = sn;
         emit("changeDir", sn, type)
     }
 
@@ -47,32 +50,31 @@ function handleItemClick(sn, type) {
     width: 23vw;
     height: calc(8 * var(--design-vh, 4.57px));
     background-color: #FFF3D0;
-    color: #3A251A;
-    border-top: 1px solid #3A251A;
-    border-bottom: 1px solid #3A251A;
-    font-size: calc(3.5 * var(--design-vh, 4.57px));
-    font-weight: 500;
-    letter-spacing: 10px;
+    border-top: 1px solid #180f0b;
+    border-bottom: 1px solid #180f0b;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: calc(2 * var(--design-vh, 4.57px));
     margin-left: 1vw;
+    transition: all 0.3s ease;
 }
 
-.dir-active-arrow {
-    position: absolute;
-    right: 15px;
-    top: calc(4.25 * var(--design-vh, 4.57px) - 0.5px);
-    color: #3A251A;
-    height: calc(3.5 * var(--design-vh, 4.57px));
+.sidebar-config-text {
+    color: #180f0b;
     font-size: calc(3.5 * var(--design-vh, 4.57px));
-    text-align: center;
-    line-height: calc(3.5 * var(--design-vh, 4.57px));
-    font-weight: 200;
-    letter-spacing: 5px;
+    font-weight: 500;
+    letter-spacing: 10px;
     transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
+}
+
+.activespan{
+    color: #5A191B;
+    transform: scale(1.15);
+}
+
+.activediv {
+    padding-left: 1vw;
+    border-color: #5A191B;
 }
 </style>

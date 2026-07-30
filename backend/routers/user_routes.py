@@ -49,7 +49,7 @@ def get_user_info(
             "user_id": user.user_id,
             "user_name": user.user_name,
             "user_email": user.user_email,
-            "avatar_url": SERVER_PATH + user_profile.avatar_url,
+            "avatar_url":  f'{user_profile.avatar_url}' if SERVER_PATH in user_profile.avatar_url else f'{SERVER_PATH}{user_profile.avatar_url}',
             "bio": user_profile.bio,
             "level": user_profile.level_xp // 1000,
             "xp": user_profile.level_xp % 1000,
@@ -72,13 +72,19 @@ def change_bio(
         .filter(UserProfile.user_id == user_id)
         .first()
     )
+
+    bio = data.bio
+
     if not user_profile:
         raise APIError("用户资料不存在")
 
-    if not data.bio or not type(data.bio) == str:
+    if not bio or not type(bio) == str:
         raise APIError("简介格式错误")
 
-    user_profile.bio = data.bio
+    if len(bio) > 20:
+        bio = bio[0:21]
+
+    user_profile.bio = bio
     db.commit()
     cache.delete(user_info_cache_key(user_id))
 
@@ -122,5 +128,5 @@ async def change_user_avatar(
 
     return JSONResponse({
         "msg": "修改头像成功",
-        "avatar_url": SERVER_PATH + avatar_url,
+        "avatar_url": f'{avatar_url}' if SERVER_PATH in avatar_url else f'{SERVER_PATH}{avatar_url}',
     })

@@ -27,7 +27,7 @@
 			}">
 				<div class="content-container" :style="{
 					transform: configModule.isContentExpanded ?
-						`translateY(${du(-112)})` : 'none'
+						`translateY(calc(-120vh + ${du(-8)}))` : 'none'
 				}">
 					<button class="hide-content-button none-select" @click="configModule.hideContent()">×</button>
 					<p class="content-title">{{ configModule.contentTitle }}</p>
@@ -43,7 +43,7 @@
 <script setup>
 import api from "../utils/api"
 import {
-	classifyGroup, switchArrow, arrowStyle, configModule, du
+	classifyGroup, currentSidebarConfig, configModule, du
 } from "../utils/index";
 import { ref, onMounted, onUnmounted } from "vue"
 import Sidebar from "../components/Sidebar.vue";
@@ -73,7 +73,7 @@ async function getAllAnnoInfo() {
 }
 
 function switchDirConfig(sn, type) {
-	switchArrow(sn)
+	currentSidebarConfig.value = sn
 
 	if (type === "all") {
 		currentConfig.value = navList.value
@@ -84,7 +84,7 @@ function switchDirConfig(sn, type) {
 }
 
 onMounted(async () => {
-	arrowStyle.transform = ""
+	currentSidebarConfig.value = 0
 	await getAllAnnoInfo()
 })
 

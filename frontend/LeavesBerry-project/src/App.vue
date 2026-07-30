@@ -122,7 +122,8 @@
         </button>
 
         <button class="menu-function-button" @click="userState.isLogined ?
-          loginModule.logout() : loginModule.openLoginWindow()" style="border-radius:0 0 3vh 0">
+          loginModule.logout() : (loginModule.openLoginWindow(), loginModule.memberEnter())" 
+          style="border-radius:0 0 3vh 0">
           <svg class="menu-function-icon" viewBox="0 0 32 32" aria-hidden="true">
             <path d="M27 16H7M14 9l-7 7 7 7"></path>
           </svg>
@@ -162,7 +163,8 @@
       <div id="command-menu" v-if="!pageState.isCmdClosed">
         <p id="command-title">指令面板</p>
         <button id="close-command" @click="navbarModule.toggleCmdUI">×</button>
-        <input id="cmd-input" v-model="pageState.cmdInputValue" placeholder="请输入指令">
+        <input id="cmd-input" v-model="pageState.cmdInputValue" @keyup.enter="navbarModule.executeCmd(cmdOutputBox)"
+        placeholder="请输入指令 | 按键盘<Enter>或右侧<RUN>执行">
         <button id="execute-cmd-button" @click="navbarModule.executeCmd(cmdOutputBox)">RUN</button>
         <div id="cmd-output-box" ref="cmdOutputBox">
           <p id="cmd-output">{{ pageState.cmdOutputText }}</p>
