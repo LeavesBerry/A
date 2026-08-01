@@ -65,13 +65,21 @@ async function getCmdInfoList() {
 		}
 	}
 
-	const res = await apiRequest.getTextResourse("cmdInfoList")
-	if (isUnmounted) return
+	try {
+		const res = await fetch('/texts/proto.json')
+		const data = await res.json()
+		applyCmdList(data)		
+	} catch {
+		const res = await apiRequest.getTextResourse("cmdInfoList")
+		if (isUnmounted) return
 
-	if (!disposeReturn(res)) {
-		applyCmdList(res)
-		localStorage.setItem("cmd_info_cache", JSON.stringify(navList.value))
+		if (!disposeReturn(res)) {
+			applyCmdList(res)
+			localStorage.setItem("cmd_info_cache", JSON.stringify(navList.value))
+		}
 	}
+
+	
 }
 
 function switchDirConfig(sn, type) {

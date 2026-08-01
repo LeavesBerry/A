@@ -5,11 +5,13 @@
             <div class="item-box" v-if="currentContent == 'bio'">
                 <input class="item" id="bio-input" v-model="bioInputValue" placeholder="请输入简介(20字以内)"
                 maxlength="20">
-                <button class="item" id="change-bio-button" @click="changeBio">更改简介</button>
-                <p>•如果你想不出一个满意的简介,不妨试试</p>
+                <button class="item" id="change-bio-button" @click="bioModule.changeBio">更改简介</button>
+                <p class="refresh-tip">•如果你想不出一个满意的简介,不妨试试</p>
+                <div style="width: 70vw;position:absolute;top: 60%;border-top: 3px solid #3a251a;"></div>
                 <div id="gener-bio-button-box">
-                    <button class="gener-bio-button" id="poem-gener-bio-button"></button>
-                    <button class="gener-bio-button" id="game-gener-bio-button"></button>
+                    <button class="gener-bio-button item" id="poem-gener-bio-button"
+                    @click="bioModule.generBioFromPoem">从诗歌中选取</button>
+                    <button class="gener-bio-button item" id="game-gener-bio-button"></button>
                 </div>
             </div>
             <div class="item-box" v-if="currentContent == 'avatar'">
@@ -67,8 +69,9 @@ const setTypeList = [
 ]
 const currentContent = ref('')
 
-const bioInputValue = ref(userState.bio)
-
+// ------------------------------
+// 头像处理
+// ------------------------------
 const avatarState = reactive({
     avatarFile: null,
     originImgUrl: '',
@@ -276,7 +279,10 @@ const avatarModule = {
 
         const res = await apiRequest.changeAvatar(blob)
         if (!disposeReturn(res)) {
-            updatePersistFields(userState, { avatarUrl: res.avatar_url }, persistConfig)
+            const updateRes = updatePersistFields(userState, { avatarUrl: res.avatar_url }, persistConfig)
+            if (updateRes.skipped) {
+                console.warn(updateRes.skipped)
+            }
         }
     },
 
@@ -289,18 +295,46 @@ const avatarModule = {
     }
 }
 
-async function changeBio() {
-    if (!userState.isLogined || !bioInputValue.value) return
-    if (bioInputValue.value.length > 20) {
-        showTips("简介字数需在20字以内")
-        return
+// ------------------------------
+// 简介处理
+// ------------------------------
+const bioInputValue = ref(userState.bio)
+
+const bioModule = {
+    async changeBio() {
+        if (!userState.isLogined || !bioInputValue.value) return
+        if (bioInputValue.value.length > 20) {
+            showTips("简介字数需在20字以内")
+            return
+        }
+
+        const res = await apiRequest.changeBio(bioInputValue.value)
+        if (!disposeReturn(res)) {
+            const updateRes = updatePersistFields(userState, { bio: bioInputValue.value }, persistConfig)
+            if (updateRes.skipped) {
+                console.warn(updateRes.skipped)
+            }
+        }
+    },
+
+    async generBioFromPoem() {
+        const poetryIndex = Math.floor(Math.random() * 5)
+        const cache = localStorage.getItem(`poetry_cache_${poetryIndex}`)
+        let poemList = []
+        if (cache) {
+            poemList = JSON.parse(cache)
+        }
+        else {
+            const poetry = await fetch(`/texts/poetry/poetry_${poetryIndex}.json`)
+            poemList = await poetry.json()
+            localStorage.setItem(`poetry_cache_${poetryIndex}`, JSON.stringify(poemList))
+        }
+        const index = Number(Math.floor(Math.random() * poemList.length))
+        bioInputValue.value = poemList[index]
     }
 
-    const res = await apiRequest.changeBio(bioInputValue.value)
-    if (!disposeReturn(res)) {
-        updatePersistFields(userState, { bio: bioInputValue.value }, persistConfig)
-    }
 }
+
 
 function switchDirContent(sn, type) {
     currentSidebarConfig.value = sn
@@ -451,7 +485,7 @@ onUnmounted(() => {
     font-weight: 600;
 }
 
-#change-avatar-button {
+.item {
     height: calc(8 * var(--design-vh));
     flex-direction: column;
     padding-top: calc(1 * var(--design-vh));
@@ -464,29 +498,4 @@ onUnmounted(() => {
     border: none;
 }
 
-#change-bio-button {
-    height: calc(8 * var(--design-vh));
-    flex-direction: column;
-    padding-top: calc(1 * var(--design-vh));
-    padding-bottom: calc(2 * var(--design-vh));
-    text-align: center;
-    font-size: 20px;
-    color: #3a251a;
-    font-weight: 600;
-    outline: none;
-    border: none;
-}
-
-#bio-input {
-    height: calc(8 * var(--design-vh));
-    flex-direction: column;
-    padding-top: calc(1 * var(--design-vh));
-    padding-bottom: calc(2 * var(--design-vh));
-    text-align: center;
-    font-size: 20px;
-    color: #3a251a;
-    font-weight: 600;
-    outline: none;
-    border: none;
-}
 </style>

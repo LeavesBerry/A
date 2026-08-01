@@ -1,7 +1,6 @@
 import time
 
-from sqlalchemy import Column, Integer, String, Text, Float, ForeignKey, JSON
-
+from sqlalchemy import Column, Integer, String, Text, Float, ForeignKey, JSON, Date
 from database import Base
 
 
@@ -32,6 +31,21 @@ class UserProfile(Base):
     )
     bio = Column(String(30), default="你好,世界")
     level_xp = Column(Integer, default=1000, nullable=False)
+
+class UserUpdateLimit(Base):
+    __tablename__ = "user_update_limit"
+    
+    user_id = Column(
+        Integer,
+        ForeignKey("user_base.user_id", ondelete="CASCADE"),
+        primary_key=True,
+        nullable=False,
+        unique=True,
+        index=True,
+    )
+    update_date = Column(Date, nullable=False)
+    updated_fields = Column(JSON, default=[])
+
 
 
 class Code(Base):

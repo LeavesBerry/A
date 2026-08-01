@@ -18,7 +18,6 @@ from routers import (
     coll_routes,
     feedback_routes,
     history_routes,
-    system,
     text_routes,
     user_routes,
 )
@@ -53,7 +52,6 @@ app.mount("/static", StaticFiles(directory=PUBLIC_DIR), name="static")
 
 register_exception_handlers(app)
 
-app.include_router(system.router)
 app.include_router(auth_routes.router)
 app.include_router(user_routes.router)
 app.include_router(coll_routes.router)

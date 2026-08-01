@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, File, Request, UploadFile
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
+from datetime import date
 
 from auth import get_current_user
 from cache import cache
@@ -8,10 +9,10 @@ from config import CACHE_TTL_MEDIUM, MAX_UPLOADIMG_SIZE, SERVER_PATH
 from database import get_db
 from exceptions import APIError
 from limiter_config import limiter
-from models import UserBase, UserProfile
+from models import UserBase, UserProfile, UserUpdateLimit
 from schemas import BioRequest
 from services.user_service import change_avatar, normalize_avatar
-
+from update_limit import check_user_daily_update, update_user_record
 
 router = APIRouter()
 
@@ -60,13 +61,22 @@ def get_user_info(
 
 
 @router.post("/api/changeBio")
-@limiter.limit("2/24hours")
+@limiter.limit("1/10seconds")
 def change_bio(
     request: Request,
     data: BioRequest,
     user_id: int = Depends(get_current_user("user_id")),
     db: Session = Depends(get_db),
 ):
+    
+    today = date.today()
+    limit_field = "bio"
+
+    has_updated, daily_record = check_user_daily_update(db, user_id, limit_field, today)
+
+    if has_updated:
+        raise APIError("今日已更新过简介")
+
     user_profile = (
         db.query(UserProfile)
         .filter(UserProfile.user_id == user_id)
@@ -83,7 +93,10 @@ def change_bio(
 
     if len(bio) > 20:
         bio = bio[0:21]
-
+    
+    if not update_user_record(db, user_id, daily_record, limit_field, today):
+        raise APIError("今日已更新过简介")
+    
     user_profile.bio = bio
     db.commit()
     cache.delete(user_info_cache_key(user_id))
@@ -92,13 +105,22 @@ def change_bio(
 
 
 @router.post("/api/changeAvatar")
-@limiter.limit("2/24hours")
+@limiter.limit("1/10seconds")
 async def change_user_avatar(
     request: Request,
     file: UploadFile = File(...),
     user_id: int = Depends(get_current_user("user_id")),
     db: Session = Depends(get_db),
 ):
+
+    today = date.today()
+    limit_field = "avatar"
+
+    has_updated, daily_record = check_user_daily_update(db, user_id, limit_field, today)
+
+    if has_updated:
+        raise APIError("今日已更新过头像")
+    
     if file.content_type not in ALLOWED_AVATAR_CONTENT_TYPES:
         raise APIError("不支持该文件类型")
 
@@ -117,6 +139,9 @@ async def change_user_avatar(
     # 重新编码后再次限制文件大小。
     if len(normalized_bytes) > MAX_UPLOADIMG_SIZE:
         raise APIError("处理后的图片文件过大")
+
+    if not update_user_record(db, user_id, daily_record, limit_field, today):
+            raise APIError("今日已更新过头像")
 
     avatar_url, success = change_avatar(
         user_id=user_id,

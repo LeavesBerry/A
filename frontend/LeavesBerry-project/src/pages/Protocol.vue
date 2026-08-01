@@ -50,16 +50,24 @@ async function getProto() {
         }
     }
 
-    const res = await apiRequest.getTextResourse("proto")
-    if (isUnmounted) return
+    try {
+        const res = await fetch('/texts/proto.json')
+        const data = await res.json() 
+        applyProto(data)
+    } catch {
+        const res = await apiRequest.getTextResourse("proto")
+        if (isUnmounted) return
 
-    if (!disposeReturn(res)) {
-        applyProto(res)
-        localStorage.setItem("proto_cache", JSON.stringify({
-            sum: protoSumList.value,
-            detail: protoDetail.value
-        }))
+        if (!disposeReturn(res)) {
+            applyProto(res)
+            localStorage.setItem("proto_cache", JSON.stringify({
+                sum: protoSumList.value,
+                detail: protoDetail.value
+            }))
+        }    
     }
+
+    
 }
 
 onMounted(async () => {

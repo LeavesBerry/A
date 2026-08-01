@@ -3,19 +3,25 @@
         <div class="slide-page">
             <div class="item-box">
                 <div class="item" id="history" v-for="item in currentContent">
+                    
                     <p class="item-title" id="history-title">
                         {{ pageMetaConfig[item.replace(`/`, '')]?.title ?? '未知界面' }}</p>
-                    <p id="history-url">{{ ROOTPATH + item }}</p>
+                    <p id="history-url" @click="goPage(item)">{{ ROOTPATH + item }}</p>
                     <p id="history-des">
-                        {{ pageMetaConfig[item.replace(`/`, '')]?.description ?? '' }}</p>
+                        |{{ pageMetaConfig[item.replace(`/`, '')]?.description ?? '没有在本站详细注册的界面' }}</p>
+                     
                 </div>
+                <p class="refresh-tip none-select" v-if="currentContent.length !== 0">历史记录的记录有<br>
+                    大约1分钟的延迟( •̀ ω •́ )✧</p>
+                <p class="no-item-tip none-select" v-if="currentContent.length == 0">暂无该类历史记录
+                    <br>有可能为延迟导致( •̀ ω •́ )✧</p>   
             </div>
 
         </div>
     </div>
     <teleport class="fixed-page" to="#app #app-root">
         <Logo></Logo>
-        <Sidebar type-list="historyTypeList" @change-dir=""></Sidebar>
+        <Sidebar :type-list="historyTypeList" @change-dir="switchDirContent"></Sidebar>
     </teleport>
 </template>
 
@@ -25,8 +31,10 @@ import Logo from '../components/Logo.vue';
 import Sidebar from '../components/Sidebar.vue';
 import ExTextarea from '../components/ExTextarea.vue'
 import api from '../utils/api.js';
-import { disposeReturn, pageMetaConfig, currentSidebarConfig } from '../utils/index.js';
+import { disposeReturn, pageMetaConfig, currentSidebarConfig, useGoPage } from '../utils/index.js';
 import { ROOTPATH } from '../router/index.js';
+
+const {goPage} = useGoPage()
 
 const historyTypeList = [
     { index: 0, typeKey: "all", label: "所有", id: "all" },
@@ -41,6 +49,7 @@ async function getHistory() {
     const res = await api.post('/api/getHistory')
     if (!disposeReturn(res.data)) {
         historyList.value = res.data.history.reverse()
+        currentContent.value = historyList.value
     }
 }
 
@@ -68,6 +77,32 @@ onMounted(() => {
 <style scoped>
 #history-box {
     margin-top: calc(4 * var(--design-vh, 4.57px));
+}
+.item {
+    height: calc(20 * var(--design-vh));
+}
+
+#history-url {
+    position: absolute;
+	right: 10%;
+	top: 15%;
+	height: 10%;
+	width: auto;
+	display: flex;
+	z-index: 3;
+    font-size: calc(4 * var(--design-vh));
+    color: #5A191B;
+}
+
+#history-des {
+    width: fit-content;
+    height: auto;
+    font-size: calc(4 * var(--design-vh));
+    color: #3A251A;
+    font-weight: 400;
+    position: absolute;
+    top: 55%;
+    left: 7%;
 }
 </style>
 <style>
