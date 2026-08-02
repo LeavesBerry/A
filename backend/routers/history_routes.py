@@ -31,7 +31,7 @@ def submit_visit_list(request: Request,
         db.add(history)
     else:
         old_visit_list = history.visit_list or []
-        history.visit_list = [*old_visit_list, *data.visit_list]
+        history.visit_list = [*old_visit_list, *data.visit_list][-120]
 
     db.commit()
     cache.delete(history_cache_key(user_id))

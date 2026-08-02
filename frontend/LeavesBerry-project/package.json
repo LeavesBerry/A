@@ -11,7 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@vueuse/head": "^2.0.0",
+    "@vueuse/head": "^0.9.8",
     "axios": "^1.16.0",
     "html2canvas": "^1.4.1",
     "qrcodejs2-fix": "^0.0.1",

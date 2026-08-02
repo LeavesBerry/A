@@ -1,7 +1,10 @@
+import time
+
 from fastapi import APIRouter, Depends, File, Request, UploadFile
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from datetime import date
+from pydantic import EmailStr
 
 from auth import get_current_user
 from cache import cache
@@ -9,10 +12,14 @@ from config import CACHE_TTL_MEDIUM, MAX_UPLOADIMG_SIZE, SERVER_PATH
 from database import get_db
 from exceptions import APIError
 from limiter_config import limiter
-from models import UserBase, UserProfile, UserUpdateLimit
-from schemas import BioRequest
+from models import UserBase, UserProfile, LimLogin
+from schemas import BioRequest, UserNameRequest, LoginRequest
 from services.user_service import change_avatar, normalize_avatar
 from update_limit import check_user_daily_update, update_user_record
+from services.security import (
+    verify_password,
+)
+
 
 router = APIRouter()
 
@@ -155,3 +162,110 @@ async def change_user_avatar(
         "msg": "修改头像成功",
         "avatar_url": f'{avatar_url}' if SERVER_PATH in avatar_url else f'{SERVER_PATH}{avatar_url}',
     })
+
+@router.post("/api/changeName")
+@limiter.limit("1/10seconds")
+def change_name(
+    request: Request,
+    data: UserNameRequest,
+    user_id: int = Depends(get_current_user("user_id")),
+    db: Session = Depends(get_db),
+):
+    
+    today = date.today()
+    limit_field = "user_name"
+
+    has_updated, daily_record = check_user_daily_update(db, user_id, limit_field, today)
+
+    if has_updated:
+        raise APIError("今日已更新过名称")
+
+    user_base = (
+        db.query(UserBase)
+        .filter(UserBase.user_id == user_id)
+        .first()
+    )
+
+    name = data.user_name
+
+    if not user_base:
+        raise APIError("用户资料不存在")
+
+    if not name or not type(name) == str:
+        raise APIError("名称格式错误")
+
+    if len(name) > 8:
+        name = name[0:9]
+    
+    if not update_user_record(db, user_id, daily_record, limit_field, today):
+        raise APIError("今日已更新过简介")
+    
+    user_base.user_name = name
+    db.commit()
+    cache.delete(user_info_cache_key(user_id))
+
+    return JSONResponse({"msg": "成功修改个人名称"})
+
+@router.post("/api/changeEmail")
+@limiter.limit("1/10seconds")
+def change_email(
+    request: Request,
+    data: LoginRequest,
+    user_id: int = Depends(get_current_user("user_id")),
+    db: Session = Depends(get_db),
+):
+    
+    today = date.today()
+    limit_field = "user_email"
+
+    has_updated, daily_record = check_user_daily_update(db, user_id, limit_field, today)
+
+    if has_updated:
+        raise APIError("今日已更新过邮箱")
+
+    user_base = (
+        db.query(UserBase)
+        .filter(UserBase.user_id == user_id)
+        .first()
+    )
+
+    email = data.user_email
+
+    if not user_base:
+        raise APIError("用户资料不存在")
+
+    if not email or not type(email) == str or len(email) > 40:
+        raise APIError("邮箱格式错误")
+
+    ip = request.client.host
+    lim = db.query(LimLogin).filter(LimLogin.user_ip == ip).first()
+    if not lim:
+        lim = LimLogin(user_ip=ip)
+        db.add(lim)
+        db.commit()
+
+    now = time.time()
+    if now < lim.lim_start_time + lim.lim_time:
+        raise APIError("尝试过于频繁，请稍后再试")
+
+    if not verify_password(data.password, user_base.password_hash):
+        lim.try_times += 1
+        if lim.try_times >= 5:
+            lim.lim_start_time = now
+            lim.lim_time = 300
+            lim.try_times = 0
+        db.commit()
+        raise APIError("密码错误")
+
+    lim.try_times = 0
+    db.commit()
+
+    
+    if not update_user_record(db, user_id, daily_record, limit_field, today):
+        raise APIError("今日已更新过邮箱")
+    
+    user_base.user_email = email
+    db.commit()
+    cache.delete(user_info_cache_key(user_id))
+
+    return JSONResponse({"msg": "成功修改个人邮箱"})

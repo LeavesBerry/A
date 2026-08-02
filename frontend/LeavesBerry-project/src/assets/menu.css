@@ -99,7 +99,7 @@
     width: calc(12 * var(--design-vh, 4.57px));
     height: calc(12 * var(--design-vh, 4.57px));
     border-radius: calc(12 * var(--design-vh, 4.57px));
-    border: #73B436 solid 1px;
+    border: #3A251A solid 2px;
 }
 
 #name {
@@ -119,7 +119,9 @@
     width: calc(36 * var(--design-vh, 4.57px));
     height: calc(7 * var(--design-vh, 4.57px));
     border: #3A251A solid 1px;
+    padding-top: calc(0.8 * var(--design-vh, 4.57px));
     font-size: calc(2.3 * var(--design-vh, 4.57px));
+    line-height: calc(3.2 * var(--design-vh, 4.57px));
     color: #884C3A;
     text-align: left;
     vertical-align: top;

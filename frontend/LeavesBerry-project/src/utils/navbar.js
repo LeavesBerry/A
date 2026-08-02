@@ -16,19 +16,51 @@ export const navbarModule = {
     // ------------------------------
     // 截图（懒加载）
     // ------------------------------
-    async createScreshot() {
-        //import html2canvas from 'html2canvas';
-        const canvas = await html2canvas(document, {
-            scale: 0.4,
-            useCORS: true,
-            allowTaint: true,
-            backgroundColor: '#ffffff',
-            logging: false,
-        });
-        pageState.srcShot = canvas.toDataURL('image/jpeg', 1);
-        pageState.isScrShot = true;
+    async cleanScreenShot() {
+        URL.revokeObjectURL(pageState.srcShot)
+        pageState.isSrcShot = false;
+        pageState.srcShot = '';
+        pageState.showFilter = false;
+        window.gc?.();
     },
 
+    async createScreshot() {
+        const targetDom = document.documentElement;
+        if (!targetDom) {
+            alert("界面异常,截图失败")
+            return
+        }
+        let canvas = null
+        try {
+            const html2canvas = (await import ('html2canvas')).default;
+            canvas = await html2canvas(targetDom, {
+                scale: window.devicePixelRatio,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: '#ffffff',
+                logging: false,
+                width: document.documentElement.clientWidth,
+                height: document.documentElement.clientHeight,
+                x: window.scrollX,
+                y: window.scrollY
+            });
+            const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.75));
+            const imgUrl =URL.createObjectURL(blob);
+            pageState.srcShot = imgUrl;
+            pageState.isSrcShot = true;
+            pageState.showFilter = true
+        } catch(e) {
+            this.cleanScreenShot()
+            console.log(e)
+        } finally {
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0,0,canvas.width, canvas.height);
+                canvas.width = canvas.height = 0
+                canvas = null;
+            }
+        }
+    },
 
     // ------------------------------
     // 收藏功能

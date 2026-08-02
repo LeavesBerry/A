@@ -29,6 +29,9 @@ class LoginRequest(BaseModel):
 class BioRequest(BaseModel):
     bio: str
 
+class UserNameRequest(BaseModel):
+    user_name: str
+
 
 class CollRequest(BaseModel):
     url: str
@@ -53,3 +56,5 @@ class TextResRequest(BaseModel):
 
 class VisitListRequest(BaseModel):
     visit_list: list[str]
+
+

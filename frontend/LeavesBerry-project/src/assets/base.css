@@ -72,11 +72,11 @@ label {
 	position: fixed;
 	top: -10dvh;
 	left: -10vw;
-	width: 100vw;
-	height: 100dvh;
-	transform: scale(2);
+	width: 200vw;
+	height: 200dvh;
 	background: rgba(0, 0, 0, 0.25);
-	filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+	backdrop-filter: blur(8px);
 	z-index: 200;
 }
 

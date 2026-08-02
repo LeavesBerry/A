@@ -1,17 +1,22 @@
 <template>
     <div class="page" id="setting-page">
         <div class="slide-page">
-            <div class="item-box" v-if="currentContent == 'name'"></div>
+            <div class="item-box" v-if="currentContent == 'name'">
+                <input class="item" id="name-input" v-model="nameInputValue" placeholder="请输入名称 | 8字以内"
+                maxlength="8">
+                <button class="item" id="change-name-button" @click="changeName">更改名称</button>
+            </div>
             <div class="item-box" v-if="currentContent == 'bio'">
-                <input class="item" id="bio-input" v-model="bioInputValue" placeholder="请输入简介(20字以内)"
-                maxlength="20">
+                <input class="item" id="bio-input" v-model="bioInputValue" placeholder="请输入简介 | 26字以内"
+                maxlength="26">
                 <button class="item" id="change-bio-button" @click="bioModule.changeBio">更改简介</button>
                 <p class="refresh-tip">•如果你想不出一个满意的简介,不妨试试</p>
                 <div style="width: 70vw;position:absolute;top: 60%;border-top: 3px solid #3a251a;"></div>
                 <div id="gener-bio-button-box">
                     <button class="gener-bio-button item" id="poem-gener-bio-button"
-                    @click="bioModule.generBioFromPoem">从诗歌中选取</button>
-                    <button class="gener-bio-button item" id="game-gener-bio-button"></button>
+                    @click="bioModule.generBio('poetry')">从诗歌中选取</button>
+                    <button class="gener-bio-button item" id="game-gener-bio-button"
+                    @click="bioModule.generBio('lines')">从台词中选取</button>
                 </div>
             </div>
             <div class="item-box" v-if="currentContent == 'avatar'">
@@ -41,7 +46,13 @@
                 </div>
 
             </div>
-            <div class="item-box" v-if="currentContent == 'email'"></div>
+            <div class="item-box" v-if="currentContent == 'email'">
+                <input class="item" id="email-input" v-model="emailInputValue" placeholder="请输入邮箱"
+                maxlength="40">
+                <input class="item" id="password-input" v-model="passwordInputValue" placeholder="请输入密码"
+                maxlength="40">
+                <button class="item" id="change-email-button" @click="changeEmail">更改邮箱</button>
+            </div>
             <div class="item-box" v-if="currentContent == 'logout'"></div>
         </div>
         <teleport class="fixed-page" to="#app #app-root">
@@ -303,37 +314,92 @@ const bioInputValue = ref(userState.bio)
 const bioModule = {
     async changeBio() {
         if (!userState.isLogined || !bioInputValue.value) return
-        if (bioInputValue.value.length > 20) {
-            showTips("简介字数需在20字以内")
+        if (bioInputValue.value.length > 26) {
+            showTips("简介字数需在26字以内")
             return
         }
 
         const res = await apiRequest.changeBio(bioInputValue.value)
         if (!disposeReturn(res)) {
             const updateRes = updatePersistFields(userState, { bio: bioInputValue.value }, persistConfig)
-            if (updateRes.skipped) {
+            if (updateRes.skipped.length > 0) {
                 console.warn(updateRes.skipped)
             }
         }
     },
 
-    async generBioFromPoem() {
-        const poetryIndex = Math.floor(Math.random() * 5)
-        const cache = localStorage.getItem(`poetry_cache_${poetryIndex}`)
-        let poemList = []
+    async generBio(type) {
+        let selectedJsonIndex = null
+        switch (type) {
+            case "poetry":
+                selectedJsonIndex = Math.floor(Math.random() * 5)
+                break;
+            case "lines":
+                selectedJsonIndex = Math.floor(Math.random() * 2)    
+                break;
+        }
+
+        const cache = localStorage.getItem(`${type}_cache_${selectedJsonIndex}`)
+        let bioList = []
         if (cache) {
-            poemList = JSON.parse(cache)
+            bioList = JSON.parse(cache)
         }
         else {
-            const poetry = await fetch(`/texts/poetry/poetry_${poetryIndex}.json`)
-            poemList = await poetry.json()
-            localStorage.setItem(`poetry_cache_${poetryIndex}`, JSON.stringify(poemList))
+            const bios = await fetch(`/texts/${type}/${type}_${selectedJsonIndex}.json`)
+            bioList = await bios.json()
+            localStorage.setItem(`${type}_cache_${selectedJsonIndex}`, JSON.stringify(bioList))
         }
-        const index = Number(Math.floor(Math.random() * poemList.length))
-        bioInputValue.value = poemList[index]
-    }
-
+        const index = Number(Math.floor(Math.random() * bioList.length))
+        bioInputValue.value = bioList[index]
+    },
 }
+
+// ------------------------------
+// 名称处理
+// ------------------------------
+const nameInputValue = ref(userState.userName)
+async function changeName() {
+    if (!userState.isLogined || !nameInputValue.value) return
+        if (nameInputValue.value.length > 8) {
+            showTips("名称字数需在8字以内")
+            return
+        }
+
+        const res = await apiRequest.changeName(nameInputValue.value)
+        if (!disposeReturn(res)) {
+            const updateRes = updatePersistFields(userState, { userName: nameInputValue.value }, persistConfig)
+            if (updateRes.skipped.length > 0) {
+                console.warn(updateRes.skipped)
+            }
+        }
+}
+
+// ------------------------------
+// 邮箱处理
+// ------------------------------
+const emailInputValue = ref(userState.userEmail)
+const passwordInputValue = ref(null)
+async function changeEmail() {
+    if (!userState.isLogined || !emailInputValue.value) return
+        const reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        const match = emailInputValue.value.trim().match(reg)
+        if (emailInputValue.value.length > 40 || !match) {
+            showTips("邮箱格式错误")
+            return
+        }
+        if (passwordInputValue.value.length > 40) {
+            showTips("密码格式错误")
+            return
+        }
+        const res = await apiRequest.changeEmail(emailInputValue.value, passwordInputValue.value)
+        if (!disposeReturn(res)) {
+            const updateRes = updatePersistFields(userState, { userEmail: emailInputValue.value }, persistConfig)
+            if (updateRes.skipped.length > 0) {
+                console.warn(updateRes.skipped)
+            }
+        }
+}
+
 
 
 function switchDirContent(sn, type) {
@@ -463,8 +529,6 @@ onUnmounted(() => {
 #avatar-input {
     height: calc(8 * var(--design-vh));
     flex-direction: column;
-    padding-top: calc(1 * var(--design-vh));
-    padding-bottom: calc(2 * var(--design-vh));
     text-align: center;
 }
 
@@ -488,14 +552,14 @@ onUnmounted(() => {
 .item {
     height: calc(8 * var(--design-vh));
     flex-direction: column;
-    padding-top: calc(1 * var(--design-vh));
-    padding-bottom: calc(2 * var(--design-vh));
+    padding-top: calc(0.4 * var(--design-vh));
     text-align: center;
     font-size: 20px;
     color: #3a251a;
     font-weight: 600;
     outline: none;
     border: none;
+    line-height: calc(8 * var(--design-vh));
 }
 
 </style>

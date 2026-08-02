@@ -74,6 +74,21 @@ export const apiRequest = {
         formData.append("file", blob, 'avatar_img.jpg')
         const res = await api.post('/api/changeAvatar', formData);
         return res.data
+    },
+
+    async changeName(userName) {
+        const res = await api.post('/api/changeName', {
+            user_name: userName
+        });
+        return res.data
+    },
+
+    async changeEmail(userEmail, password) {
+        const res = await api.post('api/changeEmail', {
+            user_email: userEmail,
+            password: password
+        });
+        return res.data
     }
 }
 

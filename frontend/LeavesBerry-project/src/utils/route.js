@@ -55,7 +55,9 @@ export function routeListener() {
 export function useGoPage() {
 
     function goPage(url) {
-        visitList.push(url)
+        if (url !== visitList[-1]) {
+            visitList.push(url)
+        }
         const reg = /^(.*)\/([^\/]+)\/config_index:(\d+)$/;
         const matchResult = url.match(reg)
         if (!matchResult) {

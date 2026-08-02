@@ -5,6 +5,11 @@
 
     <div ref="qrBox" style="display: none;"></div>
 
+    <div id="screen-shot-window" v-if="pageState.isSrcShot">
+      <img id="screen-shot" :src="pageState.srcShot">
+      <button id="close-screen-shot-window-button" @click="navbarModule.cleanScreenShot">×</button>
+    </div>
+
     <div id="menu-box" :class="pageState.isMenuClosed ? 'parent-prevent' : ''" @click="menuModule.toggleMenu"
       :style="pageState.menuBox">
 
@@ -146,8 +151,8 @@
 
       <div id="navbar-fuction-button-box">
         <!-------------截图-------------->
-        <button class="navbar-function-button" id="scrshot-button" @click="navbarModule.handleScreenshot">✦</button>
-        <img id="screen-shot" v-if="pageState.isScrShot" :src="pageState.scrShot">
+        <button class="navbar-function-button" id="scrshot-button" 
+        @click="navbarModule.createScreshot">◪</button>
         <!-------------收藏-------------->
         <button class="navbar-function-button" id="collect-button"
           :style="{ color: pageState.isCollected ? '#73B436' : 'rgb(90,25,27)' }"
@@ -171,8 +176,6 @@
         </div>
       </div>
     </div>
-
-
 
 
     <div id="login-window" :style="loginModule.window">
@@ -200,8 +203,8 @@
         <div id="info-input" :style="loginModule.infoInput">
           <button id="rechoose" @click.stop="loginModule.rechoose">返回</button>
           <input id="input-email" v-model="loginModule.inputEmail" placeholder="邮箱"></input>
-          <input id="input-code" v-model="loginModule.inputCode" placeholder="验证码--仅注册须填"></input>
-          <input id="input-name" v-model="loginModule.inputName" placeholder="名称--仅注册须填"></input>
+          <input id="input-code" v-model="loginModule.inputCode" placeholder="验证码 | 仅注册须填"></input>
+          <input id="input-name" v-model="loginModule.inputName" placeholder="名称 | 仅注册须填"></input>
           <input id="input-password" v-model="loginModule.inputPw" placeholder="密码"></input>
           <button id="register" @click="loginModule.register">注册</button>
           <button id="login" @click="loginModule.login">登录</button>
