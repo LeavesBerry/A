@@ -10,6 +10,8 @@ from models import FeedBack
 from schemas import FeedBackRequest
 from services.email_service import send_email
 from limiter_config import limiter
+from backend.request_limit import check_user_request, update_user_record
+from exceptions import APIError
 
 router = APIRouter()
 
@@ -19,21 +21,16 @@ async def submit_feedback(request: Request,
         data: FeedBackRequest, 
         db: Session = Depends(get_db),
         user_id: int = Depends(get_current_user("user_id"))):
-    user_email = data.user_email
-    now = time.time()
-    user_feedback_info = db.query(FeedBack).filter(FeedBack.user_email == user_email).first()
-    if not user_feedback_info:
-        new_feedback_info = FeedBack(user_email=user_email, last_submit_time=now)
-        db.add(new_feedback_info)
-        send_email(user_email= user_email, text_content = data.feedback, 
-                           subject = "user_feedback")
-        db.commit()
-        return JSONResponse({"msg": "已成功提交反馈"})
-    elif user_feedback_info.last_submit_time - now >= 86400:
-        user_feedback_info.last_submit_time = now
-        send_email(user_email= user_email, text_content = data.feedback, 
-                   subject = "user_feedback")
-        db.commit()
-        return JSONResponse({"msg": "已成功提交反馈"})
+    limit_field = "feedback"
+    has_submitted, record = check_user_request(db, user_id, limit_field)
+
+    if has_submitted:
+        raise APIError ("一天内只能提交一次反馈")
+
     else:
-        return JSONResponse({"error": "24小时内只能提交一次反馈"})
+        if not update_user_record(db, user_id, record, limit_field):
+                raise APIError("一天内只能提交一次反馈")
+        send_email(user_email= data.user_email, text_content = data.feedback, 
+                                   subject = "user_feedback")
+        return JSONResponse({"msg": "提交反馈成功!"})
+        

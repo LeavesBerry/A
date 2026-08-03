@@ -42,6 +42,7 @@
     background: rgba(0, 0, 0, 0);
     font-size: calc(3 * var(--design-vh, 4.57px));
     color: white;
+    cursor: pointer;
 }
 
 #search-sign {
@@ -72,6 +73,7 @@
     align-items: center;
     padding-top: 0;
     color: #5A191B;
+    cursor: pointer;
 }
 
 #scrshot-button {

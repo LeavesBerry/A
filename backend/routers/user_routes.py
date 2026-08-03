@@ -15,7 +15,7 @@ from limiter_config import limiter
 from models import UserBase, UserProfile, LimLogin
 from schemas import BioRequest, UserNameRequest, LoginRequest
 from services.user_service import change_avatar, normalize_avatar
-from update_limit import check_user_daily_update, update_user_record
+from backend.request_limit import check_user_request, update_user_record
 from services.security import (
     verify_password,
 )
@@ -76,10 +76,9 @@ def change_bio(
     db: Session = Depends(get_db),
 ):
     
-    today = date.today()
     limit_field = "bio"
 
-    has_updated, daily_record = check_user_daily_update(db, user_id, limit_field, today)
+    has_updated, record = check_user_request(db, user_id, limit_field)
 
     if has_updated:
         raise APIError("今日已更新过简介")
@@ -101,7 +100,7 @@ def change_bio(
     if len(bio) > 20:
         bio = bio[0:21]
     
-    if not update_user_record(db, user_id, daily_record, limit_field, today):
+    if not update_user_record(db, user_id, record, limit_field):
         raise APIError("今日已更新过简介")
     
     user_profile.bio = bio
@@ -120,10 +119,9 @@ async def change_user_avatar(
     db: Session = Depends(get_db),
 ):
 
-    today = date.today()
     limit_field = "avatar"
 
-    has_updated, daily_record = check_user_daily_update(db, user_id, limit_field, today)
+    has_updated, daily_record = check_user_request(db, user_id, limit_field)
 
     if has_updated:
         raise APIError("今日已更新过头像")
@@ -147,7 +145,7 @@ async def change_user_avatar(
     if len(normalized_bytes) > MAX_UPLOADIMG_SIZE:
         raise APIError("处理后的图片文件过大")
 
-    if not update_user_record(db, user_id, daily_record, limit_field, today):
+    if not update_user_record(db, user_id, daily_record, limit_field):
             raise APIError("今日已更新过头像")
 
     avatar_url, success = change_avatar(
@@ -172,10 +170,9 @@ def change_name(
     db: Session = Depends(get_db),
 ):
     
-    today = date.today()
     limit_field = "user_name"
 
-    has_updated, daily_record = check_user_daily_update(db, user_id, limit_field, today)
+    has_updated, daily_record = check_user_request(db, user_id, limit_field)
 
     if has_updated:
         raise APIError("今日已更新过名称")
@@ -197,7 +194,7 @@ def change_name(
     if len(name) > 8:
         name = name[0:9]
     
-    if not update_user_record(db, user_id, daily_record, limit_field, today):
+    if not update_user_record(db, user_id, daily_record, limit_field):
         raise APIError("今日已更新过简介")
     
     user_base.user_name = name
@@ -215,10 +212,9 @@ def change_email(
     db: Session = Depends(get_db),
 ):
     
-    today = date.today()
     limit_field = "user_email"
 
-    has_updated, daily_record = check_user_daily_update(db, user_id, limit_field, today)
+    has_updated, daily_record = check_user_request(db, user_id, limit_field)
 
     if has_updated:
         raise APIError("今日已更新过邮箱")
@@ -261,7 +257,7 @@ def change_email(
     db.commit()
 
     
-    if not update_user_record(db, user_id, daily_record, limit_field, today):
+    if not update_user_record(db, user_id, daily_record, limit_field):
         raise APIError("今日已更新过邮箱")
     
     user_base.user_email = email

@@ -24,6 +24,7 @@
     z-index: 22;
     transition: transform 0.8s ease;
     position: fixed;
+    cursor: pointer;
 }
 
 #button-left-up {
@@ -198,6 +199,7 @@
     text-align: center;
     background-color: #3A251A;
     color: #884C3A;
+    cursor: pointer;
 }
 
 .menu-function-button > span:last-child {

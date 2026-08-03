@@ -31,8 +31,9 @@ class UserProfile(Base):
     )
     bio = Column(String(30), default="你好,世界")
     level_xp = Column(Integer, default=1000, nullable=False)
+    last_email_index = Column(Integer, nullable=False, default=0)
 
-class UserUpdateLimit(Base):
+class UserRequestLimit(Base):
     __tablename__ = "user_update_limit"
     
     user_id = Column(
@@ -43,8 +44,9 @@ class UserUpdateLimit(Base):
         unique=True,
         index=True,
     )
-    update_date = Column(Date, nullable=False)
-    updated_fields = Column(JSON, default=[])
+    request_date = Column(Date, nullable=False)
+    request_tick = Column(Integer, default=0, nullable=False)
+    request_field = Column(String(30), nullable=False)
 
 
 
@@ -91,6 +93,16 @@ class Anno(Base):
     anno_date = Column(Integer, nullable=False)
 
 
+class Email(Base):
+    __tablename__ = "email"
+
+    user_id = Column(Integer, ForeignKey("user_base.user_id"), primary_key=True, nullable=False)
+    id = Column(Integer, nullable=False)
+    title = Column(String(255), default="邮件", nullable=False)
+    type = Column(String(10), default="other", nullable=False)
+    main_text = Column(Text(), nullable=False)
+    email_date = Column(Integer, nullable=False)
+
 class Pages(Base):
     __tablename__ = "pages"
     
@@ -104,10 +116,3 @@ class TextRes(Base):
     id = Column(Integer,primary_key=True, autoincrement=True)
     name = Column(String(100), unique=True, nullable=False, index=True)
     text = Column(JSON, nullable=False)
-
-class FeedBack(Base):
-    __tablename__ = "feedback"
-
-    user_email = Column(String(100), ForeignKey("user_base.user_email"),
-                        primary_key=True, nullable=False, index=True)
-    last_submit_time = Column(Integer, default=0, nullable=False)
