@@ -34,7 +34,7 @@ class UserProfile(Base):
     last_email_index = Column(Integer, nullable=False, default=0)
 
 class UserRequestLimit(Base):
-    __tablename__ = "user_update_limit"
+    __tablename__ = "user_request_limit"
     
     user_id = Column(
         Integer,
@@ -96,8 +96,8 @@ class Anno(Base):
 class Email(Base):
     __tablename__ = "email"
 
-    user_id = Column(Integer, ForeignKey("user_base.user_id"), primary_key=True, nullable=False)
-    id = Column(Integer, nullable=False)
+    user_id = Column(Integer, ForeignKey("user_base.user_id"), primary_key=True, nullable=False, index=True)
+    id = Column(Integer, nullable=False, index=True)
     title = Column(String(255), default="邮件", nullable=False)
     type = Column(String(10), default="other", nullable=False)
     main_text = Column(Text(), nullable=False)

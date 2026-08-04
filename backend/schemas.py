@@ -1,7 +1,7 @@
 import re
 from typing import Optional
 
-from pydantic import BaseModel, EmailStr, field_validator
+from pydantic import BaseModel, EmailStr, field_validator, model_validator
 
 
 class SendCodeRequest(BaseModel):
@@ -47,8 +47,19 @@ class CollRequest(BaseModel):
 class AnnoRequest(BaseModel):
     id: int
 
-class EmailRequest(BaseModel):
+class EmailGetRequest(BaseModel):
     id: int
+
+class EmailSendRequest(BaseModel):
+    email_text: str
+    emiil_title: str
+    recipient_id: Optional[str] = None
+    recipient_email: Optional[EmailStr] = None
+
+    @model_validator(mode="after")
+    def check_one_field_required(self):
+        if self.recipient_email is None and self.recipient_id is None:
+            raise ValueError("无法指定用户")
 
 class FeedBackRequest(BaseModel):
     user_email: EmailStr

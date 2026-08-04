@@ -6,11 +6,10 @@ from sqlalchemy.orm import Session
 
 from auth import get_current_user
 from database import get_db
-from models import FeedBack
 from schemas import FeedBackRequest
 from services.email_service import send_email
 from limiter_config import limiter
-from backend.request_limit import check_user_request, update_user_record
+from request_limit import check_user_request, update_request_record
 from exceptions import APIError
 
 router = APIRouter()
@@ -28,7 +27,7 @@ async def submit_feedback(request: Request,
         raise APIError ("一天内只能提交一次反馈")
 
     else:
-        if not update_user_record(db, user_id, record, limit_field):
+        if not update_request_record(db, user_id, record, limit_field):
                 raise APIError("一天内只能提交一次反馈")
         send_email(user_email= data.user_email, text_content = data.feedback, 
                                    subject = "user_feedback")

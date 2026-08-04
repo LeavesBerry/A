@@ -20,6 +20,7 @@ from routers import (
     history_routes,
     text_routes,
     user_routes,
+    email_routes,
 )
 
 logging.basicConfig(level=logging.INFO)
@@ -29,9 +30,9 @@ logger = logging.getLogger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     if cache.ping():
-        logger.info("Redis 连接成功")
+        logger.info("Successfully connected to Redis!")
     else:
-        logger.warning("Redis 未连接，当前使用 MySQL 降级模式")
+        logger.warning("Failed to connect to Redis, downgrade to MySQL for processing!")
     yield
     cache.close()
 
@@ -59,6 +60,7 @@ app.include_router(anno_routes.router)
 app.include_router(feedback_routes.router)
 app.include_router(text_routes.router)
 app.include_router(history_routes.router)
+app.include_router(email_routes.router)
 
 Base.metadata.create_all(bind=engine)
 

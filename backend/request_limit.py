@@ -6,12 +6,12 @@ from typing import Optional
 from models import UserRequestLimit
 
 request_limit_column = {
-                        "email": {"type": "date", "time": 1},
-                        "avatar": {"type": "date", "time": 1},
-                        "bio": {"type": "date", "time": 1},
-                        "user_name": {"type": "date", "time": 1},
-                        "feedback": {"type": "date", "time": 1},
-                        "email": {"type": "tick", "time": 30}
+                        "change_user_email": {"type": "date", "time": 1},
+                        "change_avatar": {"type": "date", "time": 1},
+                        "change_bio": {"type": "date", "time": 1},
+                        "change_user_name": {"type": "date", "time": 1},
+                        "submit_feedback": {"type": "date", "time": 1},
+                        "send_email": {"type": "tick", "time": 30}
                         }
 
 def check_user_request(db: Session, user_id: int, limit_field: str):
@@ -23,14 +23,14 @@ def check_user_request(db: Session, user_id: int, limit_field: str):
             today = date.today()
             
             delta = today - record.request_date
-            if delta >= request_limit_column[limit_field]["time"]:
+            if delta.days >= request_limit_column[limit_field]["time"]:
                 return False, record
             else:
                 return True, None
         elif request_limit_column[limit_field]["type"] == "tick":
             now = int(time.time())
             delta = now- record.request_tick
-            if delta >= request_limit_column[limit_field]["time"]:
+            if delta.days >= request_limit_column[limit_field]["time"]:
                 return False, record
             else:
                 return True, None
@@ -39,7 +39,7 @@ def check_user_request(db: Session, user_id: int, limit_field: str):
                 
     
 
-def update_user_record(db: Session, user_id: str, record: Optional[UserRequestLimit], 
+def update_request_record(db: Session, user_id: str, record: Optional[UserRequestLimit], 
                        limit_field: str) -> bool:
     today = date.today()
     now = int(time.time())
