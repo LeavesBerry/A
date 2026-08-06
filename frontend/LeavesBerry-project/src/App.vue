@@ -152,7 +152,7 @@
       <div id="navbar-fuction-button-box">
         <!-------------截图-------------->
         <button class="navbar-function-button" id="scrshot-button" 
-        @click="navbarModule.createScreshot">◪</button>
+        @click="navbarModule.createScreenshot">◪</button>
         <!-------------收藏-------------->
         <button class="navbar-function-button" id="collect-button"
           :style="{ color: pageState.isCollected ? '#73B436' : 'rgb(90,25,27)' }"

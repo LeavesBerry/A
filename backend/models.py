@@ -46,7 +46,7 @@ class UserRequestLimit(Base):
     )
     request_date = Column(Date, nullable=False)
     request_tick = Column(Integer, default=0, nullable=False)
-    request_field = Column(String(30), nullable=False)
+    request_field = Column(String(30), nullable=False, primary_key=True)
 
 
 

@@ -318,6 +318,13 @@ const bioModule = {
             showTips("简介字数需在26字以内")
             return
         }
+        
+        const reg = /((https?|ftp|file):\/\/)?(?:[a-zA-Z0-9\-]+\.)+[a-zA-Z0-9\-]+|(?:\d{1,3}\.){3}\d{1,3}(?:\/[\w.,@?^=%&:/~+#\-]*)*/g
+
+        if (reg.test(bioInputValue.value)) {
+            showTips("简介中禁止包含链接!")
+            return
+        }
 
         const res = await apiRequest.changeBio(bioInputValue.value)
         if (!disposeReturn(res)) {

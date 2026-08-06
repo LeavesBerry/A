@@ -24,7 +24,7 @@ export const navbarModule = {
         window.gc?.();
     },
 
-    async createScreshot() {
+    async createScreenshot() {
         const targetDom = document.documentElement;
         if (!targetDom) {
             alert("界面异常,截图失败")
@@ -34,6 +34,7 @@ export const navbarModule = {
         try {
             const html2canvas = (await import ('html2canvas')).default;
             canvas = await html2canvas(targetDom, {
+                useCORS: true,
                 scale: window.devicePixelRatio,
                 useCORS: true,
                 allowTaint: true,

@@ -1,4 +1,5 @@
 import time
+import re
 
 from fastapi import APIRouter, Depends, File, Request, UploadFile
 from fastapi.responses import JSONResponse
@@ -81,23 +82,28 @@ def change_bio(
     if has_updated:
         raise APIError("今日已更新过简介")
 
+    bio = data.bio
+
+    if not bio or not type(bio) == str:
+        raise APIError("简介格式错误")
+
+    pattern = r'((https?|ftp|file):\/\/)?(?:[a-zA-Z0-9\-]+\.)+[a-zA-Z0-9\-]+|(?:\d{1,3}\.){3}\d{1,3}(?:\/[\w.,@?^=%&:/~+#\-]*)*/g'
+    match = re.search(pattern, bio)
+    if match:
+        raise APIError("简介中不可以含有链接")
+    
+    if len(bio) > 20:
+        bio = bio[0:21]
+    
     user_profile = (
         db.query(UserProfile)
         .filter(UserProfile.user_id == user_id)
         .first()
     )
 
-    bio = data.bio
-
     if not user_profile:
         raise APIError("用户资料不存在")
 
-    if not bio or not type(bio) == str:
-        raise APIError("简介格式错误")
-
-    if len(bio) > 20:
-        bio = bio[0:21]
-    
     if not update_request_record(db, user_id, record, limit_field):
         raise APIError("今日已更新过简介")
     
