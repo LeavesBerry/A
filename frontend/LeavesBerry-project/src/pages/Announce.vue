@@ -27,7 +27,7 @@
 			}">
 				<div class="content-container" :style="{
 					transform: configModule.isContentExpanded ?
-						`translateY(calc(-120vh + ${du(-8)}))` : 'none'
+						`translateY(calc(-120vh + ${du(8)}))` : 'none'
 				}">
 					<button class="hide-content-button none-select" @click="configModule.hideContent()">×</button>
 					<p class="content-title">{{ configModule.contentTitle }}</p>

@@ -32,6 +32,7 @@ class UserProfile(Base):
     bio = Column(String(30), default="你好,世界")
     level_xp = Column(Integer, default=1000, nullable=False)
     last_email_index = Column(Integer, nullable=False, default=0)
+    black_list = Column(JSON, nullable=True, default=[])
 
 class UserRequestLimit(Base):
     __tablename__ = "user_request_limit"
@@ -41,11 +42,10 @@ class UserRequestLimit(Base):
         ForeignKey("user_base.user_id", ondelete="CASCADE"),
         primary_key=True,
         nullable=False,
-        unique=True,
         index=True,
     )
     request_date = Column(Date, nullable=False)
-    request_tick = Column(Integer, default=0, nullable=False)
+    request_tick = Column(Integer, default=1, nullable=False)
     request_field = Column(String(30), nullable=False, primary_key=True)
 
 

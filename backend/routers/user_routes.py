@@ -92,8 +92,8 @@ def change_bio(
     if match:
         raise APIError("简介中不可以含有链接")
     
-    if len(bio) > 20:
-        bio = bio[0:21]
+    if len(bio) > 26:
+        bio = bio[0:27]
     
     user_profile = (
         db.query(UserProfile)
@@ -195,8 +195,8 @@ def change_name(
     if not name or not type(name) == str:
         raise APIError("名称格式错误")
 
-    if len(name) > 8:
-        name = name[0:9]
+    if len(name) > 10:
+        name = name[0:11]
     
     if not update_request_record(db, user_id, daily_record, limit_field):
         raise APIError("今日已更新过简介")

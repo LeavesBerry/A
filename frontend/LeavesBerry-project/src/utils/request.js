@@ -89,6 +89,16 @@ export const apiRequest = {
             password: password
         });
         return res.data
+    },
+
+    async sendEmail(recipientId, recipientEmail, mainText, emailTitle ) {
+        const res = await api.post('/api/sendEmail', {
+            email_text: mainText,
+            email_title: emailTitle,
+            recipient_id: recipientId ?? null,
+            recipient_email: recipientEmail ?? null
+        });
+        return res.data
     }
 }
 

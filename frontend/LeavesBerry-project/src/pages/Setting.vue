@@ -367,7 +367,7 @@ const bioModule = {
 const nameInputValue = ref(userState.userName)
 async function changeName() {
     if (!userState.isLogined || !nameInputValue.value) return
-        if (nameInputValue.value.length > 8) {
+        if (nameInputValue.value.length > 10) {
             showTips("名称字数需在8字以内")
             return
         }

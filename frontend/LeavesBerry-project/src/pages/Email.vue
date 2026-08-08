@@ -2,20 +2,21 @@
 	<div class="page" id="email-page">
 		<div class="slide-page">
 			<div class="item-box none-select" v-show="!configModule.isContentExpanded">
-					<div class="item-box" v-if="currentContent == 'write'">
+					<div v-if="currentContent == 'write'">
 						<input id="main-text-input" v-model="mainTextInputValue" maxlength="1000">
+						<input id="email-title-input" v-model="emailTitleInputValue" maxlength="100">
 						<input id="recipient-input" v-model="recipientInputValue">
 						<button id="send-email-button" @click="sendEmail">⇦</button>
 					</div>
 
-					<div class="item-box" v-if="currentContent == 'recieve'">
+					<div v-if="currentContent == 'recieve'">
 						<p class="no-item-tip none-select" v-if="currentContent.length == 0" 
 						@click="getAllEmailInfo">
 							暂无邮件( •̀ ω •́ )✧<br>点击此处刷新</p>
-						<div class="item" v-for="item in navList" :key="item.id"
+						<div class="item" v-for="item in currentConfig" :key="item.id"
 							@click="configModule.expandContent(item.id, 'Email')">
 							<p class="item-title">{{ item.title }}</p>
-							<p class="email-date">————{{ Math.floor(item.email_date / 10000) }}年{{ Math.floor((item.emial_date %
+							<p class="email-date">————{{ Math.floor(item.email_date / 10000) }}年{{ Math.floor((item.email_date %
 								10000)
 								/
 								100) }}月{{ (item.email_date % 10000) % 100 }}日
@@ -37,7 +38,7 @@
 			}">
 				<div class="content-container" :style="{
 					transform: configModule.isContentExpanded ?
-						`translateY(calc(-120vh + ${du(-8)}))` : 'none'
+						`translateY(calc(-120vh + ${du(8)}))` : 'none'
 				}">
 					<button class="hide-content-button none-select" @click="configModule.hideContent()">×</button>
 					<p class="content-title">{{ configModule.contentTitle }}</p>
@@ -53,43 +54,78 @@
 <script setup>
 import api from "../utils/api"
 import {
-	classifyGroup, currentSidebarConfig, configModule, du, userState
+	classifyGroup, currentSidebarConfig, configModule, du, userState,
+	apiRequest,
+	disposeReturn,
+	showTips
 } from "../utils/index";
 import { ref, onMounted, onUnmounted, watch } from "vue"
 import Sidebar from "../components/Sidebar.vue";
 import Logo from "../components/Logo.vue";
 
 const navList = ref([])
-const currentContent= ref('')
+const currentContent= ref('write')
+const currentConfig = ref([])
 const groupMap = ref(new Map())
 
 const mainTextInputValue = ref(null)
 const recipientInputValue = ref(null)
+const emailTitleInputValue = ref(null)
 
 let isUnmounted = false
 
 const emailTypeList = [
 	{ index: 0, typeKey: "write", label: "写信", id: "write" },
-	{ index: 1, typeKey: "recieve", label: "收件", id: "recieve" }
+	{ index: 1, typeKey: "recieve", label: "收件", id: "recieve" },
+	{ index: 2, typeKey: "trash", label: "废件", id: "trash" }
 ]
 
 async function getAllEmailInfo() {
-	const res = await api.post('/api/getAllEamilInfo')
+	const res = await api.post('/api/getAllEmailInfo')
 	if (isUnmounted) return
 
 	const list = Array.isArray(res.data) ? res.data : []
-	navList.value = list
-	currentConfig.value = list
-	groupMap.value = classifyGroup(list, 'type')
+	groupMap.value = classifyGroup(list, "type")
 }
 
 async function sendEmail() {
-	if (!userState.isLogined || !mainText.value || !recipient.value) return
+	if (!userState.isLogined || !mainTextInputValue.value || !recipientInputValue.value) return
 
-	if (recipientInputValue.value.length > 5 || !Number.isFinite(recipientInputValue.value)) {
+	let res = null
+	
+	let re = recipientInputValue.value.trim()
+
+	if (re.length > 40 || re.value == 0) {
+		showTips("收件人格式错误")
+		return
+	}
+
+	if (!isNaN(re) && re.length < 5) {
+		try {
+			re = Number(re)
+		} catch(e) {
+			showTips("收件人格式错误")
+			showTips(e)
+			return
+		}
+
+		res = apiRequest.sendEmail(re, null,
+		mainTextInputValue.value, emailTitleInputValue.value)
+		if(!disposeReturn(res)) {
+			showTips(`成功将邮件发送给ID为${re}的用户`)
+		}
+	}
+	else {
 		const reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-		const match = recipientInputValue.value.trim().match(reg)
-		if (recipientInputValue.value.length > 40 || !match) {
+		const match = re.match(reg)
+		if (match) {
+			res = apiRequest.sendEmail(null, re, 
+			mainTextInputValue.value, emailTitleInputValue.value)
+			if(!disposeReturn(res)) {
+				showTips(`成功将邮件发送给Email为${re}的用户`)
+			}
+		}
+		else {
 			showTips("收件人格式错误")
 			return
 		}
@@ -106,19 +142,35 @@ async function verifyEmail() {
 		if ([".com", ".cn", ".org"].some(char => configModule.contentText.include(char))){
 			linkTypeList += " <第三方官方网站> "
 		}
-		if ([".top", ".xyz", ".club", ".win"].some(char => configModule.contentText.include(char))){
+		else if ([".top", ".xyz", ".club", ".win"].some(char => configModule.contentText.include(char))){
 			linkTypeList += " <未认证的小型网站> "
 		}
-		if (configModule.contentText.include(".cc")) {
+		else if (configModule.contentText.include(".cc")) {
 			linkTypeList += " <未认证的高危网站!!!> "
 		}
-		configModule.contentText += `\n\n该邮件中包含链接, 包括通向${linkTypeList}的链接, 请谨慎访问!`	
+		else {
+			linkTypeList += " <非主流域名的网站> "
+		}
+		configModule.contentText = `该邮件中包含链接, 包括通向${linkTypeList}的链接, 请谨慎访问!\n\n` + 
+		configModule.contentText
 	}
 }
 
 function switchDirConfig(sn, type) {
 	currentSidebarConfig.value = sn
     currentContent.value = type
+
+	switch (type) {
+		case "recieve":
+			currentConfig.value = groupMap.value.get("user") ?? []
+			return
+
+		case "trush":
+			currentConfig.value = groupMap.value.get("blacker") ?? []
+			return
+	}
+
+	currentConfig.value = []
 }
 
 watch(() => configModule.contentText, () => {
@@ -127,7 +179,7 @@ watch(() => configModule.contentText, () => {
 
 onMounted(async () => {
 	currentSidebarConfig.value = 0
-	await getAllAnnoInfo()
+	await getAllEmailInfo()
 })
 
 onUnmounted(() => {
@@ -143,7 +195,7 @@ onUnmounted(() => {
 	/* 457px * 2.4 */
 }
 
-.anno-date {
+.email-date {
 	width: 250px;
 	text-align: left;
 	position: absolute;

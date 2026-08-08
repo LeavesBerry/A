@@ -45,7 +45,7 @@
       </svg>
 
       <div id="menu-function-button-box">
-        <button class="menu-function-button">
+        <button class="menu-function-button" @click="goPage('/Email')">
           <svg class="menu-function-icon" viewBox="0 0 32 32" aria-hidden="true">
             <rect x="4" y="7" width="24" height="18" rx="2"></rect>
             <path d="M5 9l11 8 11-8"></path>

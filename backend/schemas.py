@@ -52,14 +52,17 @@ class EmailGetRequest(BaseModel):
 
 class EmailSendRequest(BaseModel):
     email_text: str
-    emiil_title: str
-    recipient_id: Optional[str] = None
-    recipient_email: Optional[EmailStr] = None
+    email_title: str
+    recipient_id: Optional[int] = None
+    recipient_email: Optional[str] = None
 
     @model_validator(mode="after")
     def check_one_field_required(self):
         if self.recipient_email is None and self.recipient_id is None:
             raise ValueError("无法指定用户")
+        if self.recipient_email:
+            EmailStr(self.recipient_email)
+        return self
 
 class FeedBackRequest(BaseModel):
     user_email: EmailStr
