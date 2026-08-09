@@ -3,14 +3,20 @@
 		<div class="slide-page">
 			<div class="item-box none-select" v-show="!configModule.isContentExpanded">
 					<div v-if="currentContent == 'write'">
-						<input id="main-text-input" v-model="mainTextInputValue" maxlength="1000">
-						<input id="email-title-input" v-model="emailTitleInputValue" maxlength="100">
-						<input id="recipient-input" v-model="recipientInputValue">
-						<button id="send-email-button" @click="sendEmail">⇦</button>
+						<input id="email-title-input" v-model="emailTitleInputValue" maxlength="30"
+						placeholder="请输入邮件标题 | 30字以内">
+						<input id="recipient-input" v-model="recipientInputValue"
+						placeholder="请输入收件人的ID或邮箱">
+						<textarea id="main-text-input" v-model="mainTextInputValue" wrap="soft"
+						maxlength="1000" placeholder="请输入邮件文本 | 1000字以内"></textarea>
+						<button id="send-email-button" @click="sendEmail">发送邮件</button>
+						<div id="tip-box">
+							<p v-for="item in tipList">•{{ item }}</p>
+						</div>
 					</div>
 
 					<div v-if="currentContent == 'recieve'">
-						<p class="no-item-tip none-select" v-if="currentContent.length == 0" 
+						<p class="no-item-tip none-select" v-if="currentConfig.length == 0" 
 						@click="getAllEmailInfo">
 							暂无邮件( •̀ ω •́ )✧<br>点击此处刷新</p>
 						<div class="item" v-for="item in currentConfig" :key="item.id"
@@ -22,10 +28,17 @@
 								100) }}月{{ (item.email_date % 10000) % 100 }}日
 							</p>
 						</div>
-						<p class="refresh-tip none-select" v-if="currentContent.length !== 0" @click="getAllEmailInfo">
+						<p class="refresh-tip none-select" v-if="currentConfig.length !== 0" @click="getAllEmailInfo">
 							若缺少邮件<br>可尝试点击此处刷新界面( •̀ ω •́ )</p>
 					</div>
 
+					<div v-if="currentContent == 'trash'">
+						<p class="no-item-tip none-select" v-if="currentConfig.length == 0" 
+						@click="getAllEmailInfo">
+							暂无邮件( •̀ ω •́ )✧<br>点击此处刷新</p>
+						<p class="refresh-tip none-select" v-if="currentConfig.length !== 0" @click="getAllEmailInfo">
+							若缺少邮件<br>可尝试点击此处刷新界面( •̀ ω •́ )</p>
+					</div>
 				
 			</div>
 		</div>
@@ -78,6 +91,10 @@ const emailTypeList = [
 	{ index: 0, typeKey: "write", label: "写信", id: "write" },
 	{ index: 1, typeKey: "recieve", label: "收件", id: "recieve" },
 	{ index: 2, typeKey: "trash", label: "废件", id: "trash" }
+]
+
+const tipList = [
+	"请友好交流,文明用语","发送邮件有30秒冷却","请勿暴露自己的隐私信息"
 ]
 
 async function getAllEmailInfo() {
@@ -165,7 +182,7 @@ function switchDirConfig(sn, type) {
 			currentConfig.value = groupMap.value.get("user") ?? []
 			return
 
-		case "trush":
+		case "trash":
 			currentConfig.value = groupMap.value.get("blacker") ?? []
 			return
 	}
@@ -207,5 +224,112 @@ onUnmounted(() => {
 
 .item {
 	height: calc(20 * var(--design-vh));
+}
+
+#email-title-input {
+	width: 70vw;
+	height: calc(8 * var(--design-vh));
+	border-radius: calc(5 * var(--design-vh)) calc(5 * var(--design-vh)) 0 0;
+	border: 3px solid #3a251a;
+	text-align: center;
+	line-height: calc(8 * var(--design-vh));
+	position: relative;
+	margin-top: calc(6 * var(--design-vh));
+	left: 0;
+	background: none;
+	font-size: calc(4 * var(--design-vh));
+	color: #3a251a;
+	font-weight: 600;
+}
+
+#email-title-input::placeholder {
+	font-size: calc(4 * var(--design-vh));
+	color: #3a251a;
+	font-weight: 600;
+}
+
+#recipient-input {
+	width: 70vw;
+	height: calc(8 * var(--design-vh));
+	border-radius: 0 0 calc(5 * var(--design-vh)) calc(5 * var(--design-vh));
+	border: 3px solid #3a251a;
+	text-align: center;
+	line-height: calc(8 * var(--design-vh));
+	position: relative;
+	margin-top: -3px;
+	left: 0;
+	background: none;
+	font-size: calc(4 * var(--design-vh));
+	color: #3a251a;
+}
+
+#recipient-input::placeholder {
+	font-size: calc(4 * var(--design-vh));
+	color: #3a251a;
+	font-weight: 600;
+}
+
+#main-text-input {
+	width: 70vw;
+	height: fit-content;
+	border-radius: calc(5 * var(--design-vh));
+	border: 3px solid #3a251a;
+	text-align: left;
+	padding: calc(1 * var(--design-vh)) 1% calc(1 * var(--design-vh)) 1%;
+	position: relative;
+	margin-top: calc(4 * var(--design-vh) - 3px);
+	left: 0;
+	line-height: 1;
+	background: none;
+	font-size: calc(4 * var(--design-vh));
+	color: #3a251a;
+	field-sizing: content;
+    min-height: calc(10 * var(--design-vh, 4.57px));
+    max-height: calc(300 * var(--design-vh, 4.57px));
+    resize: none;
+    overflow-y: hidden;
+    background-color: rgba(0, 0, 0, 0);
+    font-weight: 300;
+    text-align: top;
+    word-break: break-all;
+    word-wrap: break-word;
+    overflow-x: hidden;
+}
+
+#main-text-input::placeholder {
+	font-size: calc(4 * var(--design-vh));
+	color: #3a251a;
+	font-weight: 600;
+}
+
+#send-email-button {
+	width: 70vw;
+	height: calc(8 * var(--design-vh));
+	border-radius: calc(5 * var(--design-vh));
+	border: 3px solid #3a251a;
+	text-align: center;
+	position: relative;
+	top: calc(2 * var(--design-vh) - 3px);
+	left: 0;
+	background: none;
+	font-size: calc(4 * var(--design-vh));
+	font-weight: 600;
+	color: #3a251a;
+	cursor: pointer;
+}
+
+#tip-box {
+	position: relative;
+	margin-top: calc(4 * var(--design-vh));
+	left: 0;
+	width: 70vw;
+	height: auto;
+	justify-items: left;
+}
+
+#tip-box p{
+	color: #4a4030;
+    font-size: 15px;
+    font-weight: 500;
 }
 </style>

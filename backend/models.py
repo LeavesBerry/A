@@ -96,8 +96,9 @@ class Anno(Base):
 class Email(Base):
     __tablename__ = "email"
 
-    user_id = Column(Integer, ForeignKey("user_base.user_id"), primary_key=True, nullable=False, index=True)
-    id = Column(Integer, nullable=False, index=True)
+    user_id = Column(Integer, ForeignKey("user_base.user_id"), nullable=False, index=True)
+    email_index = Column(Integer, nullable=False, index=True)
+    id = Column(Integer, nullable=False, autoincrement=True, primary_key=True)
     title = Column(String(255), default="邮件", nullable=False)
     type = Column(String(10), default="other", nullable=False)
     main_text = Column(Text(), nullable=False)

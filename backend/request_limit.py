@@ -23,14 +23,14 @@ def check_user_request(db: Session, user_id: int, limit_field: str):
             today = date.today()
             
             delta = today - record.request_date
-            if delta.days >= request_limit_column[limit_field]["time"]:
+            if delta >= request_limit_column[limit_field]["time"]:
                 return False, record
             else:
                 return True, None
         elif request_limit_column[limit_field]["type"] == "tick":
             now = int(time.time())
             delta = now- record.request_tick
-            if delta.days >= request_limit_column[limit_field]["time"]:
+            if delta >= request_limit_column[limit_field]["time"]:
                 return False, record
             else:
                 return True, None

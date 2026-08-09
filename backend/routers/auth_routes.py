@@ -82,6 +82,7 @@ async def register(request: Request, data: RegisterRequest, db: Session = Depend
         user_email=data.user_email,
         user_name=data.user_name,
         password_hash=hash_password(data.password),
+        black_list = []
     )
     db.add(user)
     db.flush()

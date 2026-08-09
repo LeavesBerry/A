@@ -25,12 +25,12 @@ async def get_all_email_info(request: Request, db: Session = Depends(get_db),
     cache_key = cache.build_key("email", "list")
 
     def load_emails():
-        emails = db.query(Email.title, Email.type, Email.id, Email.email_date).filter(Email.user_id == user_id).all()
+        emails = db.query(Email.title, Email.type, Email.email_index, Email.email_date).filter(Email.user_id == user_id).all()
         return [
             {
                 "title": item.title,
                 "type": item.type,
-                "id": item.id,
+                "id": item.email_index,
                 "email_date": item.email_date,
             }
             for item in emails
@@ -50,8 +50,8 @@ async def get_email_text(request: Request, data: EmailGetRequest,
 
     def load_email():
         item = (
-            db.query(Email.user_id ,Email.id, Email.title, Email.main_text)
-            .filter(Email.id == data.id, Email.user_id == user_id)
+            db.query(Email.user_id ,Email.email_index, Email.title, Email.main_text)
+            .filter(Email.email_index == data.id, Email.user_id == user_id)
             .first()
         )
         if not item:
@@ -84,8 +84,7 @@ async def send_email(request: Request, data: EmailSendRequest,
         recipient = db.query(UserBase.user_email, UserBase.user_id).filter(UserBase.user_email == data.recipient_email)
         recipient_id = recipient.user_id
 
-    recipient_info = db.query(UserProfile.last_email_index, 
-                              UserProfile.black_list).filter(UserProfile.user_id == recipient_id).first()
+    recipient_info = db.query(UserProfile).filter(UserProfile.user_id == recipient_id).first()
 
     if recipient_info is None:
         raise APIError("未找到对应用户")
@@ -95,10 +94,12 @@ async def send_email(request: Request, data: EmailSendRequest,
 
     d = date.today()
 
-    new_email = Email(user_id = recipient_id, id = recipient_info.last_email_index + 1, 
+    new_email = Email(user_id = recipient_id, email_index = recipient_info.last_email_index + 1, 
                       title = data.email_title, main_text = data.email_text, 
                       type = "user" if str(user_id) not in recipient_info.black_list else "blacker", 
                       email_date = d.year * 10000 + d.month * 100 + d.day)
+
+    recipient_info.last_email_index += 1
 
     db.add(new_email)
     db.commit()
