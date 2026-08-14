@@ -19,7 +19,7 @@ def user_info_cache_key(user_id: int) -> str:
     return cache.build_key("user", "info", user_id)
 
 @router.post("/api/getAllEmailInfo")
-@limiter.limit("5/60minute")
+#@limiter.limit("5/60minute")
 async def get_all_email_info(request: Request, db: Session = Depends(get_db), 
                              user_id: int = Depends(get_current_user("user_id"))):
     cache_key = cache.build_key("email", "list")
@@ -36,9 +36,8 @@ async def get_all_email_info(request: Request, db: Session = Depends(get_db),
             for item in emails
         ]
 
-    print(load_emails())
-
     result = cache.remember(cache_key, load_emails, CACHE_TTL_MEDIUM)
+    print(result)
     return JSONResponse(result)
 
 

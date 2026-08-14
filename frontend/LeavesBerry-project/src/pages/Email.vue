@@ -1,8 +1,8 @@
 <template>
 	<div class="page" id="email-page">
 		<div class="slide-page">
-			<div class="item-box none-select" v-show="!configModule.isContentExpanded">
-					<div v-if="currentContent == 'write'">
+			<div class="item-box none-select" v-show="!configModule.isConfigClosed">
+					<div v-if="currentContent == 'write'" class="item" id="write-email-box">
 						<input id="email-title-input" v-model="emailTitleInputValue" maxlength="30"
 						placeholder="请输入邮件标题 | 30字以内">
 						<input id="recipient-input" v-model="recipientInputValue"
@@ -44,14 +44,15 @@
 		</div>
 		<teleport class="fixed-page" to="#app #app-root">
 			<Logo></Logo>
-			<sidebar :type-list="emailTypeList" @change-dir="switchDirConfig"></sidebar>
+			<Sidebar :type-list="emailTypeList" @change-dir="switchDirConfig"
+			v-show="!configModule.isConfigClosed"></Sidebar>
 			<div class="hidden-container" :style="{
 				position:
 					configModule.isContentExpanded ? 'absolute' : 'fixed'
 			}">
 				<div class="content-container" :style="{
 					transform: configModule.isContentExpanded ?
-						`translateY(calc(-120vh + ${du(8)}))` : 'none'
+						`translateY(calc(-120vh + ${du(10)}))` : 'none'
 				}">
 					<button class="hide-content-button none-select" @click="configModule.hideContent()">×</button>
 					<p class="content-title">{{ configModule.contentTitle }}</p>
@@ -227,7 +228,7 @@ onUnmounted(() => {
 }
 
 #email-title-input {
-	width: 70vw;
+	width: 65vw;
 	height: calc(8 * var(--design-vh));
 	border-radius: calc(5 * var(--design-vh)) calc(5 * var(--design-vh)) 0 0;
 	border: 3px solid #3a251a;
@@ -235,7 +236,6 @@ onUnmounted(() => {
 	line-height: calc(8 * var(--design-vh));
 	position: relative;
 	margin-top: calc(6 * var(--design-vh));
-	left: 0;
 	background: none;
 	font-size: calc(4 * var(--design-vh));
 	color: #3a251a;
@@ -249,7 +249,7 @@ onUnmounted(() => {
 }
 
 #recipient-input {
-	width: 70vw;
+	width: 65vw;
 	height: calc(8 * var(--design-vh));
 	border-radius: 0 0 calc(5 * var(--design-vh)) calc(5 * var(--design-vh));
 	border: 3px solid #3a251a;
@@ -257,7 +257,6 @@ onUnmounted(() => {
 	line-height: calc(8 * var(--design-vh));
 	position: relative;
 	margin-top: -3px;
-	left: 0;
 	background: none;
 	font-size: calc(4 * var(--design-vh));
 	color: #3a251a;
@@ -270,7 +269,7 @@ onUnmounted(() => {
 }
 
 #main-text-input {
-	width: 70vw;
+	width: 65vw;
 	height: fit-content;
 	border-radius: calc(5 * var(--design-vh));
 	border: 3px solid #3a251a;
@@ -278,7 +277,6 @@ onUnmounted(() => {
 	padding: calc(1 * var(--design-vh)) 1% calc(1 * var(--design-vh)) 1%;
 	position: relative;
 	margin-top: calc(4 * var(--design-vh) - 3px);
-	left: 0;
 	line-height: 1;
 	background: none;
 	font-size: calc(4 * var(--design-vh));
@@ -303,14 +301,13 @@ onUnmounted(() => {
 }
 
 #send-email-button {
-	width: 70vw;
+	width: 65vw;
 	height: calc(8 * var(--design-vh));
 	border-radius: calc(5 * var(--design-vh));
 	border: 3px solid #3a251a;
 	text-align: center;
 	position: relative;
 	top: calc(2 * var(--design-vh) - 3px);
-	left: 0;
 	background: none;
 	font-size: calc(4 * var(--design-vh));
 	font-weight: 600;
@@ -321,8 +318,7 @@ onUnmounted(() => {
 #tip-box {
 	position: relative;
 	margin-top: calc(4 * var(--design-vh));
-	left: 0;
-	width: 70vw;
+	width: 65vw;
 	height: auto;
 	justify-items: left;
 }
@@ -331,5 +327,14 @@ onUnmounted(() => {
 	color: #4a4030;
     font-size: 15px;
     font-weight: 500;
+}
+
+#write-email-box {
+	min-height: calc(70 * var(--design-vh));
+	flex-direction: column;
+	height: max-content;
+	display: flex;
+	align-items: center;
+	padding-bottom: calc(5 * var(--design-vh));
 }
 </style>

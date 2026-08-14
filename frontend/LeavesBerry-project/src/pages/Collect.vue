@@ -22,7 +22,7 @@
 						"></button>
 					</div>
 					<p id="coll-des">
-                        |{{ pageMetaConfig[item.url.replace('/', '')]?.description ?? '没有在本站详细注册的界面' }}</p>
+                        |{{ getPageMeta.des(item.url.replace('/', '')) }}</p>
 				</div>
 				<p class="refresh-tip none-select" v-if="currentConfig.length !== 0" @click="getAllColl">
 					若缺少收藏<br>可尝试点击此处刷新界面( •̀ ω •́ )</p>
@@ -42,7 +42,7 @@ import api from "../utils/api"
 import {
 	userState, copyText, createQRCode, classifyGroup,
 	currentSidebarConfig, showTips, useGoPage, apiRequest,
-	disposeReturn, pageMetaConfig
+	disposeReturn, getPageMeta
 } from "../utils/index";
 import { ROOTPATH } from "../router/index.js";
 import { ref, onMounted, onUnmounted } from "vue"

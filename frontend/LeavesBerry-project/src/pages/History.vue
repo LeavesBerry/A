@@ -5,10 +5,10 @@
                 <div class="item" id="history" v-for="item in currentContent">
                     
                     <p class="item-title" id="history-title">
-                        {{ pageMetaConfig[item.replace(`/`, '')]?.title ?? '未知界面' }}</p>
+                        {{ getPageMeta.title(item.replace('/', '')) }}</p>
                     <p id="history-url" @click="goPage(item)">{{ ROOTPATH + item }}</p>
                     <p id="history-des">
-                        |{{ pageMetaConfig[item.replace(`/`, '')]?.description ?? '没有在本站详细注册的界面' }}</p>
+                        |{{ getPageMeta.des(item.replace(`/`, '')) }}</p>
                      
                 </div>
                 <p class="refresh-tip none-select" v-if="currentContent.length !== 0">历史记录的记录有<br>
@@ -31,7 +31,7 @@ import Logo from '../components/Logo.vue';
 import Sidebar from '../components/Sidebar.vue';
 import ExTextarea from '../components/ExTextarea.vue'
 import api from '../utils/api.js';
-import { disposeReturn, pageMetaConfig, currentSidebarConfig, useGoPage } from '../utils/index.js';
+import { disposeReturn, getPageMeta, currentSidebarConfig, useGoPage } from '../utils/index.js';
 import { ROOTPATH } from '../router/index.js';
 
 const {goPage} = useGoPage()
