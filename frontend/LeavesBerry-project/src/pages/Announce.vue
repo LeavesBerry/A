@@ -1,7 +1,7 @@
 <template>
 	<div class="page" id="announce-page">
 		<div class="slide-page">
-			<div class="item-box none-select" v-show="!configModule.isContentExpanded">
+			<div class="item-box none-select" v-show="!configModule.isConfigClosed">
 				<p class="no-item-tip none-select" v-if="currentConfig.length == 0" @click="getAllAnnoInfo">暂无公告( •̀ ω
 					•́
 					)✧<br>点击此处刷新</p>
@@ -20,14 +20,15 @@
 		</div>
 		<teleport class="fixed-page" to="#app #app-root">
 			<Logo></Logo>
-			<sidebar :type-list="annoTypeList" @change-dir="switchDirConfig"></sidebar>
+			<sidebar :type-list="annoTypeList" @change-dir="switchDirConfig"
+			v-show="!configModule.isConfigClosed"></sidebar>
 			<div class="hidden-container" :style="{
 				position:
-					configModule.isContentExpanded ? 'absolute' : 'fixed'
+					configModule.isConfigClosed ? 'absolute' : 'fixed'
 			}">
 				<div class="content-container" :style="{
 					transform: configModule.isContentExpanded ?
-						`translateY(calc(-120vh + ${du(8)}))` : 'none'
+						`translateY(calc(-120vh + ${du(10)}))` : 'none'
 				}">
 					<button class="hide-content-button none-select" @click="configModule.hideContent()">×</button>
 					<p class="content-title">{{ configModule.contentTitle }}</p>

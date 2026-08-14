@@ -12,14 +12,19 @@ const routes = [
     {
         path: '/',
         name: 'Home',
-        component: () => import('../pages/Home.vue') // 初始界面
+        component: () => import('../pages/Home.vue'), // 初始界面
+        meta: {
+            title: '主页',
+            type: 'other',
+            description: '本站主页'
+        }
     },
     {
         path: '/:page',
         name: 'AutoPage',
         component: () => import('../pages/AutoPage.vue'),
         meta: {
-            title: 'LeavesBerry',
+            title: '未知界面',
             type: 'other',
             description: ''
         }

@@ -36,7 +36,7 @@ export const pageMetaConfig = {
     },
     Announce: {
         title: "公告界面",
-        type: "other",
+        type: "essay",
         description: '一些公告'
     },
     Test2: {
@@ -68,6 +68,11 @@ export const pageMetaConfig = {
         title: "设置界面",
         type: "other",
         description: "设置你的个人资料"
+    },
+    Email: {
+        title: "邮箱界面",
+        type: "other",
+        description: "接受和发送站内邮件"
     }
 }
 

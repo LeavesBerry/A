@@ -21,6 +21,8 @@
 						background-position: calc(0.3 * var(--design-vh)) center;
 						"></button>
 					</div>
+					<p id="coll-des">
+                        |{{ pageMetaConfig[item.url.replace('/', '')]?.description ?? '没有在本站详细注册的界面' }}</p>
 				</div>
 				<p class="refresh-tip none-select" v-if="currentConfig.length !== 0" @click="getAllColl">
 					若缺少收藏<br>可尝试点击此处刷新界面( •̀ ω •́ )</p>
@@ -40,7 +42,7 @@ import api from "../utils/api"
 import {
 	userState, copyText, createQRCode, classifyGroup,
 	currentSidebarConfig, showTips, useGoPage, apiRequest,
-	disposeReturn
+	disposeReturn, pageMetaConfig
 } from "../utils/index";
 import { ROOTPATH } from "../router/index.js";
 import { ref, onMounted, onUnmounted } from "vue"
@@ -154,6 +156,17 @@ onUnmounted(() => {
 	width: auto;
 	display: flex;
 	z-index: 3;
+}
+
+#coll-des {
+    width: fit-content;
+    height: auto;
+    font-size: calc(4 * var(--design-vh));
+    color: #3A251A;
+    font-weight: 400;
+    position: absolute;
+    top: 55%;
+    left: 7%;
 }
 
 .item button {

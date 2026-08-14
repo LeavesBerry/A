@@ -3,6 +3,11 @@
 		<div class="home-page">
 			<img src="/icons/logo.png" id="logo">
 			<div class="home-divider" id="home-d1"></div>
+			<div id="home-icon-box">
+				<img class="home-icon" src="/images/HomeMusicIcon.png">
+				<img class="home-icon" src="/images/HomeDiaryIcon.png">
+				<img class="home-icon" src="/images/HomeGoodIcon.png"> 
+			</div>
 			<div class="home-divider" id="home-d2"></div>
 			<span class="home-star" id="home-s1">✦</span>
 			<span class="home-star" id="home-s2">✦</span>
@@ -42,7 +47,7 @@ import Logo from '../components/Logo.vue';
 }
 
 #home-d2 {
-	margin-top: calc(83 * var(--design-vh, 4.57px));
+	margin-top: calc(77 * var(--design-vh, 4.57px));
 }
 
 .home-star {
@@ -80,5 +85,27 @@ import Logo from '../components/Logo.vue';
 #home-s6 {
 	position: absolute;
 	right: 32vw;
+}
+
+#home-icon-box {
+	width: 100vw;
+	height: calc(6 * var(--design-vh, 4.57px));
+	position: relative;
+	margin-top: calc(2.5 * var(--design-vh, 4.57px));
+	display: flex;
+	justify-items: center;
+	justify-content: center;
+}
+ 
+.home-icon {
+	height: calc(80 * var(--design-vh, 4.57px));
+	width: auto;
+	margin: 0 calc(2 * var(--design-vh, 4.57px));
+	display: flex;
+	transition: scale 0.3s ease;	
+}
+
+.home-icon:hover {
+	transform: scale(1.05);
 }
 </style>

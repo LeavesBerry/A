@@ -7,6 +7,7 @@ import router from "../router";
 
 export const configModule = reactive({
     isContentExpanded: false,
+    isConfigClosed: false,
     contentTitle: "",
     contentText: "",
     contentId: null,
@@ -25,6 +26,7 @@ export const configModule = reactive({
             pageState.currentTitle = this.contentTitle;
         }
         pageState.currentType = "essay"
+        this.isConfigClosed = true
         this.isContentExpanded = true
     },
 
@@ -32,8 +34,9 @@ export const configModule = reactive({
         const route = router.currentRoute.value
         updatePageInfo(route.params.page, location.href);
         navbarModule.initColl();
+        this.isContentExpanded = false;
         setTimeout(() => {
-            this.isContentExpanded = false;
-        }, 500)
+            this.isConfigClosed = false
+        }, 400);
     }
 })
