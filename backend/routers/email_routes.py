@@ -19,13 +19,14 @@ def user_info_cache_key(user_id: int) -> str:
     return cache.build_key("user", "info", user_id)
 
 @router.post("/api/getAllEmailInfo")
-@limiter.limit("5/60minute")
+#@limiter.limit("5/60minute")
 async def get_all_email_info(request: Request, db: Session = Depends(get_db), 
                              user_id: int = Depends(get_current_user("user_id"))):
     cache_key = cache.build_key("email", "list")
 
     def load_emails():
-        emails = db.query(Email.title, Email.type, Email.email_index, Email.email_date).filter(Email.user_id == user_id).all()
+        emails = db.query(Email.title, Email.type, Email.email_index, Email.email_date,
+                          Email.desc).filter(Email.user_id == user_id).all()
         return [
             {
                 "title": item.title,
@@ -38,19 +39,18 @@ async def get_all_email_info(request: Request, db: Session = Depends(get_db),
         ]
 
     result = cache.remember(cache_key, load_emails, CACHE_TTL_MEDIUM)
-    print(result)
     return JSONResponse(result)
 
 
-@router.post("/api/getEmailText")
+@router.post("/api/getEmailContent")
 @limiter.limit("1/1second")
-async def get_email_text(request: Request, data: EmailGetRequest, 
+async def get_email_content(request: Request, data: EmailGetRequest, 
                         db: Session = Depends(get_db), user_id = Depends(get_current_user("user_id"))):
     cache_key = cache.build_key("email", "detail", data.id)
 
     def load_email():
         item = (
-            db.query(Email.user_id ,Email.email_index, Email.title, Email.main_text)
+            db.query(Email.user_id ,Email.email_index, Email.title, Email.main_text, Email.desc)
             .filter(Email.email_index == data.id, Email.user_id == user_id)
             .first()
         )

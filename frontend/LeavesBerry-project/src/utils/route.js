@@ -11,13 +11,10 @@ export let visitList = [];
 let timer = null;
 
 async function submitVisitList() {
-    console.log(1)
     if (!userState.isLogined || visitList.length == 0) return
     try {
         const res = await apiRequest.submitVisitList(visitList)
-        if (!disposeReturn(res)) {
-            visitList = []
-        }
+        visitList = []
     }
     catch (e) {
         console.log(e)
@@ -61,6 +58,10 @@ export function useGoPage() {
         const matchResult = url.match(reg)
         if (!matchResult) {
             router.push(url)
+            if (url !== visitList[-1]) {
+                visitList.push({url: pageState.currentUrl, title: pageState.currentTitle, 
+                    type: pageState.currentType, desc: pageState.currentDesc})
+            }
             return true
         }
         else {

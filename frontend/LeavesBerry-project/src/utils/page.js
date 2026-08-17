@@ -76,12 +76,17 @@ export const pageMetaConfig = {
     }
 }
 
-export function updatePageInfo(pagename, fullPath) {
-    const metaInfo = pageMetaConfig[pagename] ?? {
+export function updatePageInfo(pageName, fullPath) {
+    const metaInfo = pageName ?
+    pageMetaConfig[pageName] ?? {
         title: 'LeavesBerry',
         type: 'other',
-        description: ''
-    }
+        description: '未在本站详细注册的页面'
+    } : {
+        title: '主页',
+        type: 'other',
+        description: '本站的开始界面'
+    } 
     pageState.currentUrl = `${fullPath}`;
     pageState.currentTitle = `${metaInfo.title}`;
     pageState.currentType = `${metaInfo.type}`;

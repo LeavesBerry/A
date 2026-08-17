@@ -29,6 +29,7 @@ export const apiRequest = {
     },
 
     async submitVisitList(visitList) {
+        console.log(2)
         const res = await api.post('/api/submitVisitList', { visit_list: visitList })
         return res.data
     },
@@ -114,8 +115,8 @@ export function disposeReturn(data) {
         showTips(data.error);
         return true;
     }
-    if (data.xpChange) {
-        userModule.changeXp(data.xpChange)
+    if (data.xp_change) {
+        userModule.changeXp(data.xp_change)
     }
     if (data.msg) {
         showTips(data.msg);

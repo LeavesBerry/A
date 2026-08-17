@@ -87,12 +87,13 @@ async def register(request: Request, data: RegisterRequest, db: Session = Depend
     db.add(user)
     db.flush()
 
-    user_profile = UserProfile(user_id=user.user_id, level_xp=1050)
+    user_profile = UserProfile(user_id=user.user_id, level_xp=1050, 
+                               avatar_url=f'/static/avatar/default_avatar_{random.randint(1,2)}.jpg')
     db.add(user_profile)
     db.delete(code_record)
     db.commit()
 
-    return JSONResponse({"msg": "注册成功", "xpChange": 50})
+    return JSONResponse({"msg": "注册成功", "xp_change": 50})
 
 
 @router.post("/api/login")

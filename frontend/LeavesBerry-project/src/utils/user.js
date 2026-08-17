@@ -21,7 +21,7 @@ const DEFAULT_USER_INFO = {
     userEmail: null,
     bio: "你好,世界!",
     userAccessToken: null,
-    avatarUrl: "http://localhost:5000/static/avatar/default_avatar.jpg",
+    avatarUrl: "http://localhost:5000/static/avatar/default_avatar_1.jpg",
     level: 0,
     xp: 0
 }

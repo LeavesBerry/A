@@ -101,6 +101,7 @@
     word-wrap: break-word;
     white-space: pre-line;
     padding-bottom: 20px;
+    text-align: left;
 }
 
 .hide-content-button {

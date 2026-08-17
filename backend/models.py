@@ -26,7 +26,7 @@ class UserProfile(Base):
     )
     avatar_url = Column(
         String(100),
-        default="/static/avatar/default_avatar.jpg",
+        default="/static/avatar/default_avatar_1.jpg",
         unique=False,
     )
     bio = Column(String(30), default="你好,世界")
@@ -81,9 +81,9 @@ class Coll(Base):
 class History(Base):
     __tablename__ = "history"
 
-    user_id = Column(Integer, ForeignKey("user_base.user_id"), primary_key=True, nullable=False)
-    url = Column(String(200), nullable=False, primary_key=True, )
-    url_hash = Column(String(64), nullable=False)
+    user_id = Column(Integer, ForeignKey("user_base.user_id"), nullable=False)
+    id = Column(Integer, nullable=False, autoincrement=True, primary_key=True)
+    url = Column(String(200), nullable=False)
     title = Column(String(255), default="未知界面", nullable=False)
     type = Column(String(10), default="other", nullable=False)
     desc = Column(String(25), default="未在本站详细注册的界面", nullable=False)

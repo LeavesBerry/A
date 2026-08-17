@@ -16,7 +16,7 @@ const routes = [
         meta: {
             title: '主页',
             type: 'other',
-            description: '本站主页'
+            description: '本站的开始界面'
         }
     },
     {
@@ -26,7 +26,7 @@ const routes = [
         meta: {
             title: '未知界面',
             type: 'other',
-            description: ''
+            description: '未在本站详细注册的页面'
         }
     }
 ]

@@ -6,7 +6,7 @@
                     
                     <p class="item-title" id="history-title">
                         {{ item.title.length > 0 ? item.title : '未知界面' }}</p>
-                    <p id="history-url" @click="goPage(item)">{{ ROOTPATH + item }}</p>
+                    <p id="history-url" @click="goPage(item)">{{ ROOTPATH + item.url }}</p>
                     <p id="history-des">
                         |{{ item.desc.length > 0 ? item.desc : '未在本站详细注册的界面' }}</p>
                      
@@ -48,7 +48,7 @@ let historyList = ref([])
 async function getHistory() {
     const res = await api.post('/api/getHistory')
     if (!disposeReturn(res.data)) {
-        historyList.value = res.data.history.reverse()
+        historyList.value = res.data.reverse()
         currentContent.value = historyList.value
     }
 }

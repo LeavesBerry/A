@@ -36,8 +36,8 @@ def submit_visit_list(request: Request,
         for item in oldest_history:
             db.delete(item)
 
-    new_record = [History(user_id=user_id, url=item.url, title=item.title, type=item.type,
-                          desc=item.desc) for item in history]
+    new_record = [History(user_id=user_id, url=item['url'], title=item['title'], type=item['type'],
+                          desc=item['desc']) for item in history]
 
     db.bulk_save_objects(new_record)
     db.commit()
@@ -53,14 +53,15 @@ def get_history(request: Request,
 
     def load_history():
         history = db.query(History).filter(History.user_id == user_id).all()
-        return {
-            item.url: {
+        return [
+                {
+                "url": item.url,
                 "title": item.title,
                 "type": item.type,
-                "desc": item.desc,
-            }
-            for item in history
-        } 
+                "desc": item.desc
+                }
+               for item in history 
+            ]
 
     result = cache.remember(cache_key, load_history, CACHE_TTL_SHORT)
     return JSONResponse(result)

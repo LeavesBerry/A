@@ -121,6 +121,9 @@ async function sendEmail() {
 	if (!isNaN(re) && re.length < 5) {
 		try {
 			re = Number(re)
+			if (re == userState.userId) {
+				showTips('你不能给自己发邮件QwQ')
+			}
 		} catch(e) {
 			showTips("收件人格式错误")
 			showTips(e)
@@ -134,6 +137,9 @@ async function sendEmail() {
 		}
 	}
 	else {
+		if (re == userState.userEmail) {
+			showTips('你不能给自己发邮件QwQ')
+		}
 		const reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 		const match = re.match(reg)
 		if (match) {

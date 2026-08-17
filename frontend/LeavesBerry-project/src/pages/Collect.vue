@@ -59,7 +59,7 @@ const collTypeList = [
 	{ index: 0, typeKey: "all", label: "所有", id: "all" },
 	{ index: 1, typeKey: "essay", label: "文章", id: "essay" },
 	{ index: 2, typeKey: "good", label: "商品", id: "good" },
-	{ index: 3, typeKey: "resourse", label: "资源", id: "resourse" },
+	{ index: 3, typeKey: "music", label: "音乐", id: "music" },
 	{ index: 4, typeKey: "other", label: "其他", id: "other" }
 ]
 

@@ -18,7 +18,7 @@ async def get_all_anno_info(request: Request, db: Session = Depends(get_db)):
     cache_key = cache.build_key("anno", "list")
 
     def load_annos():
-        annos = db.query(Anno.title, Anno.type, Anno.id, Anno.anno_date).all()
+        annos = db.query(Anno.title, Anno.type, Anno.id, Anno.anno_date, Anno.desc).all()
         return [
             {
                 "title": item.title,
@@ -34,20 +34,20 @@ async def get_all_anno_info(request: Request, db: Session = Depends(get_db)):
     return JSONResponse(result)
 
 
-@router.post("/api/getAnnounceText")
+@router.post("/api/getAnnounceContent")
 @limiter.limit("1/1second")
-async def get_anno_text(request: Request, data: AnnoRequest, db: Session = Depends(get_db)):
+async def get_anno_content(request: Request, data: AnnoRequest, db: Session = Depends(get_db)):
     cache_key = cache.build_key("anno", "detail", data.id)
 
     def load_anno():
         item = (
-            db.query(Anno.id, Anno.title, Anno.main_text)
+            db.query(Anno.id, Anno.title, Anno.main_text, Anno.desc)
             .filter(Anno.id == data.id)
             .first()
         )
         if not item:
             raise APIError("公告不存在")
-        return {"main_text": item.main_text, "title": item.title}
+        return {"main_text": item.main_text, "title": item.title, "desc": item.desc}
 
     result = cache.remember(cache_key, load_anno, CACHE_TTL_LONG)
     return JSONResponse(result)
