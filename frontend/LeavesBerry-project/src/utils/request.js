@@ -33,16 +33,22 @@ export const apiRequest = {
         return res.data
     },
 
-    async initColl(currentUrl) {
-        const res = await api.post('/api/initColl', { url: currentUrl });
+    async refreshColl(currentUrl, currentTitle, currentType, currentDesc) {
+        const res = await api.post('/api/refreshColl', { 
+            url: currentUrl,
+            title: currentTitle,
+            type: currentType,
+            desc: currentDesc
+        });
         return res.data;
     },
 
-    async toggleColl(currentUrl, currentTitle, currentType) {
+    async toggleColl(currentUrl, currentTitle, currentType, currentDesc) {
         const res = await api.post('/api/toggleColl', {
             url: currentUrl,
             title: currentTitle,
-            type: currentType
+            type: currentType,
+            desc: currentDesc
         });
         return res.data;
     },

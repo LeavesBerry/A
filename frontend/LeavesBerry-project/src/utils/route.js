@@ -11,6 +11,7 @@ export let visitList = [];
 let timer = null;
 
 async function submitVisitList() {
+    console.log(1)
     if (!userState.isLogined || visitList.length == 0) return
     try {
         const res = await apiRequest.submitVisitList(visitList)
@@ -43,8 +44,8 @@ export function routeListener() {
                 return
             }
             else {
-                updatePageInfo(route.params.page, `${location.origin}${newPath}`)
-                navbarModule.initColl(pageState.currentUrl);
+                updatePageInfo(route.params.page, `${newPath}`)
+                navbarModule.initColl();
             }
 
         },
@@ -55,9 +56,7 @@ export function routeListener() {
 export function useGoPage() {
 
     function goPage(url) {
-        if (url !== visitList[-1]) {
-            visitList.push(url)
-        }
+       
         const reg = /^(.*)\/([^\/]+)\/config_index:(\d+)$/;
         const matchResult = url.match(reg)
         if (!matchResult) {
@@ -70,9 +69,13 @@ export function useGoPage() {
             const baseUrl = matchResult[1] + "/" + folderName;
             const configNum = Number(matchResult[3]);
             try {
-                configModule.expandContent(configNum, folderName,
-                    `${location.origin}${baseUrl}`)
                 router.push(baseUrl)
+                configModule.expandContent(configNum, folderName,
+                    `${baseUrl}`)
+                if (url !== visitList[-1]) {
+                    visitList.push({url: pageState.currentUrl, title: pageState.currentTitle, 
+                        type: pageState.currentType, desc: pageState.currentDesc})
+                }
 
                 return true
             } catch {

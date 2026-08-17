@@ -3,6 +3,7 @@ import { pageState, updatePageInfo } from "./page";
 import api from "./api";
 import { navbarModule } from "./navbar"
 import router from "../router";
+import { apiRequest } from "./request";
 
 
 export const configModule = reactive({
@@ -28,6 +29,11 @@ export const configModule = reactive({
         pageState.currentType = "essay"
         this.isConfigClosed = true
         this.isContentExpanded = true
+        if(pageState.isCollected) {
+            await apiRequest.refreshColl(pageState.currentUrl,
+                pageState.currentTitle, pageState.currentType, 
+                pageState.currentDesc)
+        }
     },
 
     hideContent() {

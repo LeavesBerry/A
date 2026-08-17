@@ -23,6 +23,7 @@ async def get_all_anno_info(request: Request, db: Session = Depends(get_db)):
             {
                 "title": item.title,
                 "type": item.type,
+                "desc": item.desc,
                 "id": item.id,
                 "anno_date": item.anno_date,
             }

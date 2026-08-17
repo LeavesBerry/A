@@ -352,7 +352,7 @@ const bioModule = {
             bioList = JSON.parse(cache)
         }
         else {
-            const bios = await fetch(`/texts/${type}/${type}_${selectedJsonIndex}.json`)
+            const bios = await fetch(`/text/${type}/${type}_${selectedJsonIndex}.json`)
             bioList = await bios.json()
             localStorage.setItem(`${type}_cache_${selectedJsonIndex}`, JSON.stringify(bioList))
         }

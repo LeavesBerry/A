@@ -164,8 +164,10 @@
         <button class="navbar-function-button" id="command-button"
           :style="{ color: !pageState.isCmdClosed ? 'red' : '#5A191B' }" @click="navbarModule.toggleCmdUI">/</button>
       </div>
+    </div>
 
-      <div id="command-menu" v-if="!pageState.isCmdClosed">
+    
+    <div id="command-menu" v-if="!pageState.isCmdClosed">
         <p id="command-title">指令面板</p>
         <button id="close-command" @click="navbarModule.toggleCmdUI">×</button>
         <input id="cmd-input" v-model="pageState.cmdInputValue" @keyup.enter="navbarModule.executeCmd(cmdOutputBox)"
@@ -175,7 +177,6 @@
           <p id="cmd-output">{{ pageState.cmdOutputText }}</p>
         </div>
       </div>
-    </div>
 
 
     <div id="login-window" :style="loginModule.window">
@@ -250,6 +251,7 @@ onMounted(() => {
   routeListener();
   startTimer();
   userModule.initUser();
+  navbarModule.getAllCollInfo();
   document.addEventListener('click', onGlobalClick);
 })
 

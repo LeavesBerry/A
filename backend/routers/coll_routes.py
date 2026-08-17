@@ -23,28 +23,31 @@ def coll_exists_cache_key(user_id: int, url_hash: str) -> str:
     return cache.build_key("coll", "exists", user_id, url_hash)
 
 
-@router.post("/api/initColl")
+@router.post("/api/refreshColl")
 @limiter.limit("10/10seconds")
-async def init_coll(request: Request, 
+async def refresh_coll(request: Request, 
     data: CollRequest,
     user_id: int = Depends(get_current_user("user_id")),
     db: Session = Depends(get_db),
 ):
     url_hash = hash_url(data.url)
-    cache_key = coll_exists_cache_key(user_id, url_hash)
+    coll = (
+        db.query(Coll)
+        .filter(Coll.user_id == user_id, Coll.url_hash == url_hash)
+        .first()
+    )
 
-    def load_exists():
-        return bool(
-            db.query(
-                exists().where(
-                    Coll.user_id == user_id,
-                    Coll.url_hash == url_hash,
-                )
-            ).scalar()
-        )
+    if not coll:
+        return
 
-    is_collected = cache.remember(cache_key, load_exists, CACHE_TTL_MEDIUM)
-    return JSONResponse({"msg": "ok", "is_collected": is_collected})
+    if not coll.title == data.title:
+        coll.title = data.title
+    if not coll.type == data.type:
+        coll.type = data.type
+    if not coll.desc == data.desc:
+        coll.desc = data.desc
+
+    db.commit()
 
 
 @router.post("/api/toggleColl")
@@ -77,6 +80,7 @@ async def toggle_coll(request: Request,
         url=data.url,
         url_hash=url_hash,
         type=data.type or "other",
+        desc=data.desc
     )
     db.add(new_coll)
     db.commit()
@@ -87,7 +91,7 @@ async def toggle_coll(request: Request,
     return JSONResponse({"msg": "收藏成功", "is_collected": True})
 
 
-@router.post("/api/getAllColl")
+@router.post("/api/getAllCollInfo")
 @limiter.limit("10/1minute")
 async def get_all_coll(request: Request, 
     user_id: int = Depends(get_current_user("user_id")),
@@ -99,9 +103,10 @@ async def get_all_coll(request: Request,
         colls = db.query(Coll).filter(Coll.user_id == user_id).all()
         return [
             {
-                "url": item.url.replace(ROOT_PATH, ""),
+                "url": item.url,
                 "title": item.title,
                 "type": item.type,
+                "desc": item.desc,
             }
             for item in colls
         ]

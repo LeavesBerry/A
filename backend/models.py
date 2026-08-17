@@ -76,12 +76,18 @@ class Coll(Base):
     url_hash = Column(String(64), nullable=False)
     title = Column(String(255), default="未知界面", nullable=False)
     type = Column(String(10), default="other", nullable=False)
+    desc = Column(String(25), default="未在本站详细注册的界面", nullable=False)
 
 class History(Base):
     __tablename__ = "history"
 
     user_id = Column(Integer, ForeignKey("user_base.user_id"), primary_key=True, nullable=False)
-    visit_list = Column(JSON, nullable=False, default=[])
+    url = Column(String(200), nullable=False, primary_key=True, )
+    url_hash = Column(String(64), nullable=False)
+    title = Column(String(255), default="未知界面", nullable=False)
+    type = Column(String(10), default="other", nullable=False)
+    desc = Column(String(25), default="未在本站详细注册的界面", nullable=False)
+    creat_time = Column(Integer, default=int(time.time()))
 
 class Anno(Base):
     __tablename__ = "anno"
@@ -89,6 +95,7 @@ class Anno(Base):
     id = Column(Integer, primary_key=True, autoincrement=True, index=True)
     title = Column(String(255), default="公告", nullable=False)
     type = Column(String(10), default="other", nullable=False)
+    desc = Column(String(25), default="未在本站详细注册的界面", nullable=False)
     main_text = Column(Text(), nullable=False)
     anno_date = Column(Integer, nullable=False)
 
@@ -101,6 +108,7 @@ class Email(Base):
     id = Column(Integer, nullable=False, autoincrement=True, primary_key=True)
     title = Column(String(255), default="邮件", nullable=False)
     type = Column(String(10), default="other", nullable=False)
+    desc = Column(String(25), default="未在本站详细注册的界面", nullable=False)
     main_text = Column(Text(), nullable=False)
     email_date = Column(Integer, nullable=False)
 
@@ -110,6 +118,8 @@ class Pages(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     url = Column(String(100), unique=True, nullable=False)
     title = Column(String(255), default="未知界面", nullable=False)
+    type = Column(String(10), default="other", nullable=False)
+    desc = Column(String(25), default="未在本站详细注册的界面", nullable=False)
 
 class TextRes(Base):
     __tablename__ = "text_res"

@@ -1,12 +1,12 @@
 <template>
 	<div class="slide-page">
 		<div class="home-page">
-			<img src="/icons/logo.png" id="logo">
+			<img src="/icon/logo.png" id="logo">
 			<div class="home-divider" id="home-d1"></div>
 			<div id="home-icon-box">
-				<img class="home-icon" src="/images/HomeMusicIcon.png">
-				<img class="home-icon" src="/images/HomeDiaryIcon.png">
-				<img class="home-icon" src="/images/HomeGoodIcon.png"> 
+				<img class="home-icon" src="/image/HomeMusicIcon.png">
+				<img class="home-icon" src="/image/HomeDiaryIcon.png">
+				<img class="home-icon" src="/image/HomeGoodIcon.png"> 
 			</div>
 			<div class="home-divider" id="home-d2"></div>
 			<span class="home-star" id="home-s1">✦</span>

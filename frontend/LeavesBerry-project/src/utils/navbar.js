@@ -4,8 +4,10 @@ import { showTips, copyText, createQRCode, du } from "./base"
 import { pageState, updatePageInfo } from "./page"
 import { cmdHandler } from "./cmd"
 import { userState } from "./user"
+import { ROOTPATH } from "../router"
 import { create } from "axios"
 import router from "../router"
+import api from "./api"
 
 export const navbarModule = {
     // 搜索
@@ -66,40 +68,60 @@ export const navbarModule = {
     // ------------------------------
     // 收藏功能
     // ------------------------------
+    async getAllCollInfo() {
+        if(!userState.isLogined) return
+        let coll_info = JSON.parse(localStorage.getItem('coll_info_cache'))
+        let coll_list = JSON.parse(localStorage.getItem('coll_list_cache'))
+        if (coll_info && coll_list) return
+        const res = await api.post('/api/getAllCollInfo')
+        coll_info = res.data
+        coll_list = coll_info.map(item => item.url)
+        localStorage.setItem('coll_list_cache', JSON.stringify(coll_list))
+        localStorage.setItem('coll_info_cache', JSON.stringify(coll_info))
+    },
+
     async initColl() {
         if (pageState.currentUrl == '') {
             const route = router.currentRoute.value
-            updatePageInfo(route.params.page, location.href);
+            updatePageInfo(route.params.page, location.href.replace(ROOTPATH,''));
         }
-        const collCacheKey = `coll_${pageState.currentUrl}`;
-        const cached = localStorage.getItem(collCacheKey);
-        if (cached !== null) {
-            pageState.isCollected = cached === "true";
-            return
+        const coll_list_cache = localStorage.getItem('coll_list_cache')
+        let coll_list = []
+        if (coll_list_cache) {
+            coll_list = JSON.parse(coll_list_cache)
         }
-        try {
-            const res = await apiRequest.initColl(pageState.currentUrl)
-            if (!disposeReturn(res)) {
-                pageState.isCollected = res.is_collected;
-                localStorage.setItem(collCacheKey, res.is_collected)
-            }
-        } catch (e) {
-            showTips(e);
-        }
+        pageState.isCollected = pageState.currentUrl in coll_list
     },
 
     async toggleColl() {
         if (!userState.isLogined) return
         try {
-            pageState.isCollected = !pageState.isCollected;
-            userState.isChangedColl = true;
+            const oldState = pageState.isCollected
+            pageState.isCollected = !oldState;
             const res = await apiRequest.toggleColl(pageState.currentUrl,
-                pageState.currentTitle, pageState.currentType);
+                pageState.currentTitle, pageState.currentType, pageState.currentDesc);
             if (!disposeReturn(res)) {
-                pageState.isCollected = res.is_collected;
-                localStorage.setItem(`coll_${pageState.currentUrl}`, res.is_collected)
+                const isCollected = res.is_collected
+                pageState.isCollected = isCollected;
+                let coll_info = JSON.parse(localStorage.getItem('coll_info_cache'))
+                let coll_list = JSON.parse(localStorage.getItem('coll_list_cache'))
+                if(isCollected) {
+                    coll_info.push({url: pageState.currentUrl, title: pageState.currentTitle, 
+                        type: pageState.currentType, desc: pageState.currentDesc})
+                    coll_list.push(pageState.currentUrl)
+                    localStorage.setItem('coll_list_cache', JSON.stringify(coll_list))
+                    localStorage.setItem('coll_info_cache', JSON.stringify(coll_info))
+                }
+                else {
+                    const collIndex = coll_list.indexOf(pageState.currentUrl)
+                    coll_list.splice(collIndex)
+                    coll_info.splice(collIndex)
+                    localStorage.setItem('coll_list_cache', JSON.stringify(coll_list))
+                    localStorage.setItem('coll_info_cache', JSON.stringify(coll_info))
+                }
             }
         } catch (e) {
+            pageState.isCollected = oldState
             showTips(e)
         }
     },
@@ -129,7 +151,7 @@ export const navbarModule = {
                 width: du(9),
                 paddingLeft: du(4.5),
                 paddingRight: du(4.5),
-                backgroundImage: 'url("/images/QR.png"),url("/images/Link.png")',
+                backgroundImage: 'url("/image/QR.png"),url("/image/Link.png")',
                 backgroundPosition: `${du(1)} center, right ${du(1)} center`,
                 backgroundSize: `${du(3)} ${du(3)}, ${du(3)} ${du(3)}`,
                 backgroundRepeat: 'no-repeat,no-repeat'

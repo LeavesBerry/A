@@ -19,7 +19,7 @@ def user_info_cache_key(user_id: int) -> str:
     return cache.build_key("user", "info", user_id)
 
 @router.post("/api/getAllEmailInfo")
-#@limiter.limit("5/60minute")
+@limiter.limit("5/60minute")
 async def get_all_email_info(request: Request, db: Session = Depends(get_db), 
                              user_id: int = Depends(get_current_user("user_id"))):
     cache_key = cache.build_key("email", "list")
@@ -30,6 +30,7 @@ async def get_all_email_info(request: Request, db: Session = Depends(get_db),
             {
                 "title": item.title,
                 "type": item.type,
+                "desc": item.desc,
                 "id": item.email_index,
                 "email_date": item.email_date,
             }
@@ -55,7 +56,7 @@ async def get_email_text(request: Request, data: EmailGetRequest,
         )
         if not item:
             raise APIError("邮件不存在")
-        return {"main_text": item.main_text, "title": item.title}
+        return {"main_text": item.main_text, "title": item.title, "desc": item.desc}
 
     result = cache.remember(cache_key, load_email, CACHE_TTL_LONG)
     return JSONResponse(result)
@@ -96,6 +97,7 @@ async def send_email(request: Request, data: EmailSendRequest,
     new_email = Email(user_id = recipient_id, email_index = recipient_info.last_email_index + 1, 
                       title = data.email_title, main_text = data.email_text, 
                       type = "user" if str(user_id) not in recipient_info.black_list else "blacker", 
+                      desc = f'一封来自ID为{user_id}的用户的邮件',
                       email_date = d.year * 10000 + d.month * 100 + d.day)
 
     recipient_info.last_email_index += 1

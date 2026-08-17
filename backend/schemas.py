@@ -37,6 +37,7 @@ class CollRequest(BaseModel):
     url: str
     title: Optional[str] = None
     type: Optional[str] = None
+    desc: Optional[str] = None
 
     @field_validator("url")
     def validate_url(cls, value):

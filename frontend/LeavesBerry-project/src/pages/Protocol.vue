@@ -51,7 +51,7 @@ async function getProto() {
     }
 
     try {
-        const res = await fetch('/texts/proto.json')
+        const res = await fetch('/text/proto.json')
         const data = await res.json() 
         applyProto(data)
     } catch {
