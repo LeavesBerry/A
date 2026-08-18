@@ -5,7 +5,7 @@ import { pageState } from '../utils/index.js'
 
 const pageModules = import.meta.glob('../pages/*.vue')
 
-export const ROOTPATH = "http://localhost:5173"
+export const ROOTPATH = window.location.origin
 export const SERVERPATH = "http://localhost:5000"
 
 const routes = [

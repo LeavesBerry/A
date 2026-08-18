@@ -567,6 +567,9 @@ onUnmounted(() => {
     outline: none;
     border: none;
     line-height: calc(8 * var(--design-vh));
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 </style>

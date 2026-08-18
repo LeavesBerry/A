@@ -50,31 +50,28 @@ function handleItemClick(sn, type) {
     width: 23vw;
     height: calc(8 * var(--design-vh, 4.57px));
     background-color: #FFF3D0;
-    border-top: 1px solid #180f0b;
-    border-bottom: 1px solid #180f0b;
+    border: 1px solid #3A251A;
+    border-radius: calc(3 * var(--design-vh, 4.57px));
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: calc(2 * var(--design-vh, 4.57px));
     margin-left: 1vw;
-    transition: all 0.3s ease;
 }
 
 .sidebar-config-text {
-    color: #180f0b;
+    color: #3A251A;
     font-size: calc(3.5 * var(--design-vh, 4.57px));
     font-weight: 500;
     letter-spacing: 10px;
-    transition: all 0.3s ease;
+    transition: color 0.3s ease;
 }
 
 .activespan{
-    color: #5A191B;
-    transform: scale(1.15);
+    color: #FFF3D0;
 }
 
 .activediv {
-    padding-left: 1vw;
-    border-color: #5A191B;
+    background-color: #3A251A;
 }
 </style>

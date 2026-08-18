@@ -48,6 +48,10 @@ async def refresh_coll(request: Request,
         coll.desc = data.desc
 
     db.commit()
+    cache.delete(
+        coll_list_cache_key(user_id),
+        coll_exists_cache_key(user_id, url_hash),
+    )
 
 
 @router.post("/api/toggleColl")

@@ -71,9 +71,9 @@ class LimLogin(Base):
 class Coll(Base):
     __tablename__ = "coll"
 
-    user_id = Column(Integer, ForeignKey("user_base.user_id"), primary_key=True, nullable=False)
-    url = Column(String(200), nullable=False, primary_key=True, )
-    url_hash = Column(String(64), nullable=False)
+    user_id = Column(Integer, ForeignKey("user_base.user_id"), primary_key=True, nullable=False, index=True)
+    url = Column(String(200), nullable=False, primary_key=True)
+    url_hash = Column(String(64), nullable=False, index=True)
     title = Column(String(255), default="未知界面", nullable=False)
     type = Column(String(10), default="other", nullable=False)
     desc = Column(String(25), default="未在本站详细注册的界面", nullable=False)
@@ -81,13 +81,13 @@ class Coll(Base):
 class History(Base):
     __tablename__ = "history"
 
-    user_id = Column(Integer, ForeignKey("user_base.user_id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("user_base.user_id"), nullable=False, index=True)
     id = Column(Integer, nullable=False, autoincrement=True, primary_key=True)
     url = Column(String(200), nullable=False)
     title = Column(String(255), default="未知界面", nullable=False)
     type = Column(String(10), default="other", nullable=False)
     desc = Column(String(25), default="未在本站详细注册的界面", nullable=False)
-    creat_time = Column(Integer, default=int(time.time()))
+    creat_time = Column(Integer, default=int(time.time()), index=True)
 
 class Anno(Base):
     __tablename__ = "anno"
@@ -124,6 +124,6 @@ class Pages(Base):
 class TextRes(Base):
     __tablename__ = "text_res"
 
-    id = Column(Integer,primary_key=True, autoincrement=True)
+    id = Column(Integer,primary_key=True, autoincrement=True, index=True)
     name = Column(String(100), unique=True, nullable=False, index=True)
     text = Column(JSON, nullable=False)

@@ -152,27 +152,30 @@
       <div id="navbar-fuction-button-box">
         <!-------------截图-------------->
         <button class="navbar-function-button" id="scrshot-button" 
-        @click="navbarModule.createScreenshot">◪</button>
+        @click="navbarModule.createScreenshot" aria-label="截图" title="截图">◪</button>
         <!-------------收藏-------------->
         <button class="navbar-function-button" id="collect-button"
           :style="{ color: pageState.isCollected ? '#73B436' : 'rgb(90,25,27)' }"
-          @click="navbarModule.toggleColl">✦</button>
+          @click="navbarModule.toggleColl" aria-label="收藏" title="收藏">✦</button>
         <!-------------分享-------------->
         <button class="navbar-function-button" id="share-button" @click="navbarModule.toggleShare"
-          :style="pageState.shareStyle">{{ pageState.shareText }}</button>
+          :style="pageState.shareStyle" aria-label="分享" title="分享">{{ pageState.shareText }}</button>
         <!-------------指令-------------->
         <button class="navbar-function-button" id="command-button"
-          :style="{ color: !pageState.isCmdClosed ? 'red' : '#5A191B' }" @click="navbarModule.toggleCmdUI">/</button>
+          :style="{ color: !pageState.isCmdClosed ? 'red' : '#5A191B' }" 
+          @click="navbarModule.toggleCmdUI" aria-label="指令" title="指令">/</button>
       </div>
     </div>
 
     
     <div id="command-menu" v-if="!pageState.isCmdClosed">
-        <p id="command-title">指令面板</p>
-        <button id="close-command" @click="navbarModule.toggleCmdUI">×</button>
-        <input id="cmd-input" v-model="pageState.cmdInputValue" @keyup.enter="navbarModule.executeCmd(cmdOutputBox)"
+        <p class="none-select" id="command-title">指令面板</p>
+        <button class="none-select" id="close-command" @click="navbarModule.toggleCmdUI">×</button>
+        <input id="cmd-input" v-model="pageState.cmdInputValue" 
+        @keyup.enter="navbarModule.executeCmd(cmdOutputBox)"
         placeholder="请输入指令 | 按键盘<Enter>或右侧<RUN>执行">
-        <button id="execute-cmd-button" @click="navbarModule.executeCmd(cmdOutputBox)">RUN</button>
+        <button class="none-select"
+        id="execute-cmd-button" @click="navbarModule.executeCmd(cmdOutputBox)">RUN</button>
         <div id="cmd-output-box" ref="cmdOutputBox">
           <p id="cmd-output">{{ pageState.cmdOutputText }}</p>
         </div>
@@ -203,10 +206,12 @@
         </div>
         <div id="info-input" :style="loginModule.infoInput">
           <button id="rechoose" @click.stop="loginModule.rechoose">返回</button>
-          <input id="input-email" v-model="loginModule.inputEmail" placeholder="邮箱"></input>
+          <input id="input-email" v-model="loginModule.inputEmail" placeholder="邮箱"
+          type="email"></input>
           <input id="input-code" v-model="loginModule.inputCode" placeholder="验证码 | 仅注册须填"></input>
           <input id="input-name" v-model="loginModule.inputName" placeholder="名称 | 仅注册须填"></input>
-          <input id="input-password" v-model="loginModule.inputPw" placeholder="密码"></input>
+          <input id="input-password" v-model="loginModule.inputPw" placeholder="密码"
+          type="password"></input>
           <button id="register" @click="loginModule.register">注册</button>
           <button id="login" @click="loginModule.login">登录</button>
         </div>

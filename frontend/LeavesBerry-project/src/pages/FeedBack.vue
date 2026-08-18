@@ -107,7 +107,7 @@ onUnmounted(() => {
     width: 90.5vw;
     height: fit-content;
     padding: 20px 5px;
-    border: 1px solid #4a4030;
+    border: 3px solid #4a4030;
     border-bottom: none;
     border-radius: calc(6 * var(--design-vh, 4.57px)) calc(6 * var(--design-vh, 4.57px)) 0 0;
     field-sizing: content;
@@ -137,7 +137,7 @@ onUnmounted(() => {
     width: 90.5vw;
     height: calc(8 * var(--design-vh, 4.57px));
     background-color: rgba(0, 0, 0, 0);
-    border: 1px solid #4a4030;
+    border: 3px solid #4a4030;
     border-radius: 0 0 calc(6 * var(--design-vh, 4.57px)) calc(6 * var(--design-vh, 4.57px));
     font-size: 20px;
     font-weight: 600;

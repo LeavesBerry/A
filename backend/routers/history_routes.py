@@ -52,7 +52,7 @@ def get_history(request: Request,
     cache_key = history_cache_key(user_id)
 
     def load_history():
-        history = db.query(History).filter(History.user_id == user_id).all()
+        history = db.query(History).filter(History.user_id == user_id).order_by(History.creat_time.asc()).all()
         return [
                 {
                 "url": item.url,

@@ -27,6 +27,8 @@
 								/
 								100) }}月{{ (item.email_date % 10000) % 100 }}日
 							</p>
+							<p id="email-desc">
+                        		|{{ item.desc.length > 0 ? item.desc : '未在本站详细注册的界面' }}</p>
 						</div>
 						<p class="refresh-tip none-select" v-if="currentConfig.length !== 0" @click="getAllEmailInfo">
 							若缺少邮件<br>可尝试点击此处刷新界面( •̀ ω •́ )</p>
@@ -46,20 +48,7 @@
 			<Logo></Logo>
 			<Sidebar :type-list="emailTypeList" @change-dir="switchDirConfig"
 			v-show="!configModule.isConfigClosed"></Sidebar>
-			<div class="hidden-container" :style="{
-				position:
-					configModule.isContentExpanded ? 'absolute' : 'fixed'
-			}">
-				<div class="content-container" :style="{
-					transform: configModule.isContentExpanded ?
-						`translateY(calc(-120vh + ${du(10)}))` : 'none'
-				}">
-					<button class="hide-content-button none-select" @click="configModule.hideContent()">×</button>
-					<p class="content-title">{{ configModule.contentTitle }}</p>
-					<div class="title-content-divider"></div>
-					<p class="content-text" >{{ configModule.contentText }}</p>
-				</div>
-			</div>
+			<ExContent></ExContent>
 		</teleport>
 	</div>
 
@@ -76,6 +65,7 @@ import {
 import { ref, onMounted, onUnmounted, watch } from "vue"
 import Sidebar from "../components/Sidebar.vue";
 import Logo from "../components/Logo.vue";
+import ExContent from "../components/ExContent.vue";
 
 const navList = ref([])
 const currentContent= ref('write')
@@ -342,5 +332,16 @@ onUnmounted(() => {
 	display: flex;
 	align-items: center;
 	padding-bottom: calc(5 * var(--design-vh));
+}
+
+#email-desc {
+    width: fit-content;
+    height: auto;
+    font-size: calc(4 * var(--design-vh));
+    color: #3A251A;
+    font-weight: 400;
+    position: absolute;
+    top: 55%;
+    left: 7%;
 }
 </style>

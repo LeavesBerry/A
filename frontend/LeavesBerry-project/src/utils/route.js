@@ -58,7 +58,7 @@ export function useGoPage() {
         const matchResult = url.match(reg)
         if (!matchResult) {
             router.push(url)
-            if (url !== visitList[-1]) {
+            if (url !== visitList.at(-1)) {
                 visitList.push({url: pageState.currentUrl, title: pageState.currentTitle, 
                     type: pageState.currentType, desc: pageState.currentDesc})
             }

@@ -22,7 +22,7 @@
 						background-position: calc(0.3 * var(--design-vh)) center;
 						"></button>
 					</div>
-					<p id="coll-des">
+					<p id="coll-desc">
                         |{{ item.desc.length > 0 ? item.desc : '未在本站详细注册的界面' }}</p>
 				</div>
 				<p class="refresh-tip none-select" v-if="currentConfig.length !== 0" @click="getAllColl">
@@ -167,7 +167,7 @@ onUnmounted(() => {
 	z-index: 3;
 }
 
-#coll-des {
+#coll-desc {
     width: fit-content;
     height: auto;
     font-size: calc(4 * var(--design-vh));

@@ -37,7 +37,7 @@ export const navbarModule = {
             const html2canvas = (await import ('html2canvas')).default;
             canvas = await html2canvas(targetDom, {
                 useCORS: true,
-                scale: window.devicePixelRatio,
+                scale: Math.min(window.devicePixelRatio, 2),
                 useCORS: true,
                 allowTaint: true,
                 backgroundColor: '#ffffff',
@@ -90,7 +90,7 @@ export const navbarModule = {
         if (coll_list_cache) {
             coll_list = JSON.parse(coll_list_cache)
         }
-        pageState.isCollected = pageState.currentUrl in coll_list
+        pageState.isCollected = coll_list.includes(pageState.currentUrl)
     },
 
     async toggleColl() {
@@ -114,8 +114,8 @@ export const navbarModule = {
                 }
                 else {
                     const collIndex = coll_list.indexOf(pageState.currentUrl)
-                    coll_list.splice(collIndex)
-                    coll_info.splice(collIndex)
+                    coll_list.splice(collIndex, 1)
+                    coll_info.splice(collIndex, 1)
                     localStorage.setItem('coll_list_cache', JSON.stringify(coll_list))
                     localStorage.setItem('coll_info_cache', JSON.stringify(coll_info))
                 }

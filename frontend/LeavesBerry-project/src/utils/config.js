@@ -2,8 +2,9 @@ import { ref, reactive } from "vue";
 import { pageState, updatePageInfo } from "./page";
 import api from "./api";
 import { navbarModule } from "./navbar"
-import router from "../router";
 import { apiRequest } from "./request";
+import { ROOTPATH } from "../router";
+import router from "../router";
 
 
 const fieldTypeConfig = {
@@ -32,9 +33,9 @@ export const configModule = reactive({
             this.contentId = id;
         }
         else {
-            pageState.currentTitle = `${this.contentId}号公告`;
-            pageState.currentDesc = `${this.contentTitle}`
-            pageState.currentType = "essay"
+            pageState.currentTitle = currentTitle;
+            pageState.currentDesc = currentDesc;
+            pageState.currentType = currentType
         }
         
         this.isConfigClosed = true
@@ -48,7 +49,7 @@ export const configModule = reactive({
 
     hideContent() {
         const route = router.currentRoute.value
-        updatePageInfo(route.params.page, location.href);
+        updatePageInfo(route.params.page, location.href.replace(ROOTPATH, ''));
         navbarModule.initColl();
         this.isContentExpanded = false;
         setTimeout(() => {
