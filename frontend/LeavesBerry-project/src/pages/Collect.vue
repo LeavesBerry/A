@@ -9,10 +9,15 @@
 					<p class="item-title" @click="goPage(item.url)">
 						{{ item.title.length > 0 ? item.title : '未知界面' }}</p>
 					<div id="colls-function-box">
-						<button @click.stop.prevent="cancelColl(`${item.url}`)" style="color: #73B436; 
-						font-size: calc(6 * var(--design-vh));
-						padding-bottom: 2%;
-						border-left: 1px solid #3A251A;">✦</button>
+						<button id="discoll-button"
+							@click.stop.prevent="cancelColl(`${item.url}`)"
+							aria-label="取消收藏">
+							<svg class="coll-function-icon" viewBox="0 0 24 24" aria-hidden="true"
+							fill="currentColor" width="72" height="72">
+								<path d="M12 2.8C12.8 7.8 16.2 11.2 21.2 12C16.2 12.8 12.8 16.2 12 21.2C11.2 16.2 7.8 12.8 2.8 12C7.8 11.2 11.2 7.8 12 2.8Z"
+									></path>
+							</svg>
+						</button>
 						<button @click.stop.prevent="createQRCode(`${ROOTPATH}${item.url}`)" style="background-image: url('/image/QR.png');
 						background-size: calc(4 * var(--design-vh));
 						background-position: calc(1.3 * var(--design-vh)) center;
@@ -49,9 +54,9 @@ import { ROOTPATH } from "../router/index.js";
 import { ref, onMounted, onUnmounted } from "vue"
 import Logo from "../components/Logo.vue";
 
-const navList = ref([])
+let navList = []
+let groupMap = new Map()
 const currentConfig = ref([])
-const groupMap = ref(new Map())
 const { goPage } = useGoPage()
 let isUnmounted = false
 
@@ -67,9 +72,22 @@ function applyCollList(data) {
 	if (isUnmounted) return
 
 	const list = Array.isArray(data) ? data : []
-	navList.value = list
-	currentConfig.value = list
-	groupMap.value = classifyGroup(list, 'type')
+	navList = list
+	groupMap = classifyGroup(list, 'type')
+
+	const index = currentSidebarConfig.value
+	
+	if (index == 0) {
+		currentConfig.value = navList
+		return
+	} 
+
+	for (let item of collTypeList) {
+		if (item.index == index) {
+			currentConfig.value = groupMap.get(item.typeKey)
+		}
+	}
+	
 }
 
 async function getAllColl() {
@@ -86,15 +104,15 @@ async function getAllColl() {
 async function cancelColl(url) {
 	if (!userState.isLogined) return
 
-	const oldMap = groupMap.value
-	const oldNavList = navList.value
+	const oldMap = groupMap
+	const oldNavList = navList
 	const oldConfig = currentConfig.value
 
 	try {
 		
-		navList.value = navList.value.filter(item => item.url !== url)
+		navList = navList.filter(item => item.url !== url)
 		currentConfig.value = currentConfig.value.filter(item => item.url !== url)
-		groupMap.value = classifyGroup(navList.value, 'type')
+		groupMap = classifyGroup(navList, 'type')
 
 		const res = await apiRequest.toggleColl(url)
 		if (isUnmounted) return
@@ -109,18 +127,17 @@ async function cancelColl(url) {
 			localStorage.setItem('coll_info_cache', JSON.stringify(coll_info))
 		}
 		else {
-			console.log(1)
-			navList.value = oldNavList
+			navList = oldNavList
 			currentConfig.value = oldConfig
-			groupMap.value = oldConfig
+			groupMap = oldConfig
 		}
 	}
 	catch (e) {
 		console.log(e)
 		if (!isUnmounted) showTips(e)
-		navList.value = oldNavList
+		navList = oldNavList
 		currentConfig.value = oldConfig
-		groupMap.value = oldConfig
+		groupMap = oldConfig
 	}
 }
 
@@ -128,11 +145,11 @@ function switchDirConfig(sn, type) {
 	currentSidebarConfig.value = sn
 
 	if (type === "all") {
-		currentConfig.value = navList.value
+		currentConfig.value = navList
 		return
 	}
 
-	currentConfig.value = groupMap.value.get(type) ?? []
+	currentConfig.value = groupMap.get(type) ?? []
 }
 
 onMounted(async () => {
@@ -195,4 +212,19 @@ onUnmounted(() => {
 	border-left: none;
 	z-index: 4;
 }
+
+#discoll-button {
+	color: #73B436;
+	border-left: 1px solid #3A251A;
+}
+
+.coll-function-icon {
+	transform: scale(1.3);
+	display: block;
+	width: calc(4 * var(--design-vh));
+	height: calc(4 * var(--design-vh));
+	flex: 0 0 calc(4 * var(--design-vh));
+	pointer-events: none;
+}
+
 </style>

@@ -100,7 +100,6 @@ export const userModule = reactive({
             throw error
         }
     },
-    async changeAvatar() { },
     async changeBio() { },
     changeXp(change) {
         const oldLevel = userState.level

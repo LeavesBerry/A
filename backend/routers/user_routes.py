@@ -56,7 +56,7 @@ def get_user_info(
             "user_id": user.user_id,
             "user_name": user.user_name,
             "user_email": user.user_email,
-            "avatar_url":  f'{user_profile.avatar_url}' if SERVER_PATH in user_profile.avatar_url else f'{SERVER_PATH}{user_profile.avatar_url}',
+            "avatar_url":  user_profile.avatar_ur.replace(SERVER_PATH, '') if SERVER_PATH in user_profile.avatar_url else user_profile.avatar_url,
             "bio": user_profile.bio,
             "level": user_profile.level_xp // 1000,
             "xp": user_profile.level_xp % 1000,

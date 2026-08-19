@@ -61,24 +61,70 @@
 }
 
 .navbar-function-button {
+    box-sizing: border-box;
     width: calc(4.2 * var(--design-vh, 4.57px));
     height: calc(4.2 * var(--design-vh, 4.57px));
+    min-width: calc(4.2 * var(--design-vh, 4.57px));
+    min-height: calc(4.2 * var(--design-vh, 4.57px));
     border-radius: calc(1 * var(--design-vh, 4.57px));
     border: none;
     background: #FFF3D0;
-    font-size: calc(4 * var(--design-vh, 4.57px));
-    display: flex;
-    gap: calc(1 * var(--design-vh, 4.57px));
-    justify-content: center;
-    align-items: center;
-    padding-top: 0;
     color: #5A191B;
     cursor: pointer;
+
+    display: grid;
+    place-items: center;
+    padding: 0;
+    margin: 0;
+    line-height: 0;
+    overflow: hidden;
 }
 
-#scrshot-button {
-    font-size: calc(3.5 * var(--design-vh, 4.57px));
+.navbar-function-icon {
+    display: block;
+    width: calc(3 * var(--design-vh, 4.57px));
+    height: calc(3 * var(--design-vh, 4.57px));
+    min-width: calc(3 * var(--design-vh, 4.57px));
+    min-height: calc(3 * var(--design-vh, 4.57px));
+    max-width: calc(3 * var(--design-vh, 4.57px));
+    max-height: calc(3 * var(--design-vh, 4.57px));
+    flex: none;
+    pointer-events: none;
+}
+
+.navbar-function-text {
+    display: grid;
+    place-items: center;
+    width: calc(3 * var(--design-vh, 4.57px));
+    height: calc(3 * var(--design-vh, 4.57px));
     line-height: 1;
+    font-size: calc(3 * var(--design-vh, 4.57px));
+}
+
+/* Navbar function icons: pixel-aligned to the reference artwork. */
+#scrshot-button .navbar-function-icon {
+    transform: translate(
+        calc(-0.12 * var(--design-vh, 4.57px)),
+        calc(0.12 * var(--design-vh, 4.57px))
+    );
+}
+
+#collect-button .navbar-function-icon,
+#command-button .navbar-function-icon {
+    width: calc(3.35 * var(--design-vh, 4.57px));
+    height: calc(3.35 * var(--design-vh, 4.57px));
+    min-width: calc(3.35 * var(--design-vh, 4.57px));
+    min-height: calc(3.35 * var(--design-vh, 4.57px));
+    max-width: calc(3.35 * var(--design-vh, 4.57px));
+    max-height: calc(3.35 * var(--design-vh, 4.57px));
+    transform: translateY(calc(0.12 * var(--design-vh, 4.57px)));
+}
+
+#share-button .navbar-function-text {
+    width: calc(3.35 * var(--design-vh, 4.57px));
+    height: calc(3.35 * var(--design-vh, 4.57px));
+    font-size: calc(3.35 * var(--design-vh, 4.57px));
+    transform: translateY(calc(0.12 * var(--design-vh, 4.57px)));
 }
 
 #screen-shot-window {
@@ -115,7 +161,7 @@
 }
 
 #command-button {
-    padding-top: calc(0.5 * var(--design-vh, 4.57px));
+    padding: 0;
 }
 
 #command-menu {

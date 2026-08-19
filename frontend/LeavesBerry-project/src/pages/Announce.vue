@@ -40,9 +40,10 @@ import Sidebar from "../components/Sidebar.vue";
 import Logo from "../components/Logo.vue";
 import ExContent from "../components/ExContent.vue";
 
-const navList = ref([])
+let navList = []
+let groupMap = new Map()
 const currentConfig = ref([])
-const groupMap = ref(new Map())
+
 let isUnmounted = false
 
 const annoTypeList = [
@@ -53,25 +54,45 @@ const annoTypeList = [
 	{ index: 4, typeKey: "other", label: "其他", id: "other" }
 ]
 
+function applyAnnoList(data) {
+	if (isUnmounted) return
+
+	const list = Array.isArray(data) ? data : []
+	navList = list
+	groupMap = classifyGroup(list, 'type')
+
+	const index = currentSidebarConfig.value
+
+	if (index == 0) {
+		currentConfig.value = navList
+		return
+	} 
+
+	for (const item in annoTypeList) {
+		if (item.index == index) {
+			currentConfig.value = groupMap.get(item.typeKey)
+		}
+	}
+	
+	
+}
+
 async function getAllAnnoInfo() {
 	const res = await api.post('/api/getAllAnnoInfo')
 	if (isUnmounted) return
 
-	const list = Array.isArray(res.data) ? res.data : []
-	navList.value = list
-	currentConfig.value = list
-	groupMap.value = classifyGroup(list, 'type')
+	applyAnnoList(res.data)
 }
 
 function switchDirConfig(sn, type) {
 	currentSidebarConfig.value = sn
 
 	if (type === "all") {
-		currentConfig.value = navList.value
+		currentConfig.value = navList
 		return
 	}
 
-	currentConfig.value = groupMap.value.get(type) ?? []
+	currentConfig.value = groupMap.get(type) ?? []
 }
 
 onMounted(async () => {

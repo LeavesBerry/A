@@ -67,10 +67,10 @@ import Sidebar from "../components/Sidebar.vue";
 import Logo from "../components/Logo.vue";
 import ExContent from "../components/ExContent.vue";
 
-const navList = ref([])
+let groupMap = new Map()
 const currentContent= ref('write')
 const currentConfig = ref([])
-const groupMap = ref(new Map())
+
 
 const mainTextInputValue = ref(null)
 const recipientInputValue = ref(null)
@@ -93,7 +93,17 @@ async function getAllEmailInfo() {
 	if (isUnmounted) return
 
 	const list = Array.isArray(res.data) ? res.data : []
-	groupMap.value = classifyGroup(list, "type")
+	groupMap = classifyGroup(list, "type")
+
+	switch (currentContent) {
+		case "recieve":
+			currentConfig.value = groupMap.get("user") ?? []
+			return
+
+		case "trash":
+			currentConfig.value = groupMap.get("blacker") ?? []
+			return
+	}
 }
 
 async function sendEmail() {
@@ -176,11 +186,11 @@ function switchDirConfig(sn, type) {
 
 	switch (type) {
 		case "recieve":
-			currentConfig.value = groupMap.value.get("user") ?? []
+			currentConfig.value = groupMap.get("user") ?? []
 			return
 
 		case "trash":
-			currentConfig.value = groupMap.value.get("blacker") ?? []
+			currentConfig.value = groupMap.get("blacker") ?? []
 			return
 	}
 
