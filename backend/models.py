@@ -62,7 +62,7 @@ class Code(Base):
 class LimLogin(Base):
     __tablename__ = "lim_login"
 
-    user_ip = Column(String(20), primary_key=True, unique=True, index=True, nullable=False)
+    user_ip = Column(String(100), primary_key=True, unique=True, index=True, nullable=False)
     try_times = Column(Integer, default=0, nullable=False)
     lim_start_time = Column(Float, default=0, nullable=False)
     lim_time = Column(Integer, default=0, nullable=False)
