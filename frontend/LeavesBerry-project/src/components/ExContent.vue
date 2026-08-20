@@ -26,8 +26,7 @@ import { configModule, du } from '../utils';
     left: 5vw;
     width: 90vw;
     height: auto;
-    z-index: 9;
-    z-index: 9;
+    z-index: 10;
 }
 
 .content-container {

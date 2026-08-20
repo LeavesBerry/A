@@ -19,10 +19,6 @@ def coll_list_cache_key(user_id: int) -> str:
     return cache.build_key("coll", "list", user_id)
 
 
-def coll_exists_cache_key(user_id: int, url_hash: str) -> str:
-    return cache.build_key("coll", "exists", user_id, url_hash)
-
-
 @router.post("/api/refreshColl")
 @limiter.limit("10/10seconds")
 async def refresh_coll(request: Request, 
@@ -49,8 +45,7 @@ async def refresh_coll(request: Request,
 
     db.commit()
     cache.delete(
-        coll_list_cache_key(user_id),
-        coll_exists_cache_key(user_id, url_hash),
+        coll_list_cache_key(user_id)
     )
 
 
@@ -73,8 +68,7 @@ async def toggle_coll(request: Request,
         db.delete(coll)
         db.commit()
         cache.delete(
-            coll_list_cache_key(user_id),
-            coll_exists_cache_key(user_id, url_hash),
+            coll_list_cache_key(user_id)
         )
         return JSONResponse({"msg": "已取消收藏", "is_collected": False})
 
@@ -89,8 +83,7 @@ async def toggle_coll(request: Request,
     db.add(new_coll)
     db.commit()
     cache.delete(
-        coll_list_cache_key(user_id),
-        coll_exists_cache_key(user_id, url_hash),
+        coll_list_cache_key(user_id)
     )
     return JSONResponse({"msg": "收藏成功", "is_collected": True})
 

@@ -45,6 +45,8 @@
                     </div>
                 </div>
 
+                <div class="space"></div>
+
             </div>
             <div class="item-box" v-if="currentContent == 'email'">
                 <input class="item" id="email-input" v-model="emailInputValue" placeholder="请输入邮箱"
@@ -570,6 +572,13 @@ onUnmounted(() => {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.space {
+    margin-top: 80vh;
+    width: 100vw;
+    height: 10vh;
+    background:none;
 }
 
 </style>

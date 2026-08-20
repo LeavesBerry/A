@@ -15,14 +15,14 @@ from request_limit import check_user_request, update_request_record
 
 router = APIRouter()
 
-def user_info_cache_key(user_id: int) -> str:
-    return cache.build_key("user", "info", user_id)
+def email_detail_cache_key(user_id: int, email_index: int) -> str:
+    return 
 
 @router.post("/api/getAllEmailInfo")
 #@limiter.limit("5/60minute")
 async def get_all_email_info(request: Request, db: Session = Depends(get_db), 
                              user_id: int = Depends(get_current_user("user_id"))):
-    cache_key = cache.build_key("email", "list")
+    cache_key = cache.build_key("email", "list", user_id)
 
     def load_emails():
         emails = db.query(Email.title, Email.type, Email.email_index, Email.email_date,
@@ -46,7 +46,7 @@ async def get_all_email_info(request: Request, db: Session = Depends(get_db),
 @limiter.limit("1/1second")
 async def get_email_content(request: Request, data: EmailGetRequest, 
                         db: Session = Depends(get_db), user_id = Depends(get_current_user("user_id"))):
-    cache_key = cache.build_key("email", "detail", data.id)
+    cache_key = cache.build_key("email", "detail", user_id, data.id)
 
     def load_email():
         item = (
@@ -104,6 +104,6 @@ async def send_email(request: Request, data: EmailSendRequest,
 
     db.add(new_email)
     db.commit()
-    cache.delete(user_info_cache_key(recipient_id))
+    cache.delete(cache.build_key("email", "list", recipient_id))
 
     return JSONResponse({"msg": f'成功给{recipient_id}号用户发送邮件'})
