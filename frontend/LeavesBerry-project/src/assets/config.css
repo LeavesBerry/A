@@ -44,6 +44,17 @@
     left: 7%;
 }
 
+.item-desc {
+    width: fit-content;
+    height: auto;
+    font-size: calc(4 * var(--design-vh));
+    color: #3A251A;
+    font-weight: 400;
+    position: absolute;
+    top: 55%;
+    left: 7%;
+}
+
 .refresh-tip {
     display: flex;
     font-size: 20px;
@@ -53,4 +64,11 @@
     align-items: center;
     padding-top: calc(6 * var(--design-vh));
     padding-bottom: calc(6 * var(--design-vh));
+}
+
+@media (min-width: 1px) and (orientation: portrait) {
+	.item-desc {
+		position: absolute;
+		top: 42%;
+	}
 }

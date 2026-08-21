@@ -27,7 +27,7 @@
 						background-position: calc(0.3 * var(--design-vh)) center;
 						"></button>
 					</div>
-					<p id="coll-desc">
+					<p class="item-desc" id="coll-desc">
                         |{{ item.desc.length > 0 ? item.desc : '未在本站详细注册的界面' }}</p>
 				</div>
 				<p class="refresh-tip none-select" v-if="currentConfig.length !== 0" @click="getAllColl">
@@ -184,17 +184,6 @@ onUnmounted(() => {
 	z-index: 3;
 }
 
-#coll-desc {
-    width: fit-content;
-    height: auto;
-    font-size: calc(4 * var(--design-vh));
-    color: #3A251A;
-    font-weight: 400;
-    position: absolute;
-    top: 55%;
-    left: 7%;
-}
-
 .item button {
 	width: calc(8 * var(--design-vh));
 	height: calc(6 * var(--design-vh));
@@ -225,6 +214,17 @@ onUnmounted(() => {
 	height: calc(4 * var(--design-vh));
 	flex: 0 0 calc(4 * var(--design-vh));
 	pointer-events: none;
+}
+
+@media (min-width: 1px) and (orientation: portrait) {
+	.item {
+		height: calc(30 * var(--design-vh));
+	}
+	#colls-function-box {
+		position: absolute;
+		left: 6.4%;
+		top: 65%;
+	}
 }
 
 </style>

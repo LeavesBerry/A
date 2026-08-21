@@ -74,4 +74,11 @@ function handleItemClick(sn, type) {
 .activediv {
     background-color: #3A251A;
 }
+
+@media (min-width: 1px) and (orientation: portrait) {
+	.sidebar-config-text {
+        font-size: calc(2.7 * var(--design-vh, 4.57px));
+        letter-spacing: 2.5px;
+    }
+}
 </style>

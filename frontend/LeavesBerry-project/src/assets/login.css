@@ -1,10 +1,10 @@
 /* 登录选择卡片中的人物图标：只用网页元素绘制，不依赖图片资源 */
 .entry-person {
     position: absolute;
-    top: calc(8 * var(--design-vh, 4.57px));
-    left: calc(8.6 * var(--design-vh, 4.57px));
-    width: calc(20 * var(--design-vh, 4.57px));
-    height: calc(32 * var(--design-vh, 4.57px));
+    top: 8vh;
+    left: 8.6vh;
+    width: 20vh;
+    height: 32vh;
     pointer-events: none;
     z-index: 2;
 }
@@ -18,19 +18,19 @@
 }
 
 .entry-person__head {
-    top: calc(3 * var(--design-vh, 4.57px));
-    left: calc(5 * var(--design-vh, 4.57px));
-    width: calc(10 * var(--design-vh, 4.57px));
-    height: calc(10 * var(--design-vh, 4.57px));
+    top: 3vh;
+    left: 5vh;
+    width: 10vh;
+    height: 10vh;
     border-radius: 50%;
 }
 
 .entry-person__neck {
-    top: calc(15 * var(--design-vh, 4.57px));
-    left: calc(7.8 * var(--design-vh, 4.57px));
-    width: calc(3.8 * var(--design-vh, 4.57px));
-    height: calc(3 * var(--design-vh, 4.57px));
-    border-radius: 0 0 calc(6 * var(--design-vh, 4.57px)) calc(6 * var(--design-vh, 4.57px));
+    top: 15vh;
+    left: 7.8vh;
+    width: 3.8vh;
+    height: 3vh;
+    border-radius: 0 0 6vh 6vh;
     z-index: 1;
     overflow: hidden;
 }
@@ -39,9 +39,9 @@
     content: "";
     position: absolute;
     left: 0;
-    top: calc(-2 * var(--design-vh, 4.57px));
-    width: calc(6 * var(--design-vh, 4.57px));
-    height: calc(4 * var(--design-vh, 4.57px));
+    top: -2vh;
+    width: 6vh;
+    height: 4vh;
     border-radius: 50%;
 }
 
@@ -62,13 +62,13 @@
 }
 
 .entry-person__body {
-    top: calc(10 * var(--design-vh, 4.57px));
-    left: calc(1.3 * var(--design-vh, 4.57px));
+    top: 10vh;
+    left: 1.3vh;
     width: 0;
     height: 0;
-    border-left: calc(8.7 * var(--design-vh, 4.57px)) solid transparent;
-    border-right: calc(8.7 * var(--design-vh, 4.57px)) solid transparent;
-    border-bottom: calc(24 * var(--design-vh, 4.57px)) solid;
+    border-left: 8.7vh solid transparent;
+    border-right: 8.7vh solid transparent;
+    border-bottom: 24vh solid;
 }
 
 .entry-person--visitor .entry-person__head {
@@ -91,9 +91,9 @@
 
 .entry-person--member .entry-person__sparkle {
     top: 0;
-    right: calc(2 * var(--design-vh, 4.57px));
-    width: calc(7 * var(--design-vh, 4.57px));
-    height: calc(7 * var(--design-vh, 4.57px));
+    right: 2vh;
+    width: 7vh;
+    height: 7vh;
     background: #F39AAA;
     z-index: 1001;
     clip-path: polygon(50% 0%, 60% 39%, 100% 50%, 60% 61%, 50% 100%, 40% 61%, 0% 50%, 40% 39%);
@@ -101,17 +101,19 @@
 
 #login-window {
     position: fixed;
-    top: calc(15 * var(--design-vh, 4.57px));
-    left: calc(50vw - calc(40 * var(--design-vh, 4.57px)));
-    height: calc(50 * var(--design-vh, 4.57px));
-    width: calc(80 * var(--design-vh, 4.57px));
+    top: 15vh;
+    left: calc(50vw - 40vh);
+    height: 50vh;
+    width: 80vh;
     background-color: #5A191B;
-    border-radius: calc(5 * var(--design-vh, 4.57px));
+    border-radius: 5vh;
     border-color: #3A251A;
-    border-width: calc(0.5 * var(--design-vh, 4.57px));
-    padding: calc(28 * var(--design-vh, 4.57px)) 0 0 0;
+    border-width: 0.5vh;
+    padding: 28vh 0 0 0;
     display: none;
     z-index: 999;
+    transform: scale(0.8);
+    transform-origin: top;
 }
 
 #login-window * {
@@ -120,10 +122,10 @@
 }
 
 #identification {
-    margin-top: calc(2 * var(--design-vh, 4.57px));
-    height: calc(30 * var(--design-vh, 4.57px));
+    margin-top: 2vh;
+    height: 30vh;
     color: #3A251A;
-    font-size: calc(5 * var(--design-vh, 4.57px));
+    font-size: 5vh;
     font-weight: 800;
     text-align: center;
 }
@@ -131,43 +133,43 @@
 #enter-tip {
     position: absolute;
     left: 0;
-    top: calc(55 * var(--design-vh, 4.57px));
-    width: calc(80 * var(--design-vh, 4.57px));
-    height: calc(30 * var(--design-vh, 4.57px));
+    top: 55vh;
+    width: 80vh;
+    height: 30vh;
     color: #FFF3D0;
     text-align: center;
 }
 
 #enter-tip p {
-    font-size: calc(5 * var(--design-vh, 4.57px));
+    font-size: 5vh;
     font-weight: 800;
 }
 
 #visitor-entry {
     position: absolute;
-    left: calc(2 * var(--design-vh, 4.57px));
-    top: calc(2 * var(--design-vh, 4.57px));
-    width: calc(37.2 * var(--design-vh, 4.57px));
-    height: calc(50 * var(--design-vh, 4.57px));
+    left: 2vh;
+    top: 2vh;
+    width: 37.2vh;
+    height: 50vh;
     background-color: #FFF3D0;
-    border-radius: calc(3 * var(--design-vh, 4.57px));
+    border-radius: 3vh;
 }
 
 #visitor-sign {
     position: absolute;
-    top: calc(8 * var(--design-vh, 4.57px));
-    left: calc(8.6 * var(--design-vh, 4.57px));
-    width: calc(20 * var(--design-vh, 4.57px));
+    top: 8vh;
+    left: 8.6vh;
+    width: 20vh;
     height: auto;
 }
 
 #member-entry {
     position: absolute;
-    right: calc(2 * var(--design-vh, 4.57px));
-    top: calc(2 * var(--design-vh, 4.57px));
-    width: calc(37.2 * var(--design-vh, 4.57px));
-    height: calc(50 * var(--design-vh, 4.57px));
-    border-radius: calc(3 * var(--design-vh, 4.57px));
+    right: 2vh;
+    top: 2vh;
+    width: 37.2vh;
+    height: 50vh;
+    border-radius: 3vh;
     background-color: #FFF3D0;
     transform-origin: 100% 100%;
     transition: transform 0.4s ease-out;
@@ -176,88 +178,90 @@
 #member-entry button {
     border: none;
     background-color: #FFF3D0;
-    font-size: calc(3 * var(--design-vh, 4.57px));
+    font-size: 3vh;
     color: #3A251A;
     font-weight: 400;
     text-align: center;
-    letter-spacing: calc(2 * var(--design-vh, 4.57px));
+    letter-spacing: 2vh;
     transform-origin: 50% 100%;
 }
 
 #member-sign {
     position: absolute;
-    top: calc(8 * var(--design-vh, 4.57px));
-    left: calc(8.6 * var(--design-vh, 4.57px));
-    width: calc(20 * var(--design-vh, 4.57px));
+    top: 8vh;
+    left: 8.6vh;
+    width: 20vh;
     height: auto;
 }
 
 
 #rechoose {
     position: absolute;
-    left: calc(-19.5 * var(--design-vh, 4.57px));
-    bottom: calc(-60 * var(--design-vh, 4.57px));
-    width: calc(76 * var(--design-vh, 4.57px));
-    height: calc(8 * var(--design-vh, 4.57px));
-    border-radius: calc(4 * var(--design-vh, 4.57px));
+    left: -19.5vh;
+    bottom: -60vh;
+    width: 76vh;
+    height: 8vh;
+    border-radius: 4vh;
 }
 
-#info-input {
+#info-input-box {
     display: none;
     transform: scale(0.49, 1);
 }
 
-#info-input input {
-    width: calc(67 * var(--design-vh, 4.57px));
-    height: calc(8 * var(--design-vh, 4.57px));
-    border: calc(0.5 * var(--design-vh, 4.57px)) solid #5A191B;
-    border-radius: calc(4 * var(--design-vh, 4.57px));
+#info-input-box input {
+    width: 67vh;
+    height: 8vh;
+    border: 0.5vh solid #5A191B;
+    border-radius: 4vh;
     background-color: rgba(255, 255, 255, 0.4);
     color: #3A251A;
+    font-size: 4.3vh;
     font-weight: 400;
+    color: #3A251A;
     outline: none;
-    padding-left: calc(3 * var(--design-vh, 4.57px));
+    padding-left: 3vh;
 }
 
 #input-email {
     position: absolute;
-    top: calc(4 * var(--design-vh, 4.57px));
-    left: calc(-17 * var(--design-vh, 4.57px));
+    top: 4vh;
+    left: -17vh;
 }
 
 #input-password {
     position: absolute;
-    top: calc(15 * var(--design-vh, 4.57px));
-    left: calc(-17 * var(--design-vh, 4.57px));
+    top: 15vh;
+    left: -17vh;
 }
 
 #input-name {
     position: absolute;
-    top: calc(26 * var(--design-vh, 4.57px));
-    left: calc(-17 * var(--design-vh, 4.57px));
+    top: 26vh;
+    left: -17vh;
 }
 
 #input-code {
     position: absolute;
-    top: calc(38 * var(--design-vh, 4.57px));
-    left: calc(-17 * var(--design-vh, 4.57px));
+    top: 38vh;
+    left: -17vh;
 }
 
 #login {
     position: absolute;
-    bottom: calc(-71 * var(--design-vh, 4.57px));
-    left: calc(-19.5 * var(--design-vh, 4.57px));
-    width: calc(39 * var(--design-vh, 4.57px));
-    height: calc(8 * var(--design-vh, 4.57px));
-    border-radius: calc(4 * var(--design-vh, 4.57px)) 0 0 calc(4 * var(--design-vh, 4.57px));
+    bottom: -71vh;
+    left: -19.5vh;
+    width: 39vh;
+    height: 8vh;
+    border-radius: 4vh 0 0 4vh;
 }
 
 
 #register {
     position: absolute;
-    bottom: calc(-71 * var(--design-vh, 4.57px));
-    left: calc(17.5 * var(--design-vh, 4.57px));
-    width: calc(39 * var(--design-vh, 4.57px));
-    height: calc(8 * var(--design-vh, 4.57px));
-    border-radius: 0 calc(4 * var(--design-vh, 4.57px)) calc(4 * var(--design-vh, 4.57px)) 0;
+    bottom: -71vh;
+    left: 17.5vh;
+    width: 39vh;
+    height: 8vh;
+    border-radius: 0 4vh 4vh 0;
 }

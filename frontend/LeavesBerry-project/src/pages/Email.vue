@@ -22,12 +22,12 @@
 						<div class="item" v-for="item in currentConfig" :key="item.id"
 							@click="configModule.expandContent(item.id, 'Email')">
 							<p class="item-title">{{ item.title }}</p>
-							<p class="email-date">————{{ Math.floor(item.email_date / 10000) }}年{{ Math.floor((item.email_date %
+							<p id="email-date">{{ Math.floor(item.email_date / 10000) }}年{{ Math.floor((item.email_date %
 								10000)
 								/
 								100) }}月{{ (item.email_date % 10000) % 100 }}日
 							</p>
-							<p id="email-desc">
+							<p class="item-desc" id="email-desc">
                         		|{{ item.desc.length > 0 ? item.desc : '未在本站详细注册的界面' }}</p>
 						</div>
 						<p class="refresh-tip none-select" v-if="currentConfig.length !== 0" @click="getAllEmailInfo">
@@ -219,11 +219,11 @@ onUnmounted(() => {
 	/* 457px * 2.4 */
 }
 
-.email-date {
+#email-date {
 	width: 250px;
 	text-align: left;
 	position: absolute;
-	right: 10%;
+	right: 0;
 	top: 50%;
 	font-size: calc(4 * var(--design-vh));
 	color: #706048;
@@ -344,14 +344,14 @@ onUnmounted(() => {
 	padding-bottom: calc(5 * var(--design-vh));
 }
 
-#email-desc {
-    width: fit-content;
-    height: auto;
-    font-size: calc(4 * var(--design-vh));
-    color: #3A251A;
-    font-weight: 400;
-    position: absolute;
-    top: 55%;
-    left: 7%;
+@media (min-width: 1px) and (orientation: portrait) {
+	.item {
+		height: calc(30 * var(--design-vh));
+	}
+	#email-date {
+		position: absolute;
+		left: 7%;
+		top: 65%;
+	}
 }
 </style>

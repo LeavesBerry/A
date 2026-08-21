@@ -29,9 +29,9 @@ import Logo from '../components/Logo.vue';
 
 <style scoped>
 #logo {
-	width: calc(40 * var(--design-vh, 4.57px));
+	height: 15vh;
 	position: relative;
-	margin-top: calc(10 * var(--design-vh, 4.57px));
+	margin-top: calc(2vh + 8 * var(--design-vh));
 	user-select: none;
 	-webkit-user-select: none;
 }
@@ -43,17 +43,17 @@ import Logo from '../components/Logo.vue';
 }
 
 #home-d1 {
-	margin-top: calc(-1 * var(--design-vh, 4.57px));
+	margin-top: 0;
 }
 
 #home-d2 {
-	margin-top: calc(77 * var(--design-vh, 4.57px));
+	margin-top: 37vh;
 }
 
 .home-star {
 	position:absolute;
-	top: calc(20 * var(--design-vh, 4.57px));
-	font-size: calc(6 * var(--design-vh, 4.57px));
+	top: calc(7.7vh + 8 * var(--design-vh));
+	font-size: 3.5vh;
 	color: #3a251a;
 }
 
@@ -65,6 +65,7 @@ import Logo from '../components/Logo.vue';
 #home-s2 {
 	position: absolute;
 	left: 32vw;
+	opacity: 0;
 }
 
 #home-s3 {
@@ -85,20 +86,36 @@ import Logo from '../components/Logo.vue';
 #home-s6 {
 	position: absolute;
 	right: 32vw;
+	opacity: 0;
+}
+
+
+@media (min-width: 1px) and (orientation: landscape) {
+	#home-s2,#home-s6{
+		opacity: 1;
+	}
+	#logo {
+		height: 20vh;
+	}
+	.home-star {
+		position:absolute;
+		top: calc(8.7vh + 8 * var(--design-vh));
+		font-size: 6vh;
+	}
 }
 
 #home-icon-box {
 	width: 100vw;
-	height: calc(6 * var(--design-vh, 4.57px));
+	height: 6vh;
 	position: relative;
-	margin-top: calc(2.5 * var(--design-vh, 4.57px));
+	margin-top: 2.5vh;
 	display: flex;
 	justify-items: center;
 	justify-content: center;
 }
  
 .home-icon {
-	height: calc(80 * var(--design-vh, 4.57px));
+	height: 40vh;
 	width: auto;
 	margin: 0 calc(2 * var(--design-vh, 4.57px));
 	display: flex;

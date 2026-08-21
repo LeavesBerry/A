@@ -23,12 +23,16 @@
     padding: 0 calc(4 * var(--design-vh, 4.57px));
     width: 16%;
     height: calc(6 * var(--design-vh, 4.57px));
-    border: calc(0.5 * var(--design-vh, 4.57px)) solid white;
+    border: calc(0.5 * var(--design-vh, 4.57px)) solid #FFF3D0;
     border-radius: calc(3 * var(--design-vh, 4.57px)) 0 0 calc(3 * var(--design-vh, 4.57px));
     background: rgba(0, 0, 0, 0);
     outline: none;
-    color: white;
+    color: #FFF3D0;
     font-size: calc(3 * var(--design-vh, 4.57px));
+}
+
+#search-input::placeholder {
+    color: rgba(255, 243, 208, 0.5);
 }
 
 #search-button {
@@ -37,11 +41,11 @@
     left: calc(26% - calc(0.5 * var(--design-vh, 4.57px)));
     width: 40px;
     height: calc(6 * var(--design-vh, 4.57px));
-    border: calc(0.5 * var(--design-vh, 4.57px)) solid white;
+    border: calc(0.5 * var(--design-vh, 4.57px)) solid #FFF3D0;
     border-radius: 0 calc(3 * var(--design-vh, 4.57px)) calc(3 * var(--design-vh, 4.57px)) 0;
     background: rgba(0, 0, 0, 0);
     font-size: calc(3 * var(--design-vh, 4.57px));
-    color: white;
+    color: #FFF3D0;
     cursor: pointer;
 }
 
@@ -140,14 +144,14 @@
 }
 
 #screen-shot {
-    margin-top: calc(18 * var(--design-vh, 4.57px));
+    margin-top: 15vh;
     width: 70vw;
     height: 70vh;
 }
 
 #close-screen-shot-window-button {
     position: absolute;
-    top: calc(18 * var(--design-vh, 4.57px));
+    top: 15vh;
     right: 10%;
     font-size: calc(8 * var(--design-vh, 4.57px));
     color: #5A191B;
@@ -256,4 +260,17 @@
     -webkit-user-select: text;
     user-select: text;
     color: #c0ae93;
+}
+
+@media (min-width: 1px) and (orientation: portrait) {
+	#search-input {
+        position: fixed;
+        left: 22%;
+        width: 26%;
+    }
+
+    #search-button {
+        position: fixed;
+        left: calc(48% - calc(0.5 * var(--design-vh, 4.57px)));
+    }
 }

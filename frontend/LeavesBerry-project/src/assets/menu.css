@@ -49,48 +49,49 @@
 
 .star {
     position: absolute;
-    font-size: calc(4 * var(--design-vh, 4.57px));
+    transform: scale(1.5);
+    transform-origin: center;
     color: #73B436;
 }
 
 .s1 {
-    top: calc(-0.6 * var(--design-vh, 4.57px));
+    top: calc(0.8 * var(--design-vh, 4.57px));
     left: calc(2.2 * var(--design-vh, 4.57px));
 }
 
 .s2 {
-    top: calc(-0.6 * var(--design-vh, 4.57px));
+    top: calc(0.8 * var(--design-vh, 4.57px));
     right: calc(2.2 * var(--design-vh, 4.57px));
 }
 
 .s3 {
-    top: calc(1.0 * var(--design-vh, 4.57px));
-    left: calc(0.6 * var(--design-vh, 4.57px));
+    top: calc(2.2 * var(--design-vh, 4.57px));
+    left: calc(0.8 * var(--design-vh, 4.57px));
 }
 
 .s4 {
-    top: calc(1.0 * var(--design-vh, 4.57px));
-    right: calc(0.6 * var(--design-vh, 4.57px));
+    top: calc(2.2 * var(--design-vh, 4.57px));
+    right: calc(0.8 * var(--design-vh, 4.57px));
 }
 
 .s5 {
-    bottom: calc(1.2 * var(--design-vh, 4.57px));
-    left: calc(0.6 * var(--design-vh, 4.57px));
+    bottom: calc(2.4 * var(--design-vh, 4.57px));
+    left: calc(0.8 * var(--design-vh, 4.57px));
 }
 
 .s6 {
-    bottom: calc(-0.2 * var(--design-vh, 4.57px));
+    bottom: calc(0.9 * var(--design-vh, 4.57px));
     left: calc(2.2 * var(--design-vh, 4.57px));
 }
 
 .s7 {
-    bottom: calc(-0.2 * var(--design-vh, 4.57px));
+    bottom: calc(0.9 * var(--design-vh, 4.57px));
     right: calc(2.2 * var(--design-vh, 4.57px));
 }
 
 .s8 {
-    bottom: calc(1.2 * var(--design-vh, 4.57px));
-    right: calc(0.6 * var(--design-vh, 4.57px));
+    bottom: calc(2.4 * var(--design-vh, 4.57px));
+    right: calc(0.8 * var(--design-vh, 4.57px));
 }
 
 #avatar {

@@ -26,14 +26,38 @@
       </div>
 
 
-      <span class="star s1">✦</span>
-      <span class="star s2">✦</span>
-      <span class="star s3">✦</span>
-      <span class="star s4">✦</span>
-      <span class="star s5">✦</span>
-      <span class="star s6">✦</span>
-      <span class="star s7">✦</span>
-      <span class="star s8">✦</span>
+      <span class="star s1"><svg class="navbar-function-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2.8C12.8 7.8 16.2 11.2 21.2 12C16.2 12.8 12.8 16.2 12 21.2C11.2 16.2 7.8 12.8 2.8 12C7.8 11.2 11.2 7.8 12 2.8Z"
+              fill="currentColor"></path>
+          </svg></span>
+      <span class="star s2"><svg class="navbar-function-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2.8C12.8 7.8 16.2 11.2 21.2 12C16.2 12.8 12.8 16.2 12 21.2C11.2 16.2 7.8 12.8 2.8 12C7.8 11.2 11.2 7.8 12 2.8Z"
+              fill="currentColor"></path>
+          </svg></span>
+      <span class="star s3"><svg class="navbar-function-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2.8C12.8 7.8 16.2 11.2 21.2 12C16.2 12.8 12.8 16.2 12 21.2C11.2 16.2 7.8 12.8 2.8 12C7.8 11.2 11.2 7.8 12 2.8Z"
+              fill="currentColor"></path>
+          </svg></span>
+      <span class="star s4"><svg class="navbar-function-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2.8C12.8 7.8 16.2 11.2 21.2 12C16.2 12.8 12.8 16.2 12 21.2C11.2 16.2 7.8 12.8 2.8 12C7.8 11.2 11.2 7.8 12 2.8Z"
+              fill="currentColor"></path>
+          </svg></span>
+      <span class="star s5"><svg class="navbar-function-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2.8C12.8 7.8 16.2 11.2 21.2 12C16.2 12.8 12.8 16.2 12 21.2C11.2 16.2 7.8 12.8 2.8 12C7.8 11.2 11.2 7.8 12 2.8Z"
+              fill="currentColor"></path>
+          </svg></span>
+      <span class="star s6"><svg class="navbar-function-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2.8C12.8 7.8 16.2 11.2 21.2 12C16.2 12.8 12.8 16.2 12 21.2C11.2 16.2 7.8 12.8 2.8 12C7.8 11.2 11.2 7.8 12 2.8Z"
+              fill="currentColor"></path>
+          </svg></span>
+      <span class="star s7"><svg class="navbar-function-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2.8C12.8 7.8 16.2 11.2 21.2 12C16.2 12.8 12.8 16.2 12 21.2C11.2 16.2 7.8 12.8 2.8 12C7.8 11.2 11.2 7.8 12 2.8Z"
+              fill="currentColor"></path>
+          </svg></span>
+      <span class="star s8"><svg class="navbar-function-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2.8C12.8 7.8 16.2 11.2 21.2 12C16.2 12.8 12.8 16.2 12 21.2C11.2 16.2 7.8 12.8 2.8 12C7.8 11.2 11.2 7.8 12 2.8Z"
+              fill="currentColor"></path>
+          </svg></span>
 
 
       <svg width="100%" height="100%">
@@ -171,7 +195,11 @@
         <!-------------分享-------------->
         <button class="navbar-function-button" id="share-button" @click="navbarModule.toggleShare"
           :style="pageState.shareStyle">
-          <span class="navbar-function-text">{{ pageState.shareText }}</span>
+          <svg class="navbar-function-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true" style="transform: translateY(3%) scale(0.93);" v-if="pageState.isShareClosed">
+            <path d="M18 8a3 3 0 1 0-2.83-4A3 3 0 0 0 15 5c0 .18.02.35.05.52L8.91 9.1A3 3 0 0 0 7 8.4a3 3 0 1 0 1.91 5.31l6.14 3.58A3 3 0 0 0 15 18a3 3 0 1 0 .95-2.18L9.8 12.24A3.2 3.2 0 0 0 10 11c0-.43-.09-.84-.25-1.21l6.12-3.57A3 3 0 0 0 18 8Z"
+              fill="currentColor"></path>
+          </svg>
         </button>
         <!-------------指令-------------->
         <button class="navbar-function-button" id="command-button"
@@ -221,13 +249,14 @@
           <span class="entry-person__neck"></span>
           <span class="entry-person__body"></span>
         </div>
-        <div id="info-input" :style="loginModule.infoInput">
+        <div id="info-input-box" :style="loginModule.infoInput">
           <button id="rechoose" @click.stop="loginModule.rechoose">返回</button>
           <input id="input-email" v-model="loginModule.inputEmail" placeholder="邮箱"></input>
           <input id="input-code" v-model="loginModule.inputCode" placeholder="验证码 | 仅注册须填"></input>
           <input id="input-name" v-model="loginModule.inputName" placeholder="名称 | 仅注册须填"></input>
           <input id="input-password" v-model="loginModule.inputPw" placeholder="密码"></input>
-          <button id="register" @click="loginModule.register">注册</button>
+          <button id="register" @click="loginModule.register">
+            {{ loginModule.inputCode ? '注册' : '验证' }}</button>
           <button id="login" @click="loginModule.login">登录</button>
         </div>
       </div>
@@ -245,8 +274,7 @@
   </div>
 </template>
 <script setup>
-import axios from 'axios';
-import { ref, onMounted, onUnmounted, watch, reactive } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import {
   debounce, tip, onGlobalClick, useGoPage,
   navbarModule, menuModule, pageState, routeListener,

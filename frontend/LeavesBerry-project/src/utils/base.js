@@ -10,7 +10,6 @@ import QRCode from "qrcodejs2-fix"
 // 常量
 // ------------------------------
 export const du = (value) => `calc(${value} * var(--design-vh, 4.57px))`
-
 // ------------------------------
 // 工具函数
 // ------------------------------
