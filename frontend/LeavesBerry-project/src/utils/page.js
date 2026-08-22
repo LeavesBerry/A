@@ -23,7 +23,6 @@ export const pageState = reactive({
     srcShot: '',
     isScrShot: false,
     shareStyle: {},
-    shareText: '➹',
     cmdInputValue: "",
     cmdOutputText: "",
 })

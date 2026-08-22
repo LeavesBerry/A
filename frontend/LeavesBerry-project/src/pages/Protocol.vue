@@ -38,7 +38,7 @@ function applyProto(data) {
 }
 
 async function getProto() {
-    const protoCache = localStorage.getItem("proto_cache")
+    const protoCache = sessionStorage.getItem("proto_cache")
 
     if (protoCache) {
         try {
@@ -46,7 +46,7 @@ async function getProto() {
             return
         }
         catch {
-            localStorage.removeItem("proto_cache")
+            sessionStorage.removeItem("proto_cache")
         }
     }
 
@@ -60,7 +60,7 @@ async function getProto() {
 
         if (!disposeReturn(res)) {
             applyProto(res)
-            localStorage.setItem("proto_cache", JSON.stringify({
+            sessionStorage.setItem("proto_cache", JSON.stringify({
                 sum: protoSumList.value,
                 detail: protoDetail.value
             }))

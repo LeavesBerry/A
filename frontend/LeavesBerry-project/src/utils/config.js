@@ -20,26 +20,13 @@ export const configModule = reactive({
     contentText: "",
     contentId: null,
 
-    async expandContent(id, field, url = pageState.currentUrl) {
-        pageState.currentUrl = url + `/config_index:${id}`
-        navbarModule.initColl()
-        if (this.contentId !== id) {
-            const res = await api.post(`/api/get${field}Content`, { id: id });
-            pageState.currentTitle = res.data.title;
-            pageState.currentDesc = res.data.desc;
-            pageState.currentType = fieldTypeConfig[field] ?? "other";
-            this.contentText = res.data.main_text;
-            this.contentTitle = res.data.title;
-            this.contentId = id;
-        }
-        else {
-            pageState.currentTitle = currentTitle;
-            pageState.currentDesc = currentDesc;
-            pageState.currentType = currentType
-        }
-        
+    expandContainer() {
         this.isConfigClosed = true
         this.isContentExpanded = true
+        
+    },
+
+    async refreshColl() {
         if(pageState.isCollected) {
             await apiRequest.refreshColl(pageState.currentUrl,
                 pageState.currentTitle, pageState.currentType, 
@@ -55,5 +42,45 @@ export const configModule = reactive({
         setTimeout(() => {
             this.isConfigClosed = false
         }, 400);
-    }
+    },
+
+    async expandContent(id, field, url = pageState.currentUrl) {
+        pageState.currentUrl = url + `/config_index:${id}`
+        navbarModule.initColl()
+        if (this.contentId !== id) {
+            let contentCache = sessionStorage.getItem(`${field}_content_cache_${id}`)
+            if (!contentCache) {
+                const res = await api.post(`/api/get${field}Content`, { id: id });
+                pageState.currentTitle = res.data.title;
+                pageState.currentDesc = res.data.desc;
+                pageState.currentType = fieldTypeConfig[field] ?? "other";
+                this.contentText = res.data.main_text;
+                this.contentTitle = res.data.title;
+                this.contentId = id;
+                this.expandContainer()
+                await this.refreshColl()
+                sessionStorage.setItem(`${field}_content_cache_${id}`, 
+                    JSON.stringify({
+                        contentText: this.contentText,
+                        contentTitle: this.contentTitle
+                    }))
+                return
+            }
+            else {
+                contentCache = JSON.parse(contentCache)
+                this.contentText = cache.contentText
+                this.contentTitle = cache.contentTitle;
+                this.contentId = id;
+            }
+        }
+        else {
+            pageState.currentTitle = this.currentTitle;
+            pageState.currentDesc = this.currentDesc;
+            pageState.currentType = this.currentType;
+        }
+        this.expandContainer()
+        await this.refreshColl()
+    },
+
+    
 })

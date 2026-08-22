@@ -48,8 +48,20 @@ function applyCmdList(data) {
 
 	const list = Array.isArray(data) ? data : []
 	navList.value = list
-	currentConfig.value = list
 	groupMap.value = classifyGroup(list, "type")
+	const index = currentSidebarConfig.value
+	
+	if (index == 0) {
+		currentConfig.value = navList
+		return
+	} 
+
+	for (let item of collTypeList) {
+		if (item.index == index) {
+			currentConfig.value = groupMap.get(item.typeKey)
+		}
+	}
+	
 }
 
 async function getCmdInfoList() {

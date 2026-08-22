@@ -136,32 +136,26 @@ export const navbarModule = {
             const btn = document.querySelector('#share-button');
             const rect = btn.getBoundingClientRect();
             if (e.clientX - rect.left >= rect.width / 2) {
-                copyText(pageState.currentUrl);
+                copyText(ROOTPATH + pageState.currentUrl);
             }
             else {
-                createQRCode(pageState.currentUrl);
+                createQRCode(ROOTPATH + pageState.currentUrl);
 
             }
         }
 
         pageState.isShareClosed = !pageState.isShareClosed
         if (!pageState.isShareClosed) {
-            pageState.shareText = '';
             pageState.shareStyle = {
                 width: du(9),
-                paddingLeft: du(4.5),
-                paddingRight: du(4.5),
-                backgroundImage: 'url("/image/QR.png"),url("/image/Link.png")',
-                backgroundPosition: `${du(1)} center, right ${du(1)} center`,
-                backgroundSize: `${du(3)} ${du(3)}, ${du(3)} ${du(3)}`,
-                backgroundRepeat: 'no-repeat,no-repeat'
+                paddingLeft: du(1.1),
+                paddingRight: du(1.1),
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
             }
-            pageState.shareText = '';
-
-
         } else {
             pageState.shareStyle = {};
-            pageState.shareText = '➹';
         }
     },
 

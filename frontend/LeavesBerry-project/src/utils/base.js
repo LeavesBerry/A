@@ -2,7 +2,7 @@ import { reactive, ref } from "vue";
 import { pageState } from "./page";
 import { navbarModule } from "./navbar";
 import { menuModule } from "./menu";
-import QRCode from "qrcodejs2-fix"
+import * as QRCode from "qrcode"
 
 
 
@@ -66,37 +66,24 @@ export async function copyText(text) {
     }
 }
 
-export const qrBox = ref(null)
 export async function createQRCode(url) {
-    const qrDom = qrBox.value;
-    qrDom.innerHTML = ''
-    new QRCode(qrDom, {
-        text: url,
+    if (!url.trim()) {
+        showTips("创建失败,由于URL值为空")
+    }
+    const base64Img = await QRCode.toDataURL(url.trim(), {
         width: 220,
         height: 220,
-        colorDark: "rgb(90,25,27)",
-        colorLight: "#fff3d0",
-        correctLevel: QRCode.CorrectLevel.H
-    });
-    setTimeout(async () => {
-        const canvas = qrDom.querySelector('canvas');
-        if (!canvas) {
-            showTips("生成二维码失败");
-            return
+        color: {
+            dark: "#3a251a",
+            light: "#fff3d0"
         }
-        try {
-            const blob = await new Promise(resolve => {
-                canvas.toBlob(resolve, 'image/png')
-            })
-            const item = new ClipboardItem({
-                'image/png': blob
-            })
-            await navigator.clipboard.write([item])
-            showTips("创建二维码成功")
-        } catch (e) {
-            showTips(`生成二维码失败,由于${e}`);
-        }
-    }, 100)
+    })
+    const a = document.createElement('a')
+    a.href = base64Img
+    a.download = `qrcode_${url}.png`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
 }
 
 export function debounce(fn, delay = 100) {

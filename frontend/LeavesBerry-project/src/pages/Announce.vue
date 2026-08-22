@@ -68,7 +68,7 @@ function applyAnnoList(data) {
 		return
 	} 
 
-	for (const item in annoTypeList) {
+	for (const item of annoTypeList) {
 		if (item.index == index) {
 			currentConfig.value = groupMap.get(item.typeKey)
 		}

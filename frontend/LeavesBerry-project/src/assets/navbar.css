@@ -18,10 +18,10 @@
 #search-input {
     position: fixed;
     top: calc(1 * var(--design-vh, 4.57px));
-    left: 10%;
+    left: 10vw;
     box-sizing: border-box;
     padding: 0 calc(4 * var(--design-vh, 4.57px));
-    width: 16%;
+    width: 16vw;
     height: calc(6 * var(--design-vh, 4.57px));
     border: calc(0.5 * var(--design-vh, 4.57px)) solid #FFF3D0;
     border-radius: calc(3 * var(--design-vh, 4.57px)) 0 0 calc(3 * var(--design-vh, 4.57px));
@@ -38,7 +38,7 @@
 #search-button {
     position: fixed;
     top: calc(1 * var(--design-vh, 4.57px));
-    left: calc(26% - calc(0.5 * var(--design-vh, 4.57px)));
+    left: calc(26vw - calc(0.5 * var(--design-vh, 4.57px)));
     width: 40px;
     height: calc(6 * var(--design-vh, 4.57px));
     border: calc(0.5 * var(--design-vh, 4.57px)) solid #FFF3D0;
@@ -124,11 +124,15 @@
     transform: translateY(calc(0.12 * var(--design-vh, 4.57px)));
 }
 
-#share-button .navbar-function-text {
-    width: calc(3.35 * var(--design-vh, 4.57px));
-    height: calc(3.35 * var(--design-vh, 4.57px));
-    font-size: calc(3.35 * var(--design-vh, 4.57px));
-    transform: translateY(calc(0.12 * var(--design-vh, 4.57px)));
+#share-qr-icon {
+    width: calc(2.75 * var(--design-vh, 4.57px));
+    height: calc(2.75 * var(--design-vh, 4.57px));
+}
+
+#share-link-icon {
+    transform: translateY(8%);
+    width: calc(2.75 * var(--design-vh, 4.57px));
+    height: calc(2.75 * var(--design-vh, 4.57px));
 }
 
 #screen-shot-window {
@@ -265,12 +269,12 @@
 @media (min-width: 1px) and (orientation: portrait) {
 	#search-input {
         position: fixed;
-        left: 22%;
-        width: 26%;
+        left: 22vw;
+        width: 26vw;
     }
 
     #search-button {
         position: fixed;
-        left: calc(48% - calc(0.5 * var(--design-vh, 4.57px)));
+        left: calc(48vw - calc(0.5 * var(--design-vh, 4.57px)));
     }
 }

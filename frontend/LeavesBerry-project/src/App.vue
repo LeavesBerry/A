@@ -1,18 +1,25 @@
 <template>
   <div id="app-root">
-
+    <!-----------------------基本元素-------------------------->
+    <!-------------蒙版-------------->
     <div id="page-filter" v-if="pageState.showFilter"></div>
-
-    <div ref="qrBox" style="display: none;"></div>
-
+    <!-------------截图弹窗-------------->
     <div id="screen-shot-window" v-if="pageState.isSrcShot">
       <img id="screen-shot" :src="pageState.srcShot">
       <button id="close-screen-shot-window-button" @click="navbarModule.cleanScreenShot">×</button>
     </div>
+    <!-------------提示-------------->
+    <p class="tip" :style="tip.tipStyle">{{ tip.tipText }}</p>
+    <!-------------固定界面出口-------------->
+    <div id="teleport-root"></div>
+    
 
+
+    <!-----------------------菜单-------------------------->
     <div id="menu-box" :class="pageState.isMenuClosed ? 'parent-prevent' : ''" @click="menuModule.toggleMenu"
       :style="pageState.menuBox">
 
+      <!------------------用户信息------------------->
       <div id="user_info">
         <img id="avatar" :src="userState.avatarUrl" @click="userModule.changeAvatar">
         <p id="name">{{ userState.userName }}</p>
@@ -25,7 +32,8 @@
         </div>
       </div>
 
-
+      <!------------------菜单边框装饰------------------->
+      <!-------------星星-------------->
       <span class="star s1"><svg class="navbar-function-icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 2.8C12.8 7.8 16.2 11.2 21.2 12C16.2 12.8 12.8 16.2 12 21.2C11.2 16.2 7.8 12.8 2.8 12C7.8 11.2 11.2 7.8 12 2.8Z"
               fill="currentColor"></path>
@@ -58,8 +66,7 @@
             <path d="M12 2.8C12.8 7.8 16.2 11.2 21.2 12C16.2 12.8 12.8 16.2 12 21.2C11.2 16.2 7.8 12.8 2.8 12C7.8 11.2 11.2 7.8 12 2.8Z"
               fill="currentColor"></path>
           </svg></span>
-
-
+      <!-------------线条-------------->
       <svg width="100%" height="100%">
         <line x1="27.2px" y1="11px" x2="250px" y2="11px" stroke="#73B436" stroke-width="1" />
         <line x1="10px" y1="27.42px" x2="10px" y2="392px" stroke="#73B436" stroke-width="1" />
@@ -68,6 +75,7 @@
         <line x1="10px" y1="100px" x2="268px" y2="100px" stroke="#73B436" stroke-width="1" />
       </svg>
 
+      <!-------------------菜单按钮------------------->
       <div id="menu-function-button-box">
         <button class="menu-function-button" @click="goPage('/Email')">
           <svg class="menu-function-icon" viewBox="0 0 32 32" aria-hidden="true">
@@ -161,13 +169,15 @@
       </div>
     </div>
 
+    <!------------------菜单按钮------------------->
     <button class="menu-button" id="button-left-up" :style="pageState.leftUp"></button>
     <button class="menu-button" id="button-left-down" :style="pageState.leftDown"></button>
     <button class="menu-button" id="button-right-up" :style="pageState.rightUp"></button>
     <button class="menu-button" id="button-right-down" :style="pageState.rightDown"></button>
 
-    <p class="tip" :style="tip.tipStyle">{{ tip.tipText }}</p>
+    
 
+    <!-----------------------导航栏-------------------------->
     <div id="navbar" :style="pageState.navbar">
 
       <input id="search-input" type="text" placeholder="查找……" v-model="pageState.searchKey" />
@@ -200,6 +210,29 @@
             <path d="M18 8a3 3 0 1 0-2.83-4A3 3 0 0 0 15 5c0 .18.02.35.05.52L8.91 9.1A3 3 0 0 0 7 8.4a3 3 0 1 0 1.91 5.31l6.14 3.58A3 3 0 0 0 15 18a3 3 0 1 0 .95-2.18L9.8 12.24A3.2 3.2 0 0 0 10 11c0-.43-.09-.84-.25-1.21l6.12-3.57A3 3 0 0 0 18 8Z"
               fill="currentColor"></path>
           </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="#5B1619" 
+            v-if="!pageState.isShareClosed" id="share-qr-icon">    
+            <!-- 左上 -->
+            <path fill-rule="evenodd" d="M0 0H15V15H0V0ZM3 3V12H12V3H3Z"/>
+            <rect x="5" y="5" width="5" height="5"/>
+            <!-- 右上 -->
+            <path fill-rule="evenodd" d="M17 0H32V15H17V0ZM20 3V12H29V3H20Z"/>
+            <rect x="22" y="5" width="5" height="5"/>  
+            <!-- 左下 -->
+            <path fill-rule="evenodd" d="M0 17H15V32H0V17ZM3 20V29H12V20H3Z"/>
+            <rect x="5" y="22" width="5" height="5"/>
+            <!-- 右下 -->
+            <path fill-rule="evenodd" d="M17 17H32V32H17V17ZM20 20V29H29V20H20Z"/>
+            <rect x="23" y="23" width="3" height="3"/>    
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" 
+            v-if="!pageState.isShareClosed" id="share-link-icon">
+            <path d="M7.2 14.7 L4.9 17 C2.4 19.5 2.4 23.5 4.9 26 C7.4 28.5 11.4 28.5 13.9 26 L20.7 19.2 C23.2 16.7 23.2 12.7 20.7 10.2 C18.8 8.3 16 7.8 13.6 8.9"
+              stroke="#64151D" stroke-width="3.4" stroke-linecap="square" stroke-linejoin="round"/>
+            <path d="M11.4 17.8 C9.1 15.3 9.2 11.5 11.6 9.1 L17.8 2.9 C20.3 0.4 24.3 0.4 26.8 2.9 C29.3 5.4 29.3 9.4 26.8 11.9 L23.9 14.8"
+              stroke="#64151D" stroke-width="3.4" stroke-linecap="square" stroke-linejoin="round"/>
+            <path d="M18.1 24.7H29" stroke="#64151D" stroke-width="3.4" stroke-linecap="square"/>
+          </svg>   
         </button>
         <!-------------指令-------------->
         <button class="navbar-function-button" id="command-button"
@@ -212,27 +245,29 @@
         </button>
       </div>
     </div>
-
-    
+    <!------------------指令面板------------------->
     <div id="command-menu" v-if="!pageState.isCmdClosed">
-        <p class="none-select" id="command-title">指令面板</p>
-        <button class="none-select" id="close-command" @click="navbarModule.toggleCmdUI">×</button>
-        <input id="cmd-input" v-model="pageState.cmdInputValue" @keyup.enter="navbarModule.executeCmd(cmdOutputBox)"
-        placeholder="请输入指令 | 按键盘<Enter>或右侧<RUN>执行">
-        <button class="none-select"
-        id="execute-cmd-button" @click="navbarModule.executeCmd(cmdOutputBox)">RUN</button>
-        <div id="cmd-output-box" ref="cmdOutputBox">
-          <p id="cmd-output">{{ pageState.cmdOutputText }}</p>
-        </div>
+      <p class="none-select" id="command-title">指令面板</p>
+      <button class="none-select" id="close-command" @click="navbarModule.toggleCmdUI">×</button>
+      <input id="cmd-input" v-model="pageState.cmdInputValue" @keyup.enter="navbarModule.executeCmd(cmdOutputBox)"
+      placeholder="请输入指令 | 按键盘<Enter>或右侧<RUN>执行">
+      <button class="none-select"
+      id="execute-cmd-button" @click="navbarModule.executeCmd(cmdOutputBox)">RUN</button>
+      <div id="cmd-output-box" ref="cmdOutputBox">
+        <p id="cmd-output">{{ pageState.cmdOutputText }}</p>
       </div>
+    </div>
+    
 
 
+    <!-----------------------登录弹窗-------------------------->
     <div id="login-window" :style="loginModule.window">
       <!--复用visitorEntry属性更为方便-->
       <div id="enter-tip" :style="loginModule.visitorEntry">
         <p>-----选择您进入本站的方式-----</p>
       </div>
 
+      <!-------------访客登录-------------->    
       <div id="visitor-entry" @click="loginModule.visitorEnter" :style="loginModule.visitorEntry">
         <p id="identification">❖访客❖</p>
         <div class="entry-person entry-person--visitor" aria-hidden="true">
@@ -241,6 +276,7 @@
           <span class="entry-person__body"></span>
         </div>
       </div>
+      <!-------------成员登录--------------> 
       <div id="member-entry" @click="loginModule.memberEnter" :style="loginModule.memberEntry">
         <p id="identification" :style="loginModule.visitorEntry">❖成员❖</p>
         <div class="entry-person entry-person--member" aria-hidden="true" :style="loginModule.memberSign">
@@ -262,8 +298,9 @@
       </div>
     </div>
 
-    <div id="teleport-root"></div>
 
+
+    <!-----------------------路由出口-------------------------->
     <router-view v-slot="{ Component, route }">
       <transition name="page-cover-slide">
         <div :key="route.fullPath" class="page-cover-slide-view">
@@ -278,7 +315,7 @@ import { ref, onMounted, onUnmounted } from 'vue';
 import {
   debounce, tip, onGlobalClick, useGoPage,
   navbarModule, menuModule, pageState, routeListener,
-  userState, userModule, loginModule, qrBox, startTimer
+  userState, userModule, loginModule, startTimer
 } from './utils/index';
 import { useHead } from "@vueuse/head"
 
