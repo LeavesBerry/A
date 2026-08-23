@@ -4,9 +4,9 @@
 			<img src="/icon/logo.png" id="logo">
 			<div class="home-divider" id="home-d1"></div>
 			<div id="home-icon-box">
-				<img class="home-icon" src="/image/HomeMusicIcon.png">
-				<img class="home-icon" src="/image/HomeDiaryIcon.png">
-				<img class="home-icon" src="/image/HomeGoodIcon.png"> 
+				<img class="home-icon" id="home-music-icon" src="/image/HomeMusicIcon.png">
+				<img class="home-icon" id="home-diary-icon" src="/image/HomeDiaryIcon.png">
+				<img class="home-icon" src="/image/HomeDrawLotsIcon.png">
 			</div>
 			<div class="home-divider" id="home-d2"></div>
 			<span class="home-star" id="home-s1">✦</span>
@@ -88,7 +88,6 @@ import Logo from '../components/Logo.vue';
 	right: 32vw;
 	opacity: 0;
 }
-
 
 @media (min-width: 1px) and (orientation: landscape) {
 	#home-s2,#home-s6{

@@ -1,11 +1,11 @@
 <template>
     <div class="sidebar">
-        <div class="sidebar-config" v-for="item in typeList" :key="item.index" 
+        <button class="sidebar-config" v-for="item in typeList" :key="item.index" 
             :id="'sidebar-' + item.id" :class="{ activediv: currentSidebarConfig === item.index }"
             @click="handleItemClick(item.index, item.typeKey)">
             <span class="sidebar-config-text"
             :class="{ activespan: currentSidebarConfig === item.index }">❖{{ item.label }}❖</span>
-        </div>
+        </button>
     </div>
 
 </template>

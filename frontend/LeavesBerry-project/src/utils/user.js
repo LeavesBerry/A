@@ -69,6 +69,7 @@ export const userModule = reactive({
     resetUserInfo() {
         updatePersistFields(userState, { ...DEFAULT_USER_INFO }, persistConfig)
         clearUserInfoFreshness()
+        localStorage.clear('coll_list_cache')
     },
     clear() {
         this.resetUserInfo()
@@ -127,6 +128,7 @@ export const loginModule = reactive({
     visitorEntry: {},
     memberSign: {},
     infoInput: {},
+    isCodeSent: false,
     openLoginWindow() {
         this.window = { display: "block" }
         pageState.showFilter = true
@@ -161,21 +163,9 @@ export const loginModule = reactive({
     async sendCode() {
         const email = this.inputEmail
         if (!email) return
-        disposeReturn(await apiRequest.sendCode(email))
-    },
-    async register() {
-        if (!this.inputCode) {
-            await this.sendCode()
-            return
+        if (!disposeReturn(await apiRequest.sendCode(email))) {
+            this.isCodeSent = true
         }
-        const data = {
-            user_name: this.inputName,
-            user_email: this.inputEmail,
-            code: this.inputCode,
-            password: this.inputPw
-        }
-        const res = await apiRequest.register(data)
-        disposeReturn(res)
     },
     async login() {
         const data = {
@@ -197,5 +187,48 @@ export const loginModule = reactive({
             showTips("您已登出")
             this.openLoginWindow()
         }
-    }
+    },
+    async register() {
+        if (!this.isCodeSent) {
+            await this.sendCode()
+            return
+        }
+
+        const pw = this.inputPw.trim()
+        const email = this.inputEmail.trim()
+        const name = this.inputName.trim()
+        const code = this.inputCode.trim()
+
+        const checkList = [[code,"验证码"],[email,"邮箱"],[name,"名称"],
+            [pw,"密码"]]
+        for (const [val,tip] of checkList) {
+            if(val.length < 1) {
+                showTips(`请填写${tip}`)
+                return
+            }
+        }
+        if (!/[a-zA-Z]/.test(pw) || !/[0,9]/.test(pw)) {
+            showTips("密码必须同时包含数字和字符")
+            return
+        }
+        if (pw.length < 8) {
+            showTips("密码长度必须大于8个字符")
+            return
+        }
+        if (code.length > 6) {
+            showTips("验证码异常")
+            return
+        }
+        const data = {
+            user_name: name,
+            user_email: email,
+            code: code,
+            password: pw
+        }
+        const res = await apiRequest.register(data)
+        if (!disposeReturn(res)) {
+            await this.login()
+        }
+    },
+    
 })

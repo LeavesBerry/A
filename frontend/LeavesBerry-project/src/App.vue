@@ -288,11 +288,13 @@
         <div id="info-input-box" :style="loginModule.infoInput">
           <button id="rechoose" @click.stop="loginModule.rechoose">返回</button>
           <input id="input-email" v-model="loginModule.inputEmail" placeholder="邮箱"></input>
-          <input id="input-code" v-model="loginModule.inputCode" placeholder="验证码 | 仅注册须填"></input>
-          <input id="input-name" v-model="loginModule.inputName" placeholder="名称 | 仅注册须填"></input>
+          <input id="input-code" v-model="loginModule.inputCode" placeholder="验证码 | 仅注册须填"
+          v-if="loginModule.isCodeSent"></input>
+          <input id="input-name" v-model="loginModule.inputName" placeholder="名称 | 仅注册须填"
+          v-if="loginModule.isCodeSent"></input>
           <input id="input-password" v-model="loginModule.inputPw" placeholder="密码"></input>
-          <button id="register" @click="loginModule.register">
-            {{ loginModule.inputCode ? '注册' : '验证' }}</button>
+          <button id="register" @click="loginModule.isCodeSent ? loginModule.register() : loginModule.sendCode()">
+            {{ loginModule.isCodeSent ? "验证" : "注册" }}</button>
           <button id="login" @click="loginModule.login">登录</button>
         </div>
       </div>
