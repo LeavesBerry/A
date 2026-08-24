@@ -305,7 +305,7 @@
     <!-----------------------路由出口-------------------------->
     <router-view v-slot="{ Component, route }">
       <transition name="page-cover-slide">
-        <div :key="route.fullPath" class="page-cover-slide-view">
+        <div :key="route.path" class="page-cover-slide-view">
           <component :is="Component" />
         </div>
       </transition>
@@ -338,7 +338,6 @@ onMounted(async() => {
   routeListener();
   startTimer();
   await userModule.initUser();
-  await navbarModule.getAllCollInfo();
   document.addEventListener('click', onGlobalClick);
 })
 

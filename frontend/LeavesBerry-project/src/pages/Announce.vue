@@ -33,12 +33,14 @@
 <script setup>
 import api from "../utils/api"
 import {
-	classifyGroup, currentSidebarConfig, configModule, du
+	classifyGroup, currentSidebarConfig, configModule, du, useHashDetail
 } from "../utils/index";
 import { ref, onMounted, onUnmounted } from "vue"
 import Sidebar from "../components/Sidebar.vue";
 import Logo from "../components/Logo.vue";
 import ExContent from "../components/ExContent.vue";
+
+useHashDetail('Announce')
 
 let navList = []
 let groupMap = new Map()

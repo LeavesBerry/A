@@ -2,7 +2,7 @@
     <div class="page" id="history-page">
         <div class="slide-page">
             <div class="item-box">
-                <div class="item" id="history" v-for="item in currentContent">
+                <div class="item" id="history" v-for="item in currentContent" :key="item.id ?? item.url">
                     
                     <p class="item-title" id="history-title">
                         {{ item.title.length > 0 ? item.title : '未知界面' }}</p>

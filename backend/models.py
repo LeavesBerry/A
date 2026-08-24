@@ -74,9 +74,9 @@ class Coll(Base):
     user_id = Column(Integer, ForeignKey("user_base.user_id"), primary_key=True, nullable=False, index=True)
     url = Column(String(200), nullable=False, primary_key=True)
     url_hash = Column(String(64), nullable=False, index=True)
-    title = Column(String(255), default="未知界面", nullable=False)
-    type = Column(String(10), default="other", nullable=False)
-    desc = Column(String(25), default="未在本站详细注册的界面", nullable=False)
+    title = Column(String(255), default="未知界面", nullable=True)
+    type = Column(String(10), default="other", nullable=True)
+    desc = Column(String(25), default="未在本站详细注册的界面", nullable=True)
 
 class History(Base):
     __tablename__ = "history"

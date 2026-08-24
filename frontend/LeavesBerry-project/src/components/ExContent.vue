@@ -38,7 +38,7 @@ import { configModule, du } from '../utils';
     background-color: #FFF3D0;
     border-radius: calc(6 * var(--design-vh));
     width: 90vw;
-    transition: transform 0.5s ease;
+    transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1);
     justify-content: center;
     align-items: center;
     display: flex;

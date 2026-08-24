@@ -84,6 +84,7 @@ export const userModule = reactive({
         }
         if (token === "visitor") return
         if (!forceRefresh && userState.isLogined && isUserInfoFresh()) {
+            await navbarModule.getAllCollInfo()
             await navbarModule.initColl()
             return
         }
@@ -95,6 +96,7 @@ export const userModule = reactive({
                 return
             }
             this.updateUserInfo(res)
+            await navbarModule.getAllCollInfo()
             await navbarModule.initColl()
         } catch (error) {
             showTips(error)

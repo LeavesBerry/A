@@ -72,7 +72,7 @@ export const navbarModule = {
         if(!userState.isLogined) return
         let coll_info = JSON.parse(localStorage.getItem('coll_info_cache'))
         let coll_list = JSON.parse(localStorage.getItem('coll_list_cache'))
-        if (coll_info && coll_list) return
+        if (coll_info && coll_list && coll_info.length == coll_list.length) return
         const res = await api.post('/api/getAllCollInfo')
         coll_info = res.data
         coll_list = coll_info.map(item => item.url)

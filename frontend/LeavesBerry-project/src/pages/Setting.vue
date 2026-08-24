@@ -32,7 +32,8 @@
 
                 <div id="crop-area">
                     <div id="crop-tip-box">
-                        <p id="crop-tip" v-for="item in avatarState.tipList" v-if="avatarState.avatarFile">•{{ item }}</p>
+                        <p id="crop-tip" v-for="(item, index) in avatarState.tipList" :key="`${item}-${index}`"
+                        v-if="avatarState.avatarFile">•{{ item }}</p>
                     </div>
 
                     <div v-if="avatarState.originImgUrl" id="preview-box" :ref="el => avatarState.previewRef = el">

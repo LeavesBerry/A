@@ -7,7 +7,7 @@
 					)✧<br>点击此处刷新</p>
 				<div class="item" v-for="item in currentConfig" :key="item.id ?? item.url">
 					<p class="item-title" @click="goPage(item.url)">
-						{{ item.title.length > 0 ? item.title : '未知界面' }}</p>
+						{{ item.title ? item.title : '未知界面' }}</p>
 					<div id="colls-function-box">
 						<button id="discoll-button"
 							@click.stop.prevent="cancelColl(`${item.url}`)"
@@ -18,17 +18,17 @@
 									></path>
 							</svg>
 						</button>
-						<button @click.stop.prevent="createQRCode(`${ROOTPATH}${item.url}`)" style="background-image: url('/image/QR.png');
+						<button @click.stop.prevent="createQRCode(`${ROOTPATH}${item.url}`)" style="background-image: url('/image/basic/QR.png');
 						background-size: calc(4 * var(--design-vh));
 						background-position: calc(1.3 * var(--design-vh)) center;
 						"></button>
-						<button @click.stop.prevent="copyText(item.url)" style="background-image: url('/image/Link.png');
+						<button @click.stop.prevent="copyText(item.url)" style="background-image: url('/image/basic/Link.png');
 						background-size: calc(6 * var(--design-vh));
 						background-position: calc(0.3 * var(--design-vh)) center;
 						"></button>
 					</div>
 					<p class="item-desc" id="coll-desc">
-                        |{{ item.desc.length > 0 ? item.desc : '未在本站详细注册的界面' }}</p>
+                        |{{ item.desc ? item.desc : '未在本站详细注册的界面' }}</p>
 				</div>
 				<p class="refresh-tip none-select" v-if="currentConfig.length !== 0" @click="getAllColl">
 					若缺少收藏<br>可尝试点击此处刷新界面( •̀ ω •́ )</p>

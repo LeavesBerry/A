@@ -2,45 +2,45 @@
 	<div class="page" id="email-page">
 		<div class="slide-page">
 			<div class="item-box none-select" v-show="!configModule.isConfigClosed">
-					<div v-if="currentContent == 'write'" class="item" id="write-email-box">
-						<input id="email-title-input" v-model="emailTitleInputValue" maxlength="30"
-						placeholder="请输入邮件标题 | 30字以内">
-						<input id="recipient-input" v-model="recipientInputValue"
-						placeholder="请输入收件人的ID或邮箱">
-						<textarea id="main-text-input" v-model="mainTextInputValue" wrap="soft"
-						maxlength="1000" placeholder="请输入邮件文本 | 1000字以内"></textarea>
-						<button id="send-email-button" @click="sendEmail">发送邮件</button>
-						<div id="tip-box">
-							<p v-for="item in tipList">•{{ item }}</p>
-						</div>
+				<div v-if="currentContent == 'write'" class="item" id="write-email-box">
+					<input id="email-title-input" v-model="emailTitleInputValue" maxlength="30"
+					placeholder="请输入邮件标题 | 30字以内">
+					<input id="recipient-input" v-model="recipientInputValue"
+					placeholder="请输入收件人的ID或邮箱">
+					<textarea id="main-text-input" v-model="mainTextInputValue" wrap="soft"
+					maxlength="1000" placeholder="请输入邮件文本 | 1000字以内"></textarea>
+					<button id="send-email-button" @click="sendEmail">发送邮件</button>
+					<div id="tip-box">
+						<p v-for="(item, index) in tipList" :key="`${index}-${item}`">•{{ item }}</p>
 					</div>
+				</div>
 
-					<div v-if="currentContent == 'recieve'">
-						<p class="no-item-tip none-select" v-if="currentConfig.length == 0" 
-						@click="getAllEmailInfo">
-							暂无邮件( •̀ ω •́ )✧<br>点击此处刷新</p>
-						<div class="item" v-for="item in currentConfig" :key="item.id"
-							@click="configModule.expandContent(item.id, 'Email')">
-							<p class="item-title">{{ item.title }}</p>
-							<p id="email-date">{{ Math.floor(item.email_date / 10000) }}年{{ Math.floor((item.email_date %
-								10000)
-								/
-								100) }}月{{ (item.email_date % 10000) % 100 }}日
-							</p>
-							<p class="item-desc" id="email-desc">
-                        		|{{ item.desc.length > 0 ? item.desc : '未在本站详细注册的界面' }}</p>
-						</div>
-						<p class="refresh-tip none-select" v-if="currentConfig.length !== 0" @click="getAllEmailInfo">
-							若缺少邮件<br>可尝试点击此处刷新界面( •̀ ω •́ )</p>
+				<div v-if="currentContent == 'recieve'">
+					<p class="no-item-tip none-select" v-if="currentConfig.length == 0" 
+					@click="getAllEmailInfo">
+						暂无邮件( •̀ ω •́ )✧<br>点击此处刷新</p>
+					<div class="item" v-for="item in currentConfig" :key="item.id"
+						@click="configModule.expandContent(item.id, 'Email')">
+						<p class="item-title">{{ item.title }}</p>
+						<p id="email-date">{{ Math.floor(item.email_date / 10000) }}年{{ Math.floor((item.email_date %
+							10000)
+							/
+							100) }}月{{ (item.email_date % 10000) % 100 }}日
+						</p>
+						<p class="item-desc" id="email-desc">
+							|{{ item.desc.length > 0 ? item.desc : '未在本站详细注册的界面' }}</p>
 					</div>
+					<p class="refresh-tip none-select" v-if="currentConfig.length !== 0" @click="getAllEmailInfo">
+						若缺少邮件<br>可尝试点击此处刷新界面( •̀ ω •́ )</p>
+				</div>
 
-					<div v-if="currentContent == 'trash'">
-						<p class="no-item-tip none-select" v-if="currentConfig.length == 0" 
-						@click="getAllEmailInfo">
-							暂无邮件( •̀ ω •́ )✧<br>点击此处刷新</p>
-						<p class="refresh-tip none-select" v-if="currentConfig.length !== 0" @click="getAllEmailInfo">
-							若缺少邮件<br>可尝试点击此处刷新界面( •̀ ω •́ )</p>
-					</div>
+				<div v-if="currentContent == 'trash'">
+					<p class="no-item-tip none-select" v-if="currentConfig.length == 0" 
+					@click="getAllEmailInfo">
+						暂无邮件( •̀ ω •́ )✧<br>点击此处刷新</p>
+					<p class="refresh-tip none-select" v-if="currentConfig.length !== 0" @click="getAllEmailInfo">
+						若缺少邮件<br>可尝试点击此处刷新界面( •̀ ω •́ )</p>
+				</div>
 				
 			</div>
 		</div>
@@ -58,7 +58,7 @@
 import api from "../utils/api"
 import {
 	classifyGroup, currentSidebarConfig, configModule, du, userState,
-	apiRequest,
+	apiRequest, useHashDetail,
 	disposeReturn,
 	showTips
 } from "../utils/index";
@@ -66,6 +66,8 @@ import { ref, onMounted, onUnmounted, watch } from "vue"
 import Sidebar from "../components/Sidebar.vue";
 import Logo from "../components/Logo.vue";
 import ExContent from "../components/ExContent.vue";
+
+useHashDetail('Email')
 
 let groupMap = new Map()
 const currentContent= ref('write')

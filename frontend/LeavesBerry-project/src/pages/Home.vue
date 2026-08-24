@@ -4,9 +4,9 @@
 			<img src="/icon/logo.png" id="logo">
 			<div class="home-divider" id="home-d1"></div>
 			<div id="home-icon-box">
-				<img class="home-icon" id="home-music-icon" src="/image/HomeMusicIcon.png">
-				<img class="home-icon" id="home-diary-icon" src="/image/HomeDiaryIcon.png">
-				<img class="home-icon" src="/image/HomeDrawLotsIcon.png">
+				<img class="home-icon" src="/image/home/home_music_icon.png">
+				<img class="home-icon" src="/image/home/home_diary_icon.png">
+				<img class="home-icon" src="/image/home/home_draw_lots_icon.png">
 			</div>
 			<div class="home-divider" id="home-d2"></div>
 			<span class="home-star" id="home-s1">✦</span>

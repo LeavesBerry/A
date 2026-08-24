@@ -8,7 +8,7 @@
     border: calc(0.5 * var(--design-vh, 4.57px)) solid #73B436;
     opacity: 0;
     border-radius: calc(0.8 * var(--design-vh, 4.57px)) calc(0.8 * var(--design-vh, 4.57px)) calc(0.8 * var(--design-vh, 4.57px)) calc(0.8 * var(--design-vh, 4.57px));
-    transition: transform 0.8s ease;
+    transition: transform 0.6s cubic-bezier(0.34,1.2,0.64,1);
     transform: scale(0.1, 0.067);
     transform-origin: left top;
     z-index: 23;
@@ -22,7 +22,7 @@
     border: none;
     border-radius: calc(1 * var(--design-vh, 4.57px));
     z-index: 22;
-    transition: transform 0.8s ease;
+    transition: transform 0.6s cubic-bezier(0.34,1.2,0.64,1);
     position: fixed;
     cursor: pointer;
 }
