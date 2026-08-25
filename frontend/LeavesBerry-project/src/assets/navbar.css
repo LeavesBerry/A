@@ -1,6 +1,6 @@
 #navbar {
     width: 100vw;
-    height: calc(8 * var(--design-vh, 4.57px));
+    height: var(--navbar-height);
     position: fixed;
     top: 0;
     left: 0;
@@ -23,12 +23,13 @@
     padding: 0 calc(4 * var(--design-vh, 4.57px));
     width: 16vw;
     height: calc(6 * var(--design-vh, 4.57px));
-    border: calc(0.5 * var(--design-vh, 4.57px)) solid #FFF3D0;
+    border: calc(0.5 * var(--design-vh, 4.57px)) solid var(--primary-color);
     border-radius: calc(3 * var(--design-vh, 4.57px)) 0 0 calc(3 * var(--design-vh, 4.57px));
     background: rgba(0, 0, 0, 0);
     outline: none;
-    color: #FFF3D0;
+    color: var(--primary-color);
     font-size: calc(3 * var(--design-vh, 4.57px));
+    transform-origin: right;
 }
 
 #search-input::placeholder {
@@ -41,12 +42,13 @@
     left: calc(26vw - calc(0.5 * var(--design-vh, 4.57px)));
     width: 40px;
     height: calc(6 * var(--design-vh, 4.57px));
-    border: calc(0.5 * var(--design-vh, 4.57px)) solid #FFF3D0;
+    border: calc(0.5 * var(--design-vh, 4.57px)) solid var(--primary-color);
     border-radius: 0 calc(3 * var(--design-vh, 4.57px)) calc(3 * var(--design-vh, 4.57px)) 0;
     background: rgba(0, 0, 0, 0);
     font-size: calc(3 * var(--design-vh, 4.57px));
-    color: #FFF3D0;
+    color: var(--primary-color);
     cursor: pointer;
+    transform-origin: left;
 }
 
 #search-sign {
@@ -72,10 +74,9 @@
     min-height: calc(4.2 * var(--design-vh, 4.57px));
     border-radius: calc(1 * var(--design-vh, 4.57px));
     border: none;
-    background: #FFF3D0;
+    background: var(--primary-color);
     color: #5A191B;
     cursor: pointer;
-
     display: grid;
     place-items: center;
     padding: 0;
@@ -180,7 +181,7 @@
     width: 70vw;
     height: calc(60 * var(--design-vh, 4.57px));
     background: #4a4030;
-    border: 5px solid #22130c;
+    border: 5px solid var(--secondary-color);
     transition: transform 0.8s ease;
 }
 
@@ -191,7 +192,7 @@
     font-size: calc(4 * var(--design-vh, 4.57px));
     font-weight: 200;
     text-align: center;
-    color: #FFF3D0;
+    color: var(--primary-color);
 }
 
 #close-command {
@@ -203,7 +204,7 @@
     height: calc(6 * var(--design-vh, 4.57px));
     font-size: calc(6 * var(--design-vh, 4.57px));
     background-color: rgba(255, 255, 255, 0);
-    color: #FFF3D0;
+    color: var(--primary-color);
 }
 
 #cmd-input {
@@ -213,9 +214,9 @@
     width: 80%;
     height: calc(5 * var(--design-vh, 4.57px));
     padding-left: 1%;
-    color: #FFF3D0;
+    color: var(--primary-color);
     background-color: rgba(0, 0, 0, 0);
-    border: 2px solid #FFF3D0;
+    border: 2px solid var(--primary-color);
     outline: none;
 }
 
@@ -232,9 +233,9 @@
     cursor: pointer;
     padding: 0;
     outline: none;
-    border: 2px solid #FFF3D0;
+    border: 2px solid var(--primary-color);
     background-color: rgba(0, 0, 0, 0);
-    color: #FFF3D0;
+    color: var(--primary-color);
     font-weight: 600;
 }
 
@@ -267,14 +268,45 @@
 }
 
 @media (min-width: 1px) and (orientation: portrait) {
+    :root {
+        --navbar-height: calc(10 * var(--design-vh, 4.57px))
+    }
+    .navbar-function-button {
+        transform: scale(1.5) translateY(calc(0.7 * var(--design-vh, 4.57px)));
+
+    }
+    #navbar-fuction-button-box {
+        transform: translateX(calc(-8.5 * var(--design-vh, 4.57px)));
+        gap: calc(3 * var(--design-vh, 4.57px));
+    }
 	#search-input {
         position: fixed;
-        left: 22vw;
+        top: calc(2 * var(--design-vh, 4.57px));
+        left: 28vw;
         width: 26vw;
+        transform: scale(1.2);
     }
 
     #search-button {
         position: fixed;
-        left: calc(48vw - calc(0.5 * var(--design-vh, 4.57px)));
+        top: calc(2 * var(--design-vh, 4.57px));
+        left: calc(54vw - calc(0.5 * var(--design-vh, 4.57px)));
+        transform: scale(1.2);
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    
+    #navbar {
+        background: #f8e6b4;
+        box-shadow: 0 0 25px #f8e6b4;
+    }
+
+    .navbar-function-button {
+        color: #fff3d0;
+    }
+
+    #search-input::placeholder {
+        color: rgba(58,37,26, 0.5);
     }
 }

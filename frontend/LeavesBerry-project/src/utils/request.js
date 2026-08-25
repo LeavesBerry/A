@@ -29,7 +29,6 @@ export const apiRequest = {
     },
 
     async submitVisitList(visitList) {
-        console.log(2)
         const res = await api.post('/api/submitVisitList', { visit_list: visitList })
         return res.data
     },

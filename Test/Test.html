@@ -5,28 +5,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LeavesBerry</title>
-    <style>
-        .d {
-            background-color: aqua;
-            width: 100px;
-            height: 100px;
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 100%, 0 100%);
-            transition: clip-path 0.4s ease-out;
-        }
-    </style>
 </head>
 
-<body>
-    <div class="d"></div>
-</body>
 <script>
-    const d = document.querySelector('.d');
-    d.addEventListener('click', () => {
-        d.style.clipPath = "polygon(0 0, 100% 0,100% 0, 0 100%,0 100%)";
-        setTimeout(() => {
-            d.style.clipPath = "polygon(0 0, 0 0,0 0, 0 0,0 0)";
-        }, 250);
-    })
+    const reg = /((https?|ftp|file):\/\/)?(?:[a-zA-Z0-9\-]+\.)+[a-zA-Z0-9\-]+|(?:\d{1,3}\.){3}\d{1,3}(?:\/[\w.,@?^=%&:/~+#\-]*)*/
+    console.log(reg.test("baidu.com"))
 
 </script>
 

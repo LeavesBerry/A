@@ -34,8 +34,8 @@ function handleItemClick(sn, type) {
     width: 25vw;
     height: 100vh;
     position: fixed;
-    top: calc(8 * var(--design-vh, 4.57px));
-    background-color: #FFF3D0;
+    top: var(--navbar-height);
+    background-color: var(--primary-color);
     left: 0;
     box-shadow: 0 10px 25px rgba(180, 145, 80, 1);
     z-index: 15;
@@ -48,9 +48,9 @@ function handleItemClick(sn, type) {
 
 .sidebar-config {
     width: 23vw;
-    height: calc(8 * var(--design-vh, 4.57px));
-    background-color: #FFF3D0;
-    border: 1px solid #3A251A;
+    height: var(--navbar-height);
+    background-color: var(--primary-color);
+    border: 1px solid var(--secondary-color);
     border-radius: calc(3 * var(--design-vh, 4.57px));
     display: flex;
     justify-content: center;
@@ -60,7 +60,7 @@ function handleItemClick(sn, type) {
 }
 
 .sidebar-config-text {
-    color: #3A251A;
+    color: var(--secondary-color);
     font-size: calc(3.5 * var(--design-vh, 4.57px));
     font-weight: 500;
     letter-spacing: 10px;
@@ -68,11 +68,11 @@ function handleItemClick(sn, type) {
 }
 
 .activespan{
-    color: #FFF3D0;
+    color: var(--primary-color);
 }
 
 .activediv {
-    background-color: #3A251A;
+    background-color: var(--secondary-color);
 }
 
 @media (min-width: 1px) and (orientation: portrait) {

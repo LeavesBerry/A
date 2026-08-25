@@ -10,6 +10,7 @@ import * as QRCode from "qrcode"
 // 常量
 // ------------------------------
 export const du = (value) => `calc(${value} * var(--design-vh, 4.57px))`
+export const isPortrait = ref(window.innerHeight > window.innerWidth)
 // ------------------------------
 // 工具函数
 // ------------------------------
@@ -74,8 +75,8 @@ export async function createQRCode(url) {
         width: 220,
         height: 220,
         color: {
-            dark: "#3a251a",
-            light: "#fff3d0"
+            dark: "var(--secondary-color)",
+            light: "var(--primary-color)"
         }
     })
     const a = document.createElement('a')

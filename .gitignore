@@ -1,5 +1,6 @@
 node_modules/
 package-lock.json
+Test/
 backend/.env
 backend/config.py
 __pycache__/
@@ -10,3 +11,5 @@ __pycache__/
 *.log
 .vscode/
 .DS_Store
+
+Test/Test.html

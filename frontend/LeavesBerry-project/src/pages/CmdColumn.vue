@@ -12,7 +12,7 @@
 			</div>
 		</div>
 		<teleport class="fixed-page" to="#app #app-root">
-			<Logo></Logo>
+			<Owner></Owner>
 			<Sidebar :type-list="cmdTypeList" @change-dir="switchDirConfig"></Sidebar>
 		</teleport>
 	</div>
@@ -27,7 +27,7 @@ import {
 	currentSidebarConfig, classifyGroup,
 	apiRequest, disposeReturn
 } from '../utils/index';
-import Logo from '../components/Logo.vue';
+import Owner from '../components/Owner.vue';
 
 const navList = ref([])
 const currentConfig = ref([])
@@ -127,7 +127,7 @@ onUnmounted(() => {
 	width: fit-content;
 	height: auto;
 	font-size: calc(6 * var(--design-vh));
-	color: #3A251A;
+	color: var(--secondary-color);
 	font-weight: 800;
 	position: relative;
 	top: 0;
@@ -144,7 +144,7 @@ onUnmounted(() => {
 	border: none;
 	font-size: calc(10 * var(--design-vh));
 	font-weight: 500;
-	color: #3A251A;
+	color: var(--secondary-color);
 }
 
 #cmd-column-page .textarea-content {
@@ -154,8 +154,8 @@ onUnmounted(() => {
 	width: 86%;
 	height: fit-content;
 	padding-top: 1.5px;
-	border-top: 1px solid #3A251A;
-	color: #3A251A;
+	border-top: 1px solid var(--secondary-color);
+	color: var(--secondary-color);
 	text-align: left;
 }
 </style>

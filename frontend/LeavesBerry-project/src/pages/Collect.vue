@@ -18,14 +18,35 @@
 									></path>
 							</svg>
 						</button>
-						<button @click.stop.prevent="createQRCode(`${ROOTPATH}${item.url}`)" style="background-image: url('/image/basic/QR.png');
-						background-size: calc(4 * var(--design-vh));
-						background-position: calc(1.3 * var(--design-vh)) center;
-						"></button>
-						<button @click.stop.prevent="copyText(item.url)" style="background-image: url('/image/basic/Link.png');
-						background-size: calc(6 * var(--design-vh));
-						background-position: calc(0.3 * var(--design-vh)) center;
-						"></button>
+						<button @click.stop.prevent="createQRCode(`${ROOTPATH}${item.url}`)">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor" 
+								id="coll-qr-icon" style="transform: scale(0.5) translateX(-10%);">    
+								<!-- 左上 -->
+								<path fill-rule="evenodd" d="M0 0H15V15H0V0ZM3 3V12H12V3H3Z"/>
+								<rect x="5" y="5" width="5" height="5"/>
+								<!-- 右上 -->
+								<path fill-rule="evenodd" d="M17 0H32V15H17V0ZM20 3V12H29V3H20Z"/>
+								<rect x="22" y="5" width="5" height="5"/>  
+								<!-- 左下 -->
+								<path fill-rule="evenodd" d="M0 17H15V32H0V17ZM3 20V29H12V20H3Z"/>
+								<rect x="5" y="22" width="5" height="5"/>
+								<!-- 右下 -->
+								<path fill-rule="evenodd" d="M17 17H32V32H17V17ZM20 20V29H29V20H20Z"/>
+								<rect x="23" y="23" width="3" height="3"/>    
+							</svg>
+						</button>
+							
+						<button @click.stop.prevent="copyText(item.url)">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" 
+								id="share-link-icon" style="transform: scale(1.5) 
+								translateY(8%) translateX(-10%);">
+								<path d="M7.2 14.7 L4.9 17 C2.4 19.5 2.4 23.5 4.9 26 C7.4 28.5 11.4 28.5 13.9 26 L20.7 19.2 C23.2 16.7 23.2 12.7 20.7 10.2 C18.8 8.3 16 7.8 13.6 8.9"
+								stroke="currentColor" stroke-width="3.4" stroke-linecap="square" stroke-linejoin="round"/>
+								<path d="M11.4 17.8 C9.1 15.3 9.2 11.5 11.6 9.1 L17.8 2.9 C20.3 0.4 24.3 0.4 26.8 2.9 C29.3 5.4 29.3 9.4 26.8 11.9 L23.9 14.8"
+								stroke="currentColor" stroke-width="3.4" stroke-linecap="square" stroke-linejoin="round"/>
+								<path d="M18.1 24.7H29" stroke="currentColor" stroke-width="3.4" stroke-linecap="square"/>
+							</svg>   
+						</button>
 					</div>
 					<p class="item-desc" id="coll-desc">
                         |{{ item.desc ? item.desc : '未在本站详细注册的界面' }}</p>
@@ -35,7 +56,7 @@
 			</div>
 		</div>
 		<teleport class="fixed-page" to="#app #app-root">
-			<Logo></Logo>
+			<Owner></Owner>
 			<sidebar :type-list="collTypeList" @change-dir="switchDirConfig"></sidebar>
 		</teleport>
 	</div>
@@ -52,7 +73,7 @@ import {
 } from "../utils/index";
 import { ROOTPATH } from "../router/index.js";
 import { ref, onMounted, onUnmounted } from "vue"
-import Logo from "../components/Logo.vue";
+import Owner from "../components/Owner.vue";
 
 let navList = []
 let groupMap = new Map()
@@ -76,6 +97,7 @@ function applyCollList(data) {
 	groupMap = classifyGroup(list, 'type')
 
 	const index = currentSidebarConfig.value
+	
 	
 	if (index == 0) {
 		currentConfig.value = navList
@@ -189,13 +211,13 @@ onUnmounted(() => {
 	height: calc(6 * var(--design-vh));
 	background-color: rgba(0, 0, 0, 0);
 	background-repeat: no-repeat;
-	color: #3A251A;
+	color: var(--secondary-color);
 	margin-left: calc(1 * var(--design-vh));
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	padding: 0;
-	border-right: 1px solid #3A251A;
+	border-right: 1px solid var(--secondary-color);
 	border-top: none;
 	border-bottom: none;
 	border-left: none;
@@ -203,8 +225,8 @@ onUnmounted(() => {
 }
 
 #discoll-button {
-	color: #73B436;
-	border-left: 1px solid #3A251A;
+	color: var(--thirdary-color);
+	border-left: 1px solid var(--secondary-color);
 }
 
 .coll-function-icon {

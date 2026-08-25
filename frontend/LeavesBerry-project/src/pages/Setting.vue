@@ -11,7 +11,7 @@
                 maxlength="26">
                 <button class="item" id="change-bio-button" @click="bioModule.changeBio">更改简介</button>
                 <p class="refresh-tip">•如果你想不出一个满意的简介,不妨试试</p>
-                <div style="width: 70vw;position:absolute;top: 60%;border-top: 3px solid #3a251a;"></div>
+                <div style="width: 70vw;position:absolute;top: 60%;border-top: 3px solid var(--secondary-color);"></div>
                 <div id="gener-bio-button-box">
                     <button class="gener-bio-button item" id="poem-gener-bio-button"
                     @click="bioModule.generBio('poetry')">从诗歌中选取</button>
@@ -59,7 +59,7 @@
             <div class="item-box" v-if="currentContent == 'logout'"></div>
         </div>
         <teleport class="fixed-page" to="#app #app-root">
-            <Logo></Logo>
+            <Owner></Owner>
             <Sidebar :type-list="setTypeList" @change-dir="switchDirContent"></Sidebar>
         </teleport>
     </div>
@@ -67,7 +67,7 @@
 
 <script setup>
 import { ref, reactive, onUnmounted, onMounted } from 'vue'
-import Logo from '../components/Logo.vue'
+import Owner from '../components/owner.vue'
 import Sidebar from '../components/Sidebar.vue'
 import {
     apiRequest, userState, disposeReturn, showTips, currentSidebarConfig,
@@ -442,7 +442,7 @@ onUnmounted(() => {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 3px solid #3a251a;
+    border: 3px solid var(--secondary-color);
 }
 
 #crop-tip-box {
@@ -457,7 +457,7 @@ onUnmounted(() => {
     white-space: pre-line;
     word-break: break-all;
     word-wrap: break-word;
-    color: #3a251a;
+    color: var(--secondary-color);
     font-size: 16px;
     font-weight: 200;
 }
@@ -555,7 +555,7 @@ onUnmounted(() => {
 
 #docu-name {
     font-size: 20px;
-    color: #3a251a;
+    color: var(--secondary-color);
     font-weight: 600;
 }
 
@@ -565,7 +565,7 @@ onUnmounted(() => {
     padding-top: calc(0.4 * var(--design-vh));
     text-align: center;
     font-size: 20px;
-    color: #3a251a;
+    color: var(--secondary-color);
     font-weight: 600;
     outline: none;
     border: none;

@@ -12,7 +12,7 @@
     position: relative;
     top: calc(38 * var(--design-vh));
     font-size: 20px;
-    color: #3A251A;
+    color: var(--secondary-color);
     font-weight: 300;
     justify-content: center;
     align-items: center;
@@ -20,7 +20,7 @@
 
 .item {
     width: 70vw;
-    background-color: #FFF3D0;
+    background-color: var(--primary-color);
     box-shadow: 8px 10px 25px rgb(180, 145, 80, 1);
     position: relative;
     margin-top: calc(6 * var(--design-vh));
@@ -42,7 +42,7 @@
     width: fit-content;
     height: auto;
     font-size: calc(6 * var(--design-vh));
-    color: #3A251A;
+    color: var(--secondary-color);
     font-weight: 800;
     position: relative;
     top: 15%;
@@ -53,7 +53,7 @@
     width: fit-content;
     height: auto;
     font-size: calc(4 * var(--design-vh));
-    color: #3A251A;
+    color: var(--secondary-color);
     font-weight: 400;
     position: absolute;
     top: 55%;
@@ -63,7 +63,7 @@
 .refresh-tip {
     display: flex;
     font-size: 20px;
-    color: #3A251A;
+    color: var(--secondary-color);
     font-weight: 300;
     justify-content: center;
     align-items: center;

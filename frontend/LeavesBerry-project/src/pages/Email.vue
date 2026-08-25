@@ -45,7 +45,7 @@
 			</div>
 		</div>
 		<teleport class="fixed-page" to="#app #app-root">
-			<Logo></Logo>
+			<Owner></Owner>
 			<Sidebar :type-list="emailTypeList" @change-dir="switchDirConfig"
 			v-show="!configModule.isConfigClosed"></Sidebar>
 			<ExContent></ExContent>
@@ -64,7 +64,7 @@ import {
 } from "../utils/index";
 import { ref, onMounted, onUnmounted, watch } from "vue"
 import Sidebar from "../components/Sidebar.vue";
-import Logo from "../components/Logo.vue";
+import Owner from "../components/Owner.vue";
 import ExContent from "../components/ExContent.vue";
 
 useHashDetail('Email')
@@ -77,6 +77,8 @@ const currentConfig = ref([])
 const mainTextInputValue = ref(null)
 const recipientInputValue = ref(null)
 const emailTitleInputValue = ref(null)
+
+let isEmailVerifing = false
 
 let isUnmounted = false
 
@@ -125,6 +127,7 @@ async function sendEmail() {
 			re = Number(re)
 			if (re == userState.userId) {
 				showTips('你不能给自己发邮件QwQ')
+				return
 			}
 		} catch(e) {
 			showTips("收件人格式错误")
@@ -160,18 +163,21 @@ async function sendEmail() {
 
 async function verifyEmail() {
 
-	if (!configModule.contentText.length == 0) return
+	if (configModule.contentText.length == 0) return
 
-	const reg = /((https?|ftp|file):\/\/)?(?:[a-zA-Z0-9\-]+\.)+[a-zA-Z0-9\-]+|(?:\d{1,3}\.){3}\d{1,3}(?:\/[\w.,@?^=%&:/~+#\-]*)*/g
+	isEmailVerifing = true
+
+	const reg = /((https?|ftp|file):\/\/)?(?:[a-zA-Z0-9\-]+\.)+[a-zA-Z0-9\-]+|(?:\d{1,3}\.){3}\d{1,3}(?:\/[\w.,@?^=%&:/~+#\-]*)*/
+	
 	if (reg.test(configModule.contentText)) {
 		let linkTypeList = ''
-		if ([".com", ".cn", ".org"].some(char => configModule.contentText.include(char))){
+		if ([".com", ".cn", ".org"].some(char => configModule.contentText.includes(char))){
 			linkTypeList += " <第三方官方网站> "
 		}
-		else if ([".top", ".xyz", ".club", ".win"].some(char => configModule.contentText.include(char))){
+		else if ([".top", ".xyz", ".club", ".win"].some(char => configModule.contentText.includes(char))){
 			linkTypeList += " <未认证的小型网站> "
 		}
-		else if (configModule.contentText.include(".cc")) {
+		else if (configModule.contentText.includes(".cc")) {
 			linkTypeList += " <未认证的高危网站!!!> "
 		}
 		else {
@@ -180,6 +186,9 @@ async function verifyEmail() {
 		configModule.contentText = `该邮件中包含链接, 包括通向${linkTypeList}的链接, 请谨慎访问!\n\n` + 
 		configModule.contentText
 	}
+
+	isEmailVerifing = false
+	return
 }
 
 function switchDirConfig(sn, type) {
@@ -199,8 +208,8 @@ function switchDirConfig(sn, type) {
 	currentConfig.value = []
 }
 
-watch(() => configModule.contentText, () => {
-	verifyEmail()
+watch(() => configModule.contentId, () => {
+		verifyEmail()
 })
 
 onMounted(async () => {
@@ -239,20 +248,20 @@ onUnmounted(() => {
 	width: 65vw;
 	height: calc(8 * var(--design-vh));
 	border-radius: calc(5 * var(--design-vh)) calc(5 * var(--design-vh)) 0 0;
-	border: 3px solid #3a251a;
+	border: 3px solid var(--secondary-color);
 	text-align: center;
 	line-height: calc(8 * var(--design-vh));
 	position: relative;
 	margin-top: calc(6 * var(--design-vh));
 	background: none;
 	font-size: calc(4 * var(--design-vh));
-	color: #3a251a;
+	color: var(--secondary-color);
 	font-weight: 600;
 }
 
 #email-title-input::placeholder {
 	font-size: calc(4 * var(--design-vh));
-	color: #3a251a;
+	color: var(--secondary-color);
 	font-weight: 600;
 }
 
@@ -260,19 +269,19 @@ onUnmounted(() => {
 	width: 65vw;
 	height: calc(8 * var(--design-vh));
 	border-radius: 0 0 calc(5 * var(--design-vh)) calc(5 * var(--design-vh));
-	border: 3px solid #3a251a;
+	border: 3px solid var(--secondary-color);
 	text-align: center;
 	line-height: calc(8 * var(--design-vh));
 	position: relative;
 	margin-top: -3px;
 	background: none;
 	font-size: calc(4 * var(--design-vh));
-	color: #3a251a;
+	color: var(--secondary-color);
 }
 
 #recipient-input::placeholder {
 	font-size: calc(4 * var(--design-vh));
-	color: #3a251a;
+	color: var(--secondary-color);
 	font-weight: 600;
 }
 
@@ -280,7 +289,7 @@ onUnmounted(() => {
 	width: 65vw;
 	height: fit-content;
 	border-radius: calc(5 * var(--design-vh));
-	border: 3px solid #3a251a;
+	border: 3px solid var(--secondary-color);
 	text-align: left;
 	padding: calc(1 * var(--design-vh)) 1% calc(1 * var(--design-vh)) 1%;
 	position: relative;
@@ -288,7 +297,7 @@ onUnmounted(() => {
 	line-height: 1;
 	background: none;
 	font-size: calc(4 * var(--design-vh));
-	color: #3a251a;
+	color: var(--secondary-color);
 	field-sizing: content;
     min-height: calc(10 * var(--design-vh, 4.57px));
     max-height: calc(300 * var(--design-vh, 4.57px));
@@ -304,7 +313,7 @@ onUnmounted(() => {
 
 #main-text-input::placeholder {
 	font-size: calc(4 * var(--design-vh));
-	color: #3a251a;
+	color: var(--secondary-color);
 	font-weight: 600;
 }
 
@@ -312,14 +321,14 @@ onUnmounted(() => {
 	width: 65vw;
 	height: calc(8 * var(--design-vh));
 	border-radius: calc(5 * var(--design-vh));
-	border: 3px solid #3a251a;
+	border: 3px solid var(--secondary-color);
 	text-align: center;
 	position: relative;
 	top: calc(2 * var(--design-vh) - 3px);
 	background: none;
 	font-size: calc(4 * var(--design-vh));
 	font-weight: 600;
-	color: #3a251a;
+	color: var(--secondary-color);
 	cursor: pointer;
 }
 
@@ -344,6 +353,10 @@ onUnmounted(() => {
 	display: flex;
 	align-items: center;
 	padding-bottom: calc(5 * var(--design-vh));
+}
+
+#write-email-box:active {
+	transform: none;
 }
 
 @media (min-width: 1px) and (orientation: portrait) {

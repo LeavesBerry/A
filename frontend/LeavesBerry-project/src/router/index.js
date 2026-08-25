@@ -50,7 +50,7 @@ const routes = [
         name: 'Home',
         component: () => import('../pages/Home.vue'), // 初始界面
         meta: {
-            title: '主页',
+            title: '叶果 | 主页',
             type: 'other',
             description: '本站的开始界面'
         }
@@ -60,7 +60,7 @@ const routes = [
         name: 'AutoPage',
         component: () => import('../pages/AutoPage.vue'),
         meta: {
-            title: '未知界面',
+            title: '叶果 | 未知界面',
             type: 'other',
             description: '未在本站详细注册的页面'
         }

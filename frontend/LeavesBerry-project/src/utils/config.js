@@ -17,6 +17,8 @@ export const configModule = reactive({
     isContentExpanded: false,
     isConfigClosed: false,
     contentTitle: "",
+    contentType: "",
+    contentDesc: "",
     contentText: "",
     contentId: null,
 
@@ -56,11 +58,10 @@ export const configModule = reactive({
             if (!contentCache) {
                 const res = await api.post(`/api/get${field}Content`, { id: id });
                 this.contentText = res.data.main_text;
-                this.contentTitle = res.data.title;
                 this.contentId = id;
-                pageState.currentTitle = res.data.title;
-                pageState.currentDesc = res.data.desc;
-                pageState.currentType = fieldTypeConfig[field] ?? "other";        
+                pageState.currentTitle = this.contentTitle = res.data.title;
+                pageState.currentDesc = this.contentDesc = res.data.desc;
+                pageState.currentType = this.contentType = fieldTypeConfig[field] ?? "other";        
                 
                 sessionStorage.setItem(`${field}_content_cache_${id}`, 
                     JSON.stringify({
@@ -72,12 +73,12 @@ export const configModule = reactive({
             }
             else {
                 contentCache = JSON.parse(contentCache)
+                console.log(contentCache)
                 this.contentText = contentCache.contentText
-                this.contentTitle = contentCache.contentTitle;
                 this.contentId = id;
-                pageState.currentTitle = contentCache.currentTitle;
-                pageState.currentDesc = contentCache.contentDesc;
-                pageState.currentType = contentCache.currentType;
+                pageState.currentTitle = this.contentTitle = contentCache.contentTitle;
+                pageState.currentDesc = this.contentDesc = contentCache.contentDesc;
+                pageState.currentType = this.contentType = contentCache.contentType;
             }
         }
         else {
@@ -86,7 +87,7 @@ export const configModule = reactive({
             pageState.currentType = this.currentType;
         }
         await this.refreshColl()
-        if (url !== visitList.at(-1)) {
+        if (pageState.currentUrl !== visitList.at(-1)) {
             visitList.push({
                 url: pageState.currentUrl,
                 title: pageState.currentTitle,

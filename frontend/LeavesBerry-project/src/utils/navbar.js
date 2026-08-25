@@ -70,17 +70,17 @@ export const navbarModule = {
     // ------------------------------
     async getAllCollInfo() {
         if(!userState.isLogined) return
-        let coll_info = JSON.parse(localStorage.getItem('coll_info_cache'))
-        let coll_list = JSON.parse(localStorage.getItem('coll_list_cache'))
-        if (coll_info && coll_list && coll_info.length == coll_list.length) return
         const res = await api.post('/api/getAllCollInfo')
-        coll_info = res.data
-        coll_list = coll_info.map(item => item.url)
+        let coll_info = res.data
+        let coll_list = coll_info.map(item => item.url)
         localStorage.setItem('coll_list_cache', JSON.stringify(coll_list))
         localStorage.setItem('coll_info_cache', JSON.stringify(coll_info))
     },
 
     async initColl() {
+        console.log('当前更新',pageState.currentUrl)
+        console.log('更新前',localStorage.getItem('coll_list_cache'))
+        console.log('更新前',localStorage.getItem('coll_info_cache'))
         if (pageState.currentUrl == '') {
             const route = router.currentRoute.value
             updatePageInfo(route.params.page, location.href.replace(ROOTPATH,''));
@@ -91,12 +91,14 @@ export const navbarModule = {
             coll_list = JSON.parse(coll_list_cache)
         }
         pageState.isCollected = coll_list.includes(pageState.currentUrl)
+        console.log('更新后',localStorage.getItem('coll_list_cache'))
+        console.log('更新后',localStorage.getItem('coll_info_cache'))
     },
 
     async toggleColl() {
         if (!userState.isLogined) return
+        const oldState = pageState.isCollected
         try {
-            const oldState = pageState.isCollected
             pageState.isCollected = !oldState;
             const res = await apiRequest.toggleColl(pageState.currentUrl,
                 pageState.currentTitle, pageState.currentType, pageState.currentDesc);
@@ -122,6 +124,7 @@ export const navbarModule = {
             }
         } catch (e) {
             pageState.isCollected = oldState
+            console.log(e)
             showTips(e)
         }
     },

@@ -29,6 +29,6 @@ export default {
     margin-top: calc(50vh - 52px);
     font-size: 20px;
     font-weight: 300;
-    color: #3a251a;
+    color: var(--secondary-color);
 }
 </style>

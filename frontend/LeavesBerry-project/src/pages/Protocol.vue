@@ -17,12 +17,12 @@
         </div>
     </div>
     <teleport class="fixed-page" to="#app #app-root">
-        <Logo></Logo>
+        <Owner></Owner>
     </teleport>
 </template>
 
 <script setup>
-import Logo from '../components/Logo.vue'
+import Owner from '../components/Owner.vue'
 import { apiRequest, disposeReturn } from '../utils'
 import { ref, onMounted, onUnmounted } from 'vue'
 
@@ -81,7 +81,7 @@ onUnmounted(() => {
 
 <style scoped>
 #proto-title {
-    color: #3a251a;
+    color: var(--secondary-color);
     font-size: 25px;
     font-weight: 700;
     padding-top: calc(4 * var(--design-vh, 4.57px));
@@ -92,8 +92,8 @@ onUnmounted(() => {
     width: 100vw;
     height: fit-content;
     padding: 20px 0;
-    border-top: 1px solid #4a4030;
-    border-bottom: 1px solid #4a4030;
+    border-top: 1px solid var(--secondary-color);
+    border-bottom: 1px solid var(--secondary-color);
 }
 
 .proto-text {
@@ -102,7 +102,7 @@ onUnmounted(() => {
     width: 80vw;
     height: fit-content;
     text-align: left;
-    color: #4a4030;
+    color: var(--secondary-color);
     font-size: 15px;
     font-weight: 500;
 }

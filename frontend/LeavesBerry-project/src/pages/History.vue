@@ -20,16 +20,15 @@
         </div>
     </div>
     <teleport class="fixed-page" to="#app #app-root">
-        <Logo></Logo>
+        <Owner></Owner>
         <Sidebar :type-list="historyTypeList" @change-dir="switchDirContent"></Sidebar>
     </teleport>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import Logo from '../components/Logo.vue';
+import Owner from '../components/Owner.vue';
 import Sidebar from '../components/Sidebar.vue';
-import ExTextarea from '../components/ExTextarea.vue'
 import api from '../utils/api.js';
 import { disposeReturn, currentSidebarConfig, useGoPage } from '../utils/index.js';
 import { ROOTPATH } from '../router/index.js';
@@ -98,7 +97,7 @@ onMounted(() => {
     width: fit-content;
     height: auto;
     font-size: calc(4 * var(--design-vh));
-    color: #3A251A;
+    color: var(--secondary-color);
     font-weight: 400;
     position: absolute;
     top: 55%;
@@ -120,7 +119,7 @@ onMounted(() => {
     -webkit-user-select: none;
     user-select: none;
     background-color: rgba(0, 0, 0, 0);
-    border: 1px solid #3A251A;
+    border: 1px solid var(--secondary-color);
     border-bottom: none;
 }
 
@@ -130,14 +129,14 @@ onMounted(() => {
 
 #history-page .textarea:last-child {
     border-radius: 0 0 calc(6 * var(--design-vh)) calc(6 * var(--design-vh));
-    border-bottom: 1px solid #3A251A;
+    border-bottom: 1px solid var(--secondary-color);
 }
 
 #history-page .textarea-title {
     width: fit-content;
     height: auto;
     font-size: calc(4 * var(--design-vh));
-    color: #3A251A;
+    color: var(--secondary-color);
     font-weight: 400;
     position: relative;
     top: 0;
@@ -154,7 +153,7 @@ onMounted(() => {
     border: none;
     font-size: calc(10 * var(--design-vh));
     font-weight: 500;
-    color: #3A251A;
+    color: var(--secondary-color);
 }
 
 #history-page .textarea-content {
@@ -164,8 +163,8 @@ onMounted(() => {
     width: 86%;
     height: fit-content;
     padding-top: 1.5px;
-    border-top: 1px solid #3A251A;
-    color: #3A251A;
+    border-top: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
     text-align: left;
 }
 </style>

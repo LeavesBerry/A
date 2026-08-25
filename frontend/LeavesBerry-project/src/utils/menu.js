@@ -15,7 +15,7 @@ export const menuModule = {
             pageState.leftDown = {}
             pageState.rightUp = {}
             pageState.rightDown = {}
-            pageState.menuBox = { zIndex: '23', opacity: '0', transform: 'scale(0.1,0.067)' }
+            pageState.menuBox = { zIndex: '23', opacity: '0' }
         }
         pageState.isMenuClosed = !pageState.isMenuClosed
     }

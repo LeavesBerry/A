@@ -34,45 +34,45 @@
 
       <!------------------菜单边框装饰------------------->
       <!-------------星星-------------->
-      <span class="star s1"><svg class="navbar-function-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <span class="menu-star s1"><svg class="navbar-function-icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 2.8C12.8 7.8 16.2 11.2 21.2 12C16.2 12.8 12.8 16.2 12 21.2C11.2 16.2 7.8 12.8 2.8 12C7.8 11.2 11.2 7.8 12 2.8Z"
               fill="currentColor"></path>
           </svg></span>
-      <span class="star s2"><svg class="navbar-function-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <span class="menu-star s2"><svg class="navbar-function-icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 2.8C12.8 7.8 16.2 11.2 21.2 12C16.2 12.8 12.8 16.2 12 21.2C11.2 16.2 7.8 12.8 2.8 12C7.8 11.2 11.2 7.8 12 2.8Z"
               fill="currentColor"></path>
           </svg></span>
-      <span class="star s3"><svg class="navbar-function-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <span class="menu-star s3"><svg class="navbar-function-icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 2.8C12.8 7.8 16.2 11.2 21.2 12C16.2 12.8 12.8 16.2 12 21.2C11.2 16.2 7.8 12.8 2.8 12C7.8 11.2 11.2 7.8 12 2.8Z"
               fill="currentColor"></path>
           </svg></span>
-      <span class="star s4"><svg class="navbar-function-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <span class="menu-star s4"><svg class="navbar-function-icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 2.8C12.8 7.8 16.2 11.2 21.2 12C16.2 12.8 12.8 16.2 12 21.2C11.2 16.2 7.8 12.8 2.8 12C7.8 11.2 11.2 7.8 12 2.8Z"
               fill="currentColor"></path>
           </svg></span>
-      <span class="star s5"><svg class="navbar-function-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <span class="menu-star s5"><svg class="navbar-function-icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 2.8C12.8 7.8 16.2 11.2 21.2 12C16.2 12.8 12.8 16.2 12 21.2C11.2 16.2 7.8 12.8 2.8 12C7.8 11.2 11.2 7.8 12 2.8Z"
               fill="currentColor"></path>
           </svg></span>
-      <span class="star s6"><svg class="navbar-function-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <span class="menu-star s6"><svg class="navbar-function-icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 2.8C12.8 7.8 16.2 11.2 21.2 12C16.2 12.8 12.8 16.2 12 21.2C11.2 16.2 7.8 12.8 2.8 12C7.8 11.2 11.2 7.8 12 2.8Z"
               fill="currentColor"></path>
           </svg></span>
-      <span class="star s7"><svg class="navbar-function-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <span class="menu-star s7"><svg class="navbar-function-icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 2.8C12.8 7.8 16.2 11.2 21.2 12C16.2 12.8 12.8 16.2 12 21.2C11.2 16.2 7.8 12.8 2.8 12C7.8 11.2 11.2 7.8 12 2.8Z"
               fill="currentColor"></path>
           </svg></span>
-      <span class="star s8"><svg class="navbar-function-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <span class="menu-star s8"><svg class="navbar-function-icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 2.8C12.8 7.8 16.2 11.2 21.2 12C16.2 12.8 12.8 16.2 12 21.2C11.2 16.2 7.8 12.8 2.8 12C7.8 11.2 11.2 7.8 12 2.8Z"
               fill="currentColor"></path>
           </svg></span>
       <!-------------线条-------------->
-      <svg width="100%" height="100%">
-        <line x1="27.2px" y1="11px" x2="250px" y2="11px" stroke="#73B436" stroke-width="1" />
-        <line x1="10px" y1="27.42px" x2="10px" y2="392px" stroke="#73B436" stroke-width="1" />
-        <line x1="268px" y1="27.42px" x2="268px" y2="392px" stroke="#73B436" stroke-width="1" />
-        <line x1="27.2px" y1="410px" x2="250" y2="410px" stroke="#73B436" stroke-width="1" />
-        <line x1="10px" y1="100px" x2="268px" y2="100px" stroke="#73B436" stroke-width="1" />
+      <svg width="100%" height="100%" class="menu-line">
+        <line x1="27.2px" y1="11px" x2="250px" y2="11px" stroke="currentColor" stroke-width="1" />
+        <line x1="10px" y1="27.42px" x2="10px" y2="392px" stroke="currentColor" stroke-width="1" />
+        <line x1="268px" y1="27.42px" x2="268px" y2="392px" stroke="currentColor" stroke-width="1" />
+        <line x1="27.2px" y1="410px" x2="250" y2="410px" stroke="currentColor" stroke-width="1" />
+        <line x1="10px" y1="100px" x2="268px" y2="100px" stroke="currentColor" stroke-width="1" />
       </svg>
 
       <!-------------------菜单按钮------------------->
@@ -195,7 +195,7 @@
         </button>
         <!-------------收藏-------------->
         <button class="navbar-function-button" id="collect-button"
-          :style="{ color: pageState.isCollected ? '#73B436' : 'rgb(90,25,27)' }"
+          :style="{ color: pageState.isCollected ? 'var(--thirdary-color)' : 'var(--secondary-color)' }"
           @click="navbarModule.toggleColl" aria-label="收藏">
           <svg class="navbar-function-icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 2.8C12.8 7.8 16.2 11.2 21.2 12C16.2 12.8 12.8 16.2 12 21.2C11.2 16.2 7.8 12.8 2.8 12C7.8 11.2 11.2 7.8 12 2.8Z"
@@ -210,7 +210,7 @@
             <path d="M18 8a3 3 0 1 0-2.83-4A3 3 0 0 0 15 5c0 .18.02.35.05.52L8.91 9.1A3 3 0 0 0 7 8.4a3 3 0 1 0 1.91 5.31l6.14 3.58A3 3 0 0 0 15 18a3 3 0 1 0 .95-2.18L9.8 12.24A3.2 3.2 0 0 0 10 11c0-.43-.09-.84-.25-1.21l6.12-3.57A3 3 0 0 0 18 8Z"
               fill="currentColor"></path>
           </svg>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="#5B1619" 
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor" 
             v-if="!pageState.isShareClosed" id="share-qr-icon">    
             <!-- 左上 -->
             <path fill-rule="evenodd" d="M0 0H15V15H0V0ZM3 3V12H12V3H3Z"/>
@@ -228,19 +228,19 @@
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" 
             v-if="!pageState.isShareClosed" id="share-link-icon">
             <path d="M7.2 14.7 L4.9 17 C2.4 19.5 2.4 23.5 4.9 26 C7.4 28.5 11.4 28.5 13.9 26 L20.7 19.2 C23.2 16.7 23.2 12.7 20.7 10.2 C18.8 8.3 16 7.8 13.6 8.9"
-              stroke="#64151D" stroke-width="3.4" stroke-linecap="square" stroke-linejoin="round"/>
+              stroke="currentColor" stroke-width="3.4" stroke-linecap="square" stroke-linejoin="round"/>
             <path d="M11.4 17.8 C9.1 15.3 9.2 11.5 11.6 9.1 L17.8 2.9 C20.3 0.4 24.3 0.4 26.8 2.9 C29.3 5.4 29.3 9.4 26.8 11.9 L23.9 14.8"
-              stroke="#64151D" stroke-width="3.4" stroke-linecap="square" stroke-linejoin="round"/>
-            <path d="M18.1 24.7H29" stroke="#64151D" stroke-width="3.4" stroke-linecap="square"/>
+              stroke="currentColor" stroke-width="3.4" stroke-linecap="square" stroke-linejoin="round"/>
+            <path d="M18.1 24.7H29" stroke="currentColor" stroke-width="3.4" stroke-linecap="square"/>
           </svg>   
         </button>
         <!-------------指令-------------->
         <button class="navbar-function-button" id="command-button"
-          :style="{ color: !pageState.isCmdClosed ? 'red' : '#5A191B' }"
+          :style="{ color: !pageState.isCmdClosed ? 'red' : 'var(--secondary-color)' }"
           @click="navbarModule.toggleCmdUI" aria-label="指令">
           <svg class="navbar-function-icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M8.5 21L15.5 3"
-              fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></path>
+              fill="currentColor" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></path>
           </svg>
         </button>
       </div>
@@ -329,7 +329,6 @@ useHead({
   title: () => pageState.currentTitle,
   meta: [{ name: "description", content: () => pageState.currentDesc }]
 })
-
 
 // ------------------------------
 // 生命周期

@@ -5,7 +5,7 @@
     }">
         <div class="content-container" :style="{
             transform: configModule.isContentExpanded ?
-                `translateY(calc(-120vh + ${du(10)}))` : 'none'
+                'translateY(calc(-120vh + var(--navbar-height) + 4 * var(--design-vh))' : 'none'
         }">
             <button class="hide-content-button none-select" @click="configModule.hideContent()">×</button>
             <p class="content-title">{{ configModule.contentTitle }}</p>
@@ -35,7 +35,7 @@ import { configModule, du } from '../utils';
     left: 0;
     width: 90vw;
     box-shadow: 8px 10px 25px rgb(180, 145, 80, 1);
-    background-color: #FFF3D0;
+    background-color: var(--primary-color);
     border-radius: calc(6 * var(--design-vh));
     width: 90vw;
     transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1);
@@ -49,7 +49,7 @@ import { configModule, du } from '../utils';
 .content-title {
     width: auto;
     font-size: calc(8 * var(--design-vh));
-    color: #3A251A;
+    color: var(--secondary-color);
     font-weight: 800;
     padding-top: calc(6 * var(--design-vh));
     padding-bottom: calc(6 * var(--design-vh));
@@ -58,7 +58,7 @@ import { configModule, du } from '../utils';
 .content-text {
     width: 83vw;
     height: fit-content;
-    color: #3A251A;
+    color: var(--secondary-color);
     font-weight: 300;
     padding-top: calc(6 * var(--design-vh));
     word-break: break-all;
@@ -75,12 +75,12 @@ import { configModule, du } from '../utils';
     font-size: calc(8 * var(--design-vh));
     background-color: rgba(0, 0, 0, 0);
     border: none;
-    color: #3A251A;
+    color: var(--secondary-color);
 }
 
 .title-content-divider {
     width: 84vw;
     height: 0;
-    border: 1px solid #3A251A;
+    border: 1px solid var(--secondary-color);
 }
 </style>

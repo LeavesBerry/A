@@ -13,14 +13,14 @@
         </div>
     </div>
     <teleport class="fixed-page" to="#app #app-root">
-        <Logo></Logo>
+        <Owner></Owner>
     </teleport>
 </template>
 
 <script setup>
 import { apiRequest, userState, disposeReturn, showTips } from '../utils/index.js';
 import { ref, onMounted, onUnmounted } from 'vue';
-import Logo from '../components/Logo.vue';
+import Owner from '../components/Owner.vue';
 
 let isUnmounted = false;
 const feedback = ref("")
@@ -117,7 +117,7 @@ onUnmounted(() => {
     overflow-y: hidden;
     background-color: rgba(0, 0, 0, 0);
     height: fit-content;
-    color: #3A251A;
+    color: var(--secondary-color);
     font-size: 20px;
     font-weight: 300;
     text-align: top;
@@ -141,7 +141,7 @@ onUnmounted(() => {
     border-radius: 0 0 calc(6 * var(--design-vh, 4.57px)) calc(6 * var(--design-vh, 4.57px));
     font-size: 20px;
     font-weight: 600;
-    color: #3A251A;
+    color: var(--secondary-color);
     cursor: pointer;
 }
 
