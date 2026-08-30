@@ -68,31 +68,13 @@ export const navbarModule = {
     // ------------------------------
     // 收藏功能
     // ------------------------------
-    async getAllCollInfo() {
-        if(!userState.isLogined) return
-        const res = await api.post('/api/getAllCollInfo')
-        let coll_info = res.data
-        let coll_list = coll_info.map(item => item.url)
-        localStorage.setItem('coll_list_cache', JSON.stringify(coll_list))
-        localStorage.setItem('coll_info_cache', JSON.stringify(coll_info))
-    },
-
-    async initColl() {
-        console.log('当前更新',pageState.currentUrl)
-        console.log('更新前',localStorage.getItem('coll_list_cache'))
-        console.log('更新前',localStorage.getItem('coll_info_cache'))
-        if (pageState.currentUrl == '') {
+    async initColl(url = pageState.currentUrl) {
+        if (url == '') {
             const route = router.currentRoute.value
             updatePageInfo(route.params.page, location.href.replace(ROOTPATH,''));
         }
-        const coll_list_cache = localStorage.getItem('coll_list_cache')
-        let coll_list = []
-        if (coll_list_cache) {
-            coll_list = JSON.parse(coll_list_cache)
-        }
-        pageState.isCollected = coll_list.includes(pageState.currentUrl)
-        console.log('更新后',localStorage.getItem('coll_list_cache'))
-        console.log('更新后',localStorage.getItem('coll_info_cache'))
+        const res = await apiRequest.initColl(url);
+        pageState.isCollected = res.is_collected ?? false
     },
 
     async toggleColl() {
@@ -105,22 +87,6 @@ export const navbarModule = {
             if (!disposeReturn(res)) {
                 const isCollected = res.is_collected
                 pageState.isCollected = isCollected;
-                let coll_info = JSON.parse(localStorage.getItem('coll_info_cache'))
-                let coll_list = JSON.parse(localStorage.getItem('coll_list_cache'))
-                if(isCollected) {
-                    coll_info.push({url: pageState.currentUrl, title: pageState.currentTitle, 
-                        type: pageState.currentType, desc: pageState.currentDesc})
-                    coll_list.push(pageState.currentUrl)
-                    localStorage.setItem('coll_list_cache', JSON.stringify(coll_list))
-                    localStorage.setItem('coll_info_cache', JSON.stringify(coll_info))
-                }
-                else {
-                    const collIndex = coll_list.indexOf(pageState.currentUrl)
-                    coll_list.splice(collIndex, 1)
-                    coll_info.splice(collIndex, 1)
-                    localStorage.setItem('coll_list_cache', JSON.stringify(coll_list))
-                    localStorage.setItem('coll_info_cache', JSON.stringify(coll_info))
-                }
             }
         } catch (e) {
             pageState.isCollected = oldState

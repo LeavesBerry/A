@@ -15,7 +15,6 @@ const USER_INFO_UPDATED_AT_KEY = "userInfoUpdatedAt"
 const USER_INFO_CACHE_DURATION = 10 * 60 * 1000
 const DEFAULT_USER_INFO = {
     isLogined: false,
-    isChangedColl: false,
     userName: "未登录",
     userId: null,
     userEmail: null,
@@ -84,7 +83,6 @@ export const userModule = reactive({
         }
         if (token === "visitor") return
         if (!forceRefresh && userState.isLogined && isUserInfoFresh()) {
-            await navbarModule.getAllCollInfo()
             await navbarModule.initColl()
             return
         }
@@ -96,7 +94,6 @@ export const userModule = reactive({
                 return
             }
             this.updateUserInfo(res)
-            await navbarModule.getAllCollInfo()
             await navbarModule.initColl()
         } catch (error) {
             showTips(error)

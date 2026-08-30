@@ -93,7 +93,7 @@ const tipList = [
 ]
 
 async function getAllEmailInfo() {
-	const res = await api.post('/api/getAllEmailInfo')
+	const res = await api.get('/api/getAllEmailInfo')
 	if (isUnmounted) return
 
 	const list = Array.isArray(res.data) ? res.data : []

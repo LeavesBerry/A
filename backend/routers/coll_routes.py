@@ -48,6 +48,20 @@ async def refresh_coll(request: Request,
         coll_list_cache_key(user_id)
     )
 
+@router.post("/api/initColl")
+#@limiter.limit("1/1second")
+async def init_coll(request: Request, data: CollRequest,
+    user_id: int = Depends(get_current_user("user_id")),
+    db: Session = Depends(get_db),
+):
+
+    exist = db.query(
+        exists().where(Coll.user_id == user_id, Coll.url_hash == hash_url(data.url))
+    ).scalar()
+
+    return JSONResponse({"is_collected": exist})
+    
+
 
 @router.post("/api/toggleColl")
 @limiter.limit("7/10seconds")
@@ -88,7 +102,7 @@ async def toggle_coll(request: Request,
     return JSONResponse({"msg": "收藏成功", "is_collected": True})
 
 
-@router.post("/api/getAllCollInfo")
+@router.get("/api/getAllCollInfo")
 @limiter.limit("10/1minute")
 async def get_all_coll(request: Request, 
     user_id: int = Depends(get_current_user("user_id")),

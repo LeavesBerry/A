@@ -336,7 +336,6 @@ useHead({
 onMounted(async() => {
   routeListener();
   startTimer();
-  await userModule.initUser();
   document.addEventListener('click', onGlobalClick);
 })
 

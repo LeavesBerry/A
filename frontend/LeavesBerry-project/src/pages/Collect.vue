@@ -117,10 +117,9 @@ async function getAllColl() {
 
 	if (isUnmounted) return
 
-	const coll_info = JSON.parse(localStorage.getItem('coll_info_cache'))
+	const res = api.get('/api/getAllColl')
 
-	applyCollList(coll_info)
-	userState.isChangedColl = false
+	applyCollList(res.data)
 }
 
 async function cancelColl(url) {

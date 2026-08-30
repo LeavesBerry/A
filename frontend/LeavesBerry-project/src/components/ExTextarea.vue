@@ -43,4 +43,8 @@ function toggleText() {
     height: auto;
     overflow: visible;
 }
+
+.expandable-textarea:active {
+    transform: none;
+}
 </style>

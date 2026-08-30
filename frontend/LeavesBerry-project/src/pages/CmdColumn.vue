@@ -2,13 +2,13 @@
 	<div class="page" id="cmd-column-page">
 		<div class="slide-page">
 			<div class="item-box">
-				<ExTextarea v-for="item in currentConfig" :key="item.id ?? item.cmd" :title="item.cmd" :text="item.des"
+				<ExTextarea v-for="item in currentContent" :key="item.id ?? item.cmd" :title="item.cmd" :text="item.des"
 					custom-class="item" title-class="textarea-title" button-class="textarea-button"
 					content-class="textarea-content">
 				</ExTextarea>
-				<p class="no-item-tip none-select" v-if="currentConfig.length == 0">暂无该类指令( •̀ ω •́ )✧</p>
+				<p class="no-item-tip none-select" v-if="currentContent.length == 0">暂无该类指令( •̀ ω •́ )✧</p>
 				<!--直接用refresh-tip更方便-->
-				<p class="refresh-tip none-select" v-if="currentConfig.length !== 0">更多指令,敬请期待( •̀ ω •́ )✧</p>
+				<p class="refresh-tip none-select" v-if="currentContent.length !== 0">更多指令,敬请期待( •̀ ω •́ )✧</p>
 			</div>
 		</div>
 		<teleport class="fixed-page" to="#app #app-root">
@@ -29,9 +29,9 @@ import {
 } from '../utils/index';
 import Owner from '../components/Owner.vue';
 
-const navList = ref([])
-const currentConfig = ref([])
-const groupMap = ref(new Map())
+let navList = []
+let currentContent = ref([])
+let groupMap = new Map()
 let isUnmounted = false
 
 const cmdTypeList = [
@@ -47,25 +47,25 @@ function applyCmdList(data) {
 	if (isUnmounted) return
 
 	const list = Array.isArray(data) ? data : []
-	navList.value = list
-	groupMap.value = classifyGroup(list, "type")
+	navList = list
+	groupMap = classifyGroup(list, "type")
 	const index = currentSidebarConfig.value
 	
 	if (index == 0) {
-		currentConfig.value = navList
+		currentContent.value = navList
 		return
 	} 
 
 	for (let item of collTypeList) {
 		if (item.index == index) {
-			currentConfig.value = groupMap.get(item.typeKey)
+			currentContent.value = groupMap.get(item.typeKey)
 		}
 	}
 	
 }
 
 async function getCmdInfoList() {
-	const cmdInfoCache = localStorage.getItem("cmd_info_cache")
+	const cmdInfoCache = sessionStorage.getItem("cmd_info_cache")
 
 	if (cmdInfoCache) {
 		try {
@@ -73,12 +73,12 @@ async function getCmdInfoList() {
 			return
 		}
 		catch {
-			localStorage.removeItem("cmd_info_cache")
+			sessionStoragee.removeItem("cmd_info_cache")
 		}
 	}
 
 	try {
-		const res = await fetch('/text/proto.json')
+		const res = await fetch('/text/cmdColumn.json')
 		const data = await res.json()
 		applyCmdList(data)		
 	} catch {
@@ -87,7 +87,7 @@ async function getCmdInfoList() {
 
 		if (!disposeReturn(res)) {
 			applyCmdList(res)
-			localStorage.setItem("cmd_info_cache", JSON.stringify(navList.value))
+			sessionStorage.setItem("cmd_info_cache", JSON.stringify(navList.value))
 		}
 	}
 
@@ -98,11 +98,11 @@ function switchDirConfig(sn, type) {
 	currentSidebarConfig.value = sn;
 
 	if (type === "all") {
-		currentConfig.value = navList.value
+		currentContent.value = navList
 		return
 	}
 
-	currentConfig.value = groupMap.value.get(type) ?? []
+	currentContent.value = groupMap.get(type) ?? []
 }
 
 onMounted(async () => {

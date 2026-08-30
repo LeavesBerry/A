@@ -12,7 +12,7 @@ from schemas import AnnoRequest
 
 router = APIRouter()
 
-@router.post("/api/getAllAnnoInfo")
+@router.get("/api/getAllAnnoInfo")
 #@limiter.limit("5/60minute")
 async def get_all_anno_info(request: Request, db: Session = Depends(get_db)):
     cache_key = cache.build_key("anno", "list")

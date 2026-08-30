@@ -149,14 +149,14 @@
 }
 
 #screen-shot {
-    margin-top: 15vh;
+    margin-top: 10vh;
     width: 70vw;
     height: 70vh;
 }
 
 #close-screen-shot-window-button {
     position: absolute;
-    top: 15vh;
+    top: 10vh;
     right: 10%;
     font-size: calc(8 * var(--design-vh, 4.57px));
     color: #5A191B;
@@ -180,7 +180,7 @@
     z-index: 999;
     width: 70vw;
     height: calc(60 * var(--design-vh, 4.57px));
-    background: #4a4030;
+    background: var(--primary-color);
     border: 5px solid var(--secondary-color);
     transition: transform 0.8s ease;
 }
@@ -214,14 +214,14 @@
     width: 80%;
     height: calc(5 * var(--design-vh, 4.57px));
     padding-left: 1%;
-    color: var(--primary-color);
+    color: var(--secondary-color);
     background-color: rgba(0, 0, 0, 0);
-    border: 2px solid var(--primary-color);
+    border: 2px solid var(--secondary-color);
     outline: none;
 }
 
 #cmd-input::placeholder {
-    color: rgba(255, 243, 208, 0.5);
+    color: rgba(0, 36, 55, 0.5);
 }
 
 #execute-cmd-button {
@@ -233,9 +233,9 @@
     cursor: pointer;
     padding: 0;
     outline: none;
-    border: 2px solid var(--primary-color);
+    border: 2px solid var(--secondary-color);
     background-color: rgba(0, 0, 0, 0);
-    color: var(--primary-color);
+    color: var(--secondary-color);
     font-weight: 600;
 }
 
@@ -264,7 +264,7 @@
     text-align: left;
     -webkit-user-select: text;
     user-select: text;
-    color: #c0ae93;
+    color: var(--secondary-color);
 }
 
 @media (min-width: 1px) and (orientation: portrait) {
@@ -308,5 +308,13 @@
 
     #search-input::placeholder {
         color: rgba(58,37,26, 0.5);
+    }
+
+    #close-screen-shot-window-button {
+        color: #c0ae93;
+    }
+
+    #cmd-input::placeholder {
+        color: rgba(255, 243, 208, 0.5);
     }
 }

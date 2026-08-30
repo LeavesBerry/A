@@ -43,6 +43,13 @@ export const apiRequest = {
         return res.data;
     },
 
+    async initColl(url) {
+        const res = await api.post('/api/initColl', {
+            url: url
+        });
+        return res.data;
+    },
+
     async toggleColl(currentUrl, currentTitle, currentType, currentDesc) {
         const res = await api.post('/api/toggleColl', {
             url: currentUrl,

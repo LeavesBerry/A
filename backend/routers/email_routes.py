@@ -18,7 +18,7 @@ router = APIRouter()
 def email_detail_cache_key(user_id: int, email_index: int) -> str:
     return 
 
-@router.post("/api/getAllEmailInfo")
+@router.get("/api/getAllEmailInfo")
 #@limiter.limit("5/60minute")
 async def get_all_email_info(request: Request, db: Session = Depends(get_db), 
                              user_id: int = Depends(get_current_user("user_id"))):

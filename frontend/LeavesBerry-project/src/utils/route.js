@@ -34,8 +34,8 @@ export function routeListener() {
         () => route.fullPath,
         (newPath) => {
             
-        updatePageInfo(route.params.page, `${newPath}`);
-        navbarModule.initColl();
+            updatePageInfo(route.params.page, `${newPath}`);
+            navbarModule.initColl(newPath)
             
         },
         { flush: "sync", immediate: true }
@@ -55,6 +55,7 @@ async function prepareTargetPage(target) {
 }
 
 export function useHashDetail(field) {
+
     onMounted(async() => {
         const hash = window.location.hash
         if(hash.startsWith("#?config_index=")) {

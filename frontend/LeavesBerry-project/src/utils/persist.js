@@ -108,10 +108,6 @@ export const persistConfig = {
         type: "rare",
         storage: "local"
     },
-    isChangedColl: {
-        type: "frequent",
-        storage: "local"
-    },
     userName: {
         type: "rare",
         storage: "local"

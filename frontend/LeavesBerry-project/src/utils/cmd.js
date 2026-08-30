@@ -113,20 +113,20 @@ export const cmdHandler = {
     // ------------------------------
     // 缓存有关
     // ------------------------------
-    clean: function (item) {
+    clean: function (item, storage) {
         if (item == "all") {
-            localStorage.clear()
+            storage.clear()
             return `已移除所有本地储存`
         }
-        else if (localStorage.getItem(item)) {
-            localStorage.removeItem(item)
+        else if (storage.getItem(item)) {
+            storage.removeItem(item)
             return `已移除本地储存:${item}`
         }
         else {
             return `本地储存:${item}不存在`
         }
     },
-    cache: function (item) {
-        return `查找的缓存:${JSON.stringify(localStorage.getItem(item))}`
+    cache: function (item, storage) {
+        return `查找的缓存:${JSON.stringify(storage.getItem(item))}`
     },
 }

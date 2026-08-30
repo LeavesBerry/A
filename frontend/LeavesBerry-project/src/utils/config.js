@@ -53,6 +53,7 @@ export const configModule = reactive({
         await router.push({
             hash: `#?config_index=${id}`
         })
+        navbarModule.initColl();
         if (this.contentId !== id) {
             let contentCache = sessionStorage.getItem(`${field}_content_cache_${id}`)
             if (!contentCache) {

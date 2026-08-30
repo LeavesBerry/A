@@ -80,8 +80,9 @@ function applyAnnoList(data) {
 }
 
 async function getAllAnnoInfo() {
-	const res = await api.post('/api/getAllAnnoInfo')
 	if (isUnmounted) return
+
+	const res = await api.get('/api/getAllAnnoInfo')	
 
 	applyAnnoList(res.data)
 }

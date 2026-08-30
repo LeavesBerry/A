@@ -1,5 +1,4 @@
 import { reactive } from "vue";
-import Setting from "../pages/Setting.vue";
 
 // 页面状态
 export const pageState = reactive({
