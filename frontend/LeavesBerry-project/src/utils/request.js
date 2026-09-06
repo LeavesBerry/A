@@ -2,6 +2,15 @@ import api from "./api";
 import { showTips } from "./base";
 import { userModule } from "./user";
 
+const COLL_CLIENT_ID =
+    globalThis.crypto?.randomUUID?.()
+    ?? `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+
+
+export function getCollClientId() {
+    return COLL_CLIENT_ID;
+}
+
 export const apiRequest = {
     async sendCode(email) {
         const res = await api.post('/api/sendCode', { user_email: email });
@@ -43,19 +52,17 @@ export const apiRequest = {
         return res.data;
     },
 
-    async initColl(url) {
-        const res = await api.post('/api/initColl', {
-            url: url
-        });
-        return res.data;
-    },
-
     async toggleColl(currentUrl, currentTitle, currentType, currentDesc) {
         const res = await api.post('/api/toggleColl', {
             url: currentUrl,
             title: currentTitle,
             type: currentType,
             desc: currentDesc
+        },
+        {
+            headers: {
+                'X-Client-ID': getCollClientId()
+            }
         });
         return res.data;
     },

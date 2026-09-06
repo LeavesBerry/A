@@ -139,13 +139,42 @@ async function cancelColl(url) {
 		if (isUnmounted) return
 
 		if (!disposeReturn(res)) {
-			let coll_info = JSON.parse(localStorage.getItem('coll_info_cache'))
-            let coll_list = JSON.parse(localStorage.getItem('coll_list_cache'))
-			const collIndex = coll_list.indexOf(url)
-			coll_list.splice(collIndex)
-			coll_info.splice(collIndex)
-			localStorage.setItem('coll_list_cache', JSON.stringify(coll_list))
-			localStorage.setItem('coll_info_cache', JSON.stringify(coll_info))
+			let coll_info =
+				JSON.parse(
+					localStorage.getItem(
+						'coll_info'
+					) || '[]'
+				)
+			let coll_url =
+				JSON.parse(
+					localStorage.getItem(
+						'coll_url'
+					) || '[]'
+				)
+			coll_info =
+				coll_info.filter(
+					item =>
+						item.url !== url
+				)
+			coll_url =
+				coll_url.filter(
+					itemUrl =>
+						itemUrl !== url
+				)
+			localStorage.setItem(
+				'coll_info',
+				JSON.stringify(
+					coll_info
+				)
+			)
+
+			localStorage.setItem(
+				'coll_url',
+				JSON.stringify(
+					coll_url
+				)
+			)
+
 		}
 		else {
 			navList = oldNavList
@@ -162,6 +191,13 @@ async function cancelColl(url) {
 	}
 }
 
+function handleCollUpdated(event) {
+
+    applyCollList(
+        event.detail
+    )
+}
+
 function switchDirConfig(sn, type) {
 	currentSidebarConfig.value = sn
 
@@ -174,9 +210,28 @@ function switchDirConfig(sn, type) {
 }
 
 onMounted(async () => {
-	currentSidebarConfig.value = 0
-	await getAllColl()
+
+    currentSidebarConfig.value = 0
+
+    window.addEventListener(
+        'coll-updated',
+        handleCollUpdated
+    )
+
+    await getAllColl()
 })
+
+
+onUnmounted(() => {
+
+    isUnmounted = true
+
+    window.removeEventListener(
+        'coll-updated',
+        handleCollUpdated
+    )
+})
+
 
 onUnmounted(() => {
 	isUnmounted = true

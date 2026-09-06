@@ -333,13 +333,27 @@ useHead({
 // ------------------------------
 // 生命周期
 // ------------------------------
-onMounted(async() => {
-  routeListener();
-  startTimer();
-  document.addEventListener('click', onGlobalClick);
+onMounted(async () => {
+  routeListener()
+  startTimer()
+  await userModule.initUser()
+  if (userState.isLogined) {
+    await navbarModule.getAllColl()
+    // 开始跨端监听
+    navbarModule.connectCollSSE()
+  }
+  document.addEventListener(
+    'click',
+    onGlobalClick
+  )
 })
 
+
 onUnmounted(() => {
-  document.removeEventListener('click', onGlobalClick);
+  navbarModule.disconnectCollSSE()
+  document.removeEventListener(
+    'click',
+    onGlobalClick
+  )
 })
 </script>

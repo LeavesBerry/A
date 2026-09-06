@@ -168,22 +168,41 @@ export const loginModule = reactive({
     },
     async login() {
         const data = {
-            user_email: this.inputEmail,
-            password: this.inputPw
+            user_email:
+                this.inputEmail,
+            password:
+                this.inputPw
         }
-        const res = await apiRequest.login(data)
-        if (disposeReturn(res)) return
-        userModule.setToken(res.access_token)
-        await userModule.initUser({ forceRefresh: true })
+        const res =
+            await apiRequest.login(data)
+        if (disposeReturn(res)) {
+            return
+        }
+        userModule.setToken(
+            res.access_token
+        )
+        await userModule.initUser({
+            forceRefresh: true
+        })
+        await navbarModule.getAllColl()
+        // 建立 SSE
+        navbarModule.connectCollSSE()
         this.rechoose()
         this.closeLoginWindow()
     },
     async logout() {
         try {
             await apiRequest.logout()
-        } finally {
+        }
+        finally {
+            // 先关闭旧账号 SSE
+            navbarModule.disconnectCollSSE()
+            // 防止另一个账号读到旧账号收藏
+            navbarModule.clearCollLocal()
             userModule.clear()
-            showTips("您已登出")
+            showTips(
+                "您已登出"
+            )
             this.openLoginWindow()
         }
     },

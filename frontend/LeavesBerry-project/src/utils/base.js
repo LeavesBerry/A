@@ -95,6 +95,27 @@ export function debounce(fn, delay = 100) {
     }
 }
 
+export function readLocalArray(key) {
+    try {
+        const value = JSON.parse(
+            localStorage.getItem(key) || '[]'
+        )
+
+        return Array.isArray(value)
+            ? value
+            : []
+    }
+    catch {
+        return []
+    }
+}
+
+export function sleep(ms) {
+    return new Promise(resolve => {
+        setTimeout(resolve, ms)
+    })
+}
+
 export function classifyGroup(data, keyField) {
     const groupMap = new Map();
     for (const item of data) {
